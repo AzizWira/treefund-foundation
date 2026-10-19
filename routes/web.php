@@ -7,13 +7,13 @@ use App\Http\Controllers\PublicCatalogController;
 use App\Http\Controllers\PublicController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'foundation-start', ['pageTitle' => 'Beranda'])->name('home');
-Route::view('/catalog', 'foundation-start', ['pageTitle' => 'Katalog Lahan'])->name('catalog');
-Route::view('/peta', 'foundation-start', ['pageTitle' => 'Peta Lahan'])->name('public.map');
-Route::get('/peta/data', fn () => response()->json([]))->name('public.map.data');
+Route::get('/', [PublicController::class, 'home'])->name('home');
+Route::get('/catalog', [PublicCatalogController::class, 'catalog'])->name('catalog');
 Route::view('/informasi/tentang', 'foundation-start', ['pageTitle' => 'Tentang TreeFund'])->name('about');
-Route::view('/informasi/{topic}', 'foundation-start', ['pageTitle' => 'Informasi TreeFund'])->name('information');
+Route::get('/informasi/{topic}', [PublicController::class, 'information'])->name('information');
 Route::view('/faq', 'foundation-start', ['pageTitle' => 'FAQ'])->name('faq');
+Route::get('/peta', [PublicController::class, 'map'])->name('public.map');
+Route::get('/peta/data', [PublicController::class, 'mapData'])->name('public.map.data');
 Route::middleware('guest')->group(function () {
     Route::view('/login', 'auth.login')->name('login');
     Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:10,1');
