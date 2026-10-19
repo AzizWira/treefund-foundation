@@ -11,7 +11,7 @@ Route::get('/', [PublicController::class, 'home'])->name('home');
 Route::get('/catalog', [PublicCatalogController::class, 'catalog'])->name('catalog');
 Route::get('/informasi/tentang', fn () => app(PublicController::class)->information('tentang'))->name('about');
 Route::get('/informasi/{topic}', [PublicController::class, 'information'])->name('information');
-Route::view('/faq', 'foundation-start', ['pageTitle' => 'FAQ'])->name('faq');
+Route::view('/faq', 'faq')->name('faq');
 Route::get('/peta', [PublicController::class, 'map'])->name('public.map');
 Route::get('/peta/data', [PublicController::class, 'mapData'])->name('public.map.data');
 Route::middleware('guest')->group(function () {
