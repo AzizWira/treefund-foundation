@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PublicController::class, 'home'])->name('home');
 Route::get('/catalog', [PublicCatalogController::class, 'catalog'])->name('catalog');
-Route::view('/informasi/tentang', 'foundation-start', ['pageTitle' => 'Tentang TreeFund'])->name('about');
+Route::get('/informasi/tentang', fn () => app(PublicController::class)->information('tentang'))->name('about');
 Route::get('/informasi/{topic}', [PublicController::class, 'information'])->name('information');
 Route::view('/faq', 'foundation-start', ['pageTitle' => 'FAQ'])->name('faq');
 Route::get('/peta', [PublicController::class, 'map'])->name('public.map');

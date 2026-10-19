@@ -20,6 +20,7 @@ class PublicController extends Controller
     public function information(string $topic): mixed
     {
         $pages = [
+            'tentang' => ['Tentang TreeFund', 'Mempertemukan kepedulian dengan aksi nyata.', 'TreeFund menghubungkan donatur dan kelompok tani melalui adopsi pohon agroforestri. Setiap adopsi terhubung dengan identitas pohon, penugasan penanaman, serta laporan lapangan yang diperiksa oleh Admin.'],
             'cara-kerja' => ['Cara Kerja', 'Dari satu adopsi hingga pohon bertumbuh.', 'Pilih bibit dan lahan yang telah terverifikasi, selesaikan pembayaran, lalu ikuti penanaman dan perkembangan pohon melalui portofolio akun Anda.'],
             'privasi' => ['Privasi Data', 'Data Anda dijaga sesuai kebutuhan akses.', 'Dokumen legalitas, rekening, transaksi, dan foto laporan dibatasi menurut peran serta kepemilikan. Peta publik menampilkan lokasi lahan yang dipublikasikan, tanpa nama donatur, kode pohon pribadi, atau dokumen kelompok.'],
             'ketentuan' => ['Ketentuan Penggunaan', 'Adopsi yang transparan dan bertanggung jawab.', 'TreeFund saat ini digunakan untuk pengembangan akademik dengan pembayaran Midtrans Sandbox. E-sertifikat merupakan bukti adopsi, bukan sertifikasi kredit karbon. Perkembangan pohon mengikuti bukti lapangan yang diverifikasi.'],
