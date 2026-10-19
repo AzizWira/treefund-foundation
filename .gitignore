@@ -1,0 +1,42 @@
+*.log
+.DS_Store
+.env
+.env.backup
+.env.production
+# Keep all environment variants private; commit only the configuration template.
+.env.*
+!.env.example
+/.envrc
+# Local database files and backups are not application source.
+*.sqlite*
+*.sql
+*.sql.gz
+/backups/
+# Private certificates and authentication keys.
+*.pem
+*.p12
+*.pfx
+*.key
+.phpactor.json
+.phpunit.result.cache
+/.codex
+/.cursor/
+/.idea
+/.nova
+/.phpunit.cache
+/.vscode
+/.zed
+/auth.json
+/node_modules
+/public/build
+/public/fonts-manifest.dev.json
+/public/hot
+/public/storage
+/storage/*.key
+/storage/pail
+/vendor
+_ide_helper.php
+Homestead.json
+Homestead.yaml
+Thumbs.db
+/ngrok.exe

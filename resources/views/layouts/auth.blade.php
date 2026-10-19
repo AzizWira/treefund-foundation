@@ -1,0 +1,7 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="csrf-token" content="{{ csrf_token() }}"><meta name="viewport" content="width=device-width,initial-scale=1"><title>@yield('title') · TreeFund</title><link rel="preload" href="/assets/fonts/material-symbols-outlined.ttf" as="font" type="font/ttf" crossorigin><link rel="stylesheet" href="/assets/fonts/fonts.css?v=2">@vite(['resources/css/app.css','resources/js/app.js'])</head>
+<body><div class="auth-shell"><section class="auth-art"><a class="brand" href="/"><img src="{{ asset('assets/logo.png') }}" alt="TreeFund"><strong>TreeFund</strong></a><span class="eyebrow">TUMBUH BERSAMA, TERHUBUNG DENGAN AMAN</span><h1>Langkah kecil.<br>Kepercayaan yang tumbuh.</h1><p>Lindungi akun Anda dan terima kabar perkembangan dari setiap pohon yang Anda dukung.</p><div class="auth-tree" aria-hidden="true">✳</div><small>Satu akun, satu perjalanan hijau yang dapat ditelusuri.</small></section><section class="auth-form"><a class="back-link" href="/">← Kembali ke beranda</a><div class="auth-form-inner"><span class="eyebrow">KEAMANAN AKUN TREEFUND</span><h1>@yield('title')</h1>
+@if(session('status'))<div class="flash success" role="status">{{ session('status') }}</div>@endif
+@if($errors->any())<div class="flash error" role="alert">{{ $errors->first() }}</div>@endif
+@yield('content')
+</div><footer class="auth-footer"><span>© {{ date('Y') }} TreeFund · Tumbuh bersama, pulihkan bumi.</span></footer></section></div></body></html>

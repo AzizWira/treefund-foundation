@@ -1,0 +1,1 @@
+@props(['title'=>'Belum ada data','text'=>'Data akan tampil setelah aktivitas terkait tercatat.'])<div class="empty"><span class="material-symbols-outlined">eco</span><h3>{{ $title }}</h3><p>{{ $text }}</p></div>

@@ -1,0 +1,1 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TreeFund</title>@vite(['resources/css/app.css','resources/js/app.js'])</head><body><main class="panel"><h1>TreeFund</h1><p>Halaman {{ $pageTitle ?? 'Beranda' }}</p></main></body></html>
