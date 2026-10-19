@@ -37,11 +37,11 @@ class FoundationTest extends TestCase
         $this->get('/informasi/tidak-ada')->assertNotFound();
     }
 
-    public function test_seeded_users_log_in_to_their_own_dashboard_and_all_portal_menus_are_placeholders(): void
+    public function test_seeded_users_log_in_and_unfinished_portal_menus_remain_placeholders(): void
     {
         $routes = [
             'admin' => ['/admin/partners', '/admin/plots', '/admin/plantings', '/admin/monitorings', '/admin/catalog', '/admin/disbursements', '/admin/reports', '/admin/settings'],
-            'partner' => ['/partner/partnership', '/partner/plots', '/partner/work-orders', '/partner/work-orders/1', '/partner/monitoring', '/partner/funds', '/partner/members'],
+            'partner' => ['/partner/plots', '/partner/work-orders', '/partner/work-orders/1', '/partner/monitoring', '/partner/funds', '/partner/members'],
             'donor' => ['/donor/catalog', '/checkout/1', '/orders', '/orders/1', '/certificates', '/trees'],
         ];
         foreach (['admin' => 'admin', 'partner' => 'mitra', 'donor' => 'donatur'] as $role => $email) {
@@ -150,6 +150,6 @@ class FoundationTest extends TestCase
         $this->actingAs(User::where('role', 'donor')->firstOrFail());
         $this->post('/orders')->assertStatus(405);
         $this->post('/payments/midtrans/notification')->assertNotFound();
-        $this->post('/partner/partnership')->assertStatus(405);
+        $this->post('/partner/partnership')->assertForbidden();
     }
 }

@@ -32,6 +32,7 @@ class TreeFundMail extends Mailable implements ShouldBeEncrypted, ShouldQueue
         $template = match ($this->kind) {
             'verification' => 'verification',
             'password_reset' => 'password-reset',
+            'admin_request' => 'admin',
             default => 'security',
         };
 

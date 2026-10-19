@@ -86,6 +86,8 @@ document.addEventListener('click', event => {
         const form = document.querySelector('form[action="/login"]');
         if (form) { form.elements.email.value = trigger.dataset.demoAccount; form.elements.password.value = 'TreeFund!2026'; form.requestSubmit(); }
     }
+    const back = event.target.closest('[data-back]');
+    if (back) { if (history.length > 1) history.back(); else location.assign('/dashboard'); }
     const anchor = event.target.closest('a[href^="#"]');
     if (anchor && anchor.hash.length > 1) {
         const destination = document.getElementById(decodeURIComponent(anchor.hash.slice(1)));
