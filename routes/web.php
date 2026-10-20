@@ -42,6 +42,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/files/{type}/{id}', FileController::class)->where('type', 'legal')->whereNumber('id')->name('files');
     Route::middleware('role:admin')->group(function () {
         Route::get('/admin/partners', [AdminController::class, 'queue'])->defaults('type', 'partners')->name('admin.partners');
+        Route::post('/admin/{type}/{id}/review', [AdminController::class, 'review'])->where('type', 'partners')->whereNumber('id');
         Route::view('/admin/plots', 'portal.placeholder', ['pageTitle' => 'Verifikasi Lahan'])->name('admin.plots');
         Route::view('/admin/plantings', 'portal.placeholder', ['pageTitle' => 'Verifikasi Bukti Tanam'])->name('admin.plantings');
         Route::view('/admin/monitorings', 'portal.placeholder', ['pageTitle' => 'Monitoring Berkala'])->name('admin.monitorings');

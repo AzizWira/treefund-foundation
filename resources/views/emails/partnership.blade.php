@@ -1,0 +1,4 @@
+@extends('emails.layout')
+@section('content')
+<h1 style="font:700 29px/1.3 Georgia,serif;margin:0 0 16px">{{ $payload['title'] }}</h1><p style="font-size:14px;line-height:1.8">Halo {{ $recipientName }}, {{ $payload['body'] }}</p><div style="padding:18px 20px;background:{{ ($payload['decision'] ?? '')==='revision' ? '#fff6e5' : '#edf6e8' }};border-radius:8px;margin:20px 0"><strong style="font-size:13px;color:#355d3d">{{ ($payload['decision'] ?? '')==='revision' ? 'Perbaikan diperlukan' : 'Hasil pemeriksaan tersedia' }}</strong><p style="font-size:13px;line-height:1.8;margin-bottom:0">{{ $payload['note'] ?? 'Buka pengajuan untuk melihat keputusan dan langkah berikutnya.' }}</p></div><p style="font-size:12px;color:#6d7e70">Dokumen legalitas dan informasi rekening tetap tersedia hanya melalui akun yang berwenang.</p>
+@endsection

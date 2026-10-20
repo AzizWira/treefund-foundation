@@ -33,6 +33,7 @@ class TreeFundMail extends Mailable implements ShouldBeEncrypted, ShouldQueue
             'verification' => 'verification',
             'password_reset' => 'password-reset',
             'admin_request' => 'admin',
+            'partnership' => 'partnership',
             default => 'security',
         };
 

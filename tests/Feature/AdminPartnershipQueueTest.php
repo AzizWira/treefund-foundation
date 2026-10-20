@@ -47,7 +47,7 @@ class AdminPartnershipQueueTest extends TestCase
             ->assertSee('id="review-'.$partner->id.'"', false)
             ->assertSee('/files/legal/'.$partner->id.'?preview=1', false)
             ->assertSee('sidebar', false)->assertSee('topbar', false)->assertSee('app-footer', false)
-            ->assertDontSee('foundation-placeholder', false)->assertDontSee('name="decision"', false);
+            ->assertDontSee('foundation-placeholder', false)->assertSee('name="decision"', false);
         $this->assertSame('pending', $partner->fresh()->status);
         $this->assertDatabaseCount('audit_logs', 0);
         Mail::assertNothingQueued();
@@ -72,7 +72,7 @@ class AdminPartnershipQueueTest extends TestCase
             ->assertSee('Kelompok Revisi')->assertSee('Lengkapi dokumen.')
             ->assertSee('Perlu perbaikan')->assertViewHas('records', fn ($records) => $records->total() === 1);
         $approved = Partner::where('status', 'approved')->firstOrFail();
-        $this->get('/admin/partners?review='.$approved->id)->assertOk()->assertSee('Pengajuan telah disetujui.');
+        $this->get('/admin/partners?review='.$approved->id)->assertOk()->assertSee('Keputusan sudah tercatat.');
     }
 
     public function test_pagination_retains_filters_and_focused_review_is_validated(): void
