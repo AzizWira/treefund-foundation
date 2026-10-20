@@ -115,6 +115,7 @@ class PartnershipSubmissionTest extends TestCase
         $user = User::where('role', 'partner')->firstOrFail();
         $partner = $user->partner;
         $partner->update(['status' => 'revision', 'review_note' => 'Perbaiki alamat kelompok.']);
+        Storage::disk('local')->put($partner->document, '%PDF-1.4 test document');
         $other = $this->newPartnerUser();
         $this->actingAs($user)->get('/partner/partnership')->assertOk()->assertSee('Perbaiki alamat kelompok.');
         $this->from('/partner/partnership')->post('/partner/partnership', $this->submission([
