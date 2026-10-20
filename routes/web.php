@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailAuthController;
 use App\Http\Controllers\FileController;
@@ -40,7 +41,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/notifications', 'portal.placeholder', ['pageTitle' => 'Notifikasi'])->name('notifications');
     Route::get('/files/{type}/{id}', FileController::class)->where('type', 'legal')->whereNumber('id')->name('files');
     Route::middleware('role:admin')->group(function () {
-        Route::view('/admin/partners', 'portal.placeholder', ['pageTitle' => 'Verifikasi Mitra'])->name('admin.partners');
+        Route::get('/admin/partners', [AdminController::class, 'queue'])->defaults('type', 'partners')->name('admin.partners');
         Route::view('/admin/plots', 'portal.placeholder', ['pageTitle' => 'Verifikasi Lahan'])->name('admin.plots');
         Route::view('/admin/plantings', 'portal.placeholder', ['pageTitle' => 'Verifikasi Bukti Tanam'])->name('admin.plantings');
         Route::view('/admin/monitorings', 'portal.placeholder', ['pageTitle' => 'Monitoring Berkala'])->name('admin.monitorings');
