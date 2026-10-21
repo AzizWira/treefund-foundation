@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Partner;
+use App\Models\Plot;
 use App\Services\ActivityService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -63,4 +64,32 @@ class PartnerController extends Controller
 
         return back()->with('success', 'Profil dan legalitas dikirim untuk diverifikasi.');
     }
+
+    public function plots(Request $request): mixed
+    {
+        return view('partner.plots', ['partner' => $request->user()->partner, 'plots' => $this->filteredRecords($request, Plot::where('partner_id', $request->user()->partner?->id ?? 0)->latest()->get(), fn ($plot) => $plot->name.' '.$plot->location.' '.$plot->proposed_species, 8, fn ($plot) => $plot->status)]);
+    }
+
+    public function savePlot(Request $request, ActivityService $activity): mixed
+    {
+        $partner = $request->user()->partner()->first();
+        abort_unless($partner, 403, 'Lengkapi pengajuan profil kemitraan terlebih dahulu.');
+        abort_unless($partner->status === 'approved', 403, 'Kemitraan harus disetujui terlebih dahulu.');
+        $data = $request->validate(['plot_id' => 'nullable|integer', 'name' => 'required|string|max:150', 'location' => 'required|string|max:190', 'latitude' => 'required|numeric|between:-90,90', 'longitude' => 'required|numeric|between:-180,180', 'capacity' => 'required|integer|min:1|max:100000', 'proposed_species' => 'required|string|max:150']);
+        DB::transaction(function () use ($request, $partner, $data, $activity): void {
+            $partner = Partner::whereKey($partner->id)->lockForUpdate()->firstOrFail();
+            abort_unless($partner->status === 'approved', 403, 'Kemitraan harus disetujui terlebih dahulu.');
+            $plot = isset($data['plot_id'])
+                ? Plot::where('partner_id', $partner->id)->lockForUpdate()->findOrFail($data['plot_id'])
+                : new Plot(['partner_id' => $partner->id]);
+            abort_if($plot->exists && $plot->status !== 'revision', 409, 'Hanya pengajuan yang dikembalikan dapat diperbaiki.');
+            unset($data['plot_id']);
+            $plot->fill(array_merge($data, ['status' => 'pending', 'review_note' => null, 'reviewed_by' => null]))->save();
+            $activity->audit('plot.submitted', $plot);
+            $activity->notifyAdmins('Pengajuan lahan baru', $plot->name, '/admin/plots');
+        });
+
+        return back()->with('success', 'Lahan dikirim untuk verifikasi.');
+    }
+
 }

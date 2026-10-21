@@ -144,3 +144,23 @@ if (reviewTarget) {
     const dialog = document.getElementById(reviewTarget);
     if (dialog instanceof HTMLDialogElement && !dialog.open) dialog.showModal();
 }
+
+function recordGPS(button) {
+    const form = button.closest('form');
+    const status = form?.querySelector('[data-gps-status]');
+    if (!form || !navigator.geolocation) { if (status) status.textContent = 'GPS tidak tersedia. Masukkan koordinat secara manual.'; return; }
+    button.disabled = true;
+    if (status) status.textContent = 'Membaca lokasi perangkat…';
+    navigator.geolocation.getCurrentPosition(position => {
+        form.querySelector('[name=latitude]').value = position.coords.latitude.toFixed(7);
+        form.querySelector('[name=longitude]').value = position.coords.longitude.toFixed(7);
+        if (status) status.textContent = 'Koordinat terbaca. Akurasi perangkat sekitar ' + Math.round(position.coords.accuracy) + ' meter; tetap diperiksa Admin.';
+        button.disabled = false;
+    }, () => { button.disabled = false; if (status) status.textContent = 'Lokasi belum dapat diakses. Periksa izin browser atau masukkan koordinat secara manual.'; }, { enableHighAccuracy: true, timeout: 15000 });
+}
+
+
+document.addEventListener('click', event => {
+    const button = event.target.closest('[data-gps]');
+    if (button && !button.disabled) recordGPS(button);
+});
