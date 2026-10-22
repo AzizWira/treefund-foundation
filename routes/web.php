@@ -46,7 +46,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/admin/plots', [AdminController::class, 'queue'])->defaults('type', 'plots')->name('admin.plots');
         Route::view('/admin/plantings', 'portal.placeholder', ['pageTitle' => 'Verifikasi Bukti Tanam'])->name('admin.plantings');
         Route::view('/admin/monitorings', 'portal.placeholder', ['pageTitle' => 'Monitoring Berkala'])->name('admin.monitorings');
-        Route::view('/admin/catalog', 'portal.placeholder', ['pageTitle' => 'Pengelolaan Katalog'])->name('admin.catalog');
+        Route::get('/admin/catalog', [AdminController::class, 'catalog'])->name('admin.catalog');
+        Route::post('/admin/catalog', [AdminController::class, 'saveOffer']);
         Route::view('/admin/disbursements', 'portal.placeholder', ['pageTitle' => 'Pencairan Dana'])->name('admin.funds');
         Route::view('/admin/reports', 'portal.placeholder', ['pageTitle' => 'Rekapitulasi dan Laporan'])->name('admin.reports');
         Route::view('/admin/settings', 'portal.placeholder', ['pageTitle' => 'Pengaturan Sistem'])->name('admin.settings');
