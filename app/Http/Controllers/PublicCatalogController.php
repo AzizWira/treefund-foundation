@@ -12,7 +12,7 @@ class PublicCatalogController extends Controller
         $request->validate(['q' => 'nullable|string|max:190', 'species' => 'nullable|string|max:120']);
         $search = trim((string) $request->input('q', ''));
 
-        $published = Offer::where('active', true)->whereHas('plot', fn ($q) => $q->where('status', 'approved')->whereHas('partner', fn ($p) => $p->where('status', 'approved')));
+        $published = Offer::published();
         $speciesOptions = (clone $published)->select('species')->distinct()->orderBy('species')->pluck('species');
         $offers = $published->with('plot.partner')
             ->when($search !== '', fn ($q) => $q->where(fn ($s) => $s->where('species', 'like', '%'.$search.'%')->orWhereHas('plot', fn ($p) => $p->where('name', 'like', '%'.$search.'%')->orWhere('location', 'like', '%'.$search.'%'))))
