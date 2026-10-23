@@ -103,7 +103,8 @@ class PartnerController extends Controller
     public function members(Request $request): mixed
     {
         $partner = $request->user()->partner()->first();
-        $members = Member::where('partner_id', $partner?->id ?? 0)->orderBy('id')->get();
+        $request->validate(['q' => 'nullable|string|max:190']);
+        $members = $this->filteredRecords($request, Member::where('partner_id', $partner?->id ?? 0)->orderBy('id')->get(), fn ($member) => $member->name.' '.$member->position.' '.$member->phone, 8);
 
         return view('partner.members', compact('partner', 'members'));
     }
@@ -125,5 +126,13 @@ class PartnerController extends Controller
         $member->update($data);
 
         return back()->with('success', 'Data anggota diperbarui.');
+    }
+
+    public function deleteMember(Request $request, Member $member): mixed
+    {
+        abort_unless($member->partner_id === $request->user()->partner()->value('id'), 403);
+        $member->delete();
+
+        return back()->with('success', 'Anggota dihapus.');
     }
 }

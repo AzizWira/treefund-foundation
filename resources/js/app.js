@@ -1,3 +1,4 @@
+import { initMemberDelete } from './member-delete.js';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
@@ -189,3 +190,5 @@ document.addEventListener('click', event => {
     details.open = true;
     section.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
 });
+
+initMemberDelete(document, closeReview);

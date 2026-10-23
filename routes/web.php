@@ -64,6 +64,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/partner/members', [PartnerController::class, 'members'])->name('partner.members');
         Route::post('/partner/members', [PartnerController::class, 'saveMember']);
         Route::put('/partner/members/{member}', [PartnerController::class, 'updateMember'])->whereNumber('member');
+        Route::delete('/partner/members/{member}', [PartnerController::class, 'deleteMember'])->whereNumber('member');
     });
     Route::middleware('role:donor')->group(function () {
         Route::get('/donor/catalog', [PublicCatalogController::class, 'catalog'])->name('donor.catalog');
