@@ -61,7 +61,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::view('/partner/work-orders/{work}', 'portal.placeholder', ['pageTitle' => 'Detail Work Order'])->name('partner.work');
         Route::view('/partner/monitoring', 'portal.placeholder', ['pageTitle' => 'Log Monitoring'])->name('partner.monitoring');
         Route::view('/partner/funds', 'portal.placeholder', ['pageTitle' => 'Pencairan Dana'])->name('partner.funds');
-        Route::view('/partner/members', 'portal.placeholder', ['pageTitle' => 'Data Anggota Kelompok'])->name('partner.members');
+        Route::get('/partner/members', [PartnerController::class, 'members'])->name('partner.members');
+        Route::post('/partner/members', [PartnerController::class, 'saveMember']);
+        Route::put('/partner/members/{member}', [PartnerController::class, 'updateMember'])->whereNumber('member');
     });
     Route::middleware('role:donor')->group(function () {
         Route::get('/donor/catalog', [PublicCatalogController::class, 'catalog'])->name('donor.catalog');

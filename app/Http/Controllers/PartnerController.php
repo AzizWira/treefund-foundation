@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Member;
 use App\Models\Partner;
 use App\Models\Plot;
 use App\Services\ActivityService;
@@ -98,4 +99,31 @@ class PartnerController extends Controller
         return back()->with('success', 'Lahan dikirim untuk verifikasi.');
     }
 
+
+    public function members(Request $request): mixed
+    {
+        $partner = $request->user()->partner()->first();
+        $members = Member::where('partner_id', $partner?->id ?? 0)->orderBy('id')->get();
+
+        return view('partner.members', compact('partner', 'members'));
+    }
+
+    public function saveMember(Request $request): mixed
+    {
+        $partner = $request->user()->partner()->first();
+        abort_unless($partner, 403, 'Lengkapi pengajuan profil kemitraan terlebih dahulu.');
+        $data = $request->validate(['name' => 'required|string|max:120', 'position' => 'required|string|max:100', 'phone' => 'nullable|string|max:25']);
+        $partner->members()->create($data);
+
+        return back()->with('success', 'Anggota kelompok ditambahkan.');
+    }
+
+    public function updateMember(Request $request, Member $member): mixed
+    {
+        abort_unless($member->partner_id === $request->user()->partner()->value('id'), 403);
+        $data = $request->validate(['name' => 'required|string|max:120', 'position' => 'required|string|max:100', 'phone' => 'nullable|string|max:25']);
+        $member->update($data);
+
+        return back()->with('success', 'Data anggota diperbarui.');
+    }
 }
