@@ -64,7 +64,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::view('/partner/members', 'portal.placeholder', ['pageTitle' => 'Data Anggota Kelompok'])->name('partner.members');
     });
     Route::middleware('role:donor')->group(function () {
-        Route::view('/donor/catalog', 'portal.placeholder', ['pageTitle' => 'Katalog Donatur'])->name('donor.catalog');
+        Route::get('/donor/catalog', [PublicCatalogController::class, 'catalog'])->name('donor.catalog');
         Route::view('/trees', 'portal.placeholder', ['pageTitle' => 'Portofolio Pohon dan WebGIS'])->name('trees');
         Route::view('/certificates', 'portal.placeholder', ['pageTitle' => 'E-Sertifikat Adopsi'])->name('certificates');
         Route::view('/orders', 'portal.placeholder', ['pageTitle' => 'Riwayat Transaksi'])->name('orders');
