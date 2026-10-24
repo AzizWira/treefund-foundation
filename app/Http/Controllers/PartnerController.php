@@ -13,14 +13,18 @@ class PartnerController extends Controller
 {
     public function partnership(Request $request): mixed
     {
-        return view('partner.partnership', ['partner' => $request->user()->partner()->first()]);
+        $partner = $request->user()->partner()->first();
+        $documentAvailable = $partner && $partner->document && Storage::disk('local')->exists($partner->document);
+
+        return view('partner.partnership', compact('partner', 'documentAvailable'));
     }
 
     public function savePartnership(Request $request, ActivityService $activity): mixed
     {
         $partner = $request->user()->partner()->first();
         abort_if($partner && $partner->status === 'approved', 409, 'Profil telah disetujui. Hubungi Admin untuk perubahan legalitas.');
-        $data = $request->validate(['group_name' => 'required|string|max:150', 'address' => 'required|string|max:1000', 'bank_name' => 'required|string|max:80', 'bank_account' => 'required|regex:/^[0-9]{5,30}$/', 'account_holder' => 'required|string|max:150', 'document' => ($partner ? 'nullable' : 'required').'|file|mimes:pdf,jpg,jpeg,png|max:10240']);
+        $documentRequired = ! $partner || ! $partner->document || ! Storage::disk('local')->exists($partner->document);
+        $data = $request->validate(['group_name' => 'required|string|max:150', 'address' => 'required|string|max:1000', 'bank_name' => 'required|string|max:80', 'bank_account' => 'required|regex:/^[0-9]{5,30}$/', 'account_holder' => 'required|string|max:150', 'document' => ($documentRequired ? 'required' : 'nullable').'|file|mimes:pdf,jpg,jpeg,png|max:10240']);
         $newDocumentPath = null;
         if ($request->hasFile('document')) {
             $newDocumentPath = $request->file('document')->store('legal', 'local');

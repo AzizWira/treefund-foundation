@@ -40,3 +40,4 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 /ngrok.exe
+/storage/framework/lsp-*.php
