@@ -68,6 +68,20 @@ async function initPublicMap(scope = document) {
     }
 }
 
+function openReview(dialog) {
+    if (!dialog || dialog.open) return;
+    dialog.showModal();
+    requestAnimationFrame(() => dialog.querySelectorAll('[data-coordinate-map]').forEach(element => {
+        if (!maps.has(element)) {
+            const latitude = Number(element.dataset.lat);
+            const longitude = Number(element.dataset.lng);
+            const map = baseMap(element, latitude, longitude);
+            L.marker([latitude, longitude]).addTo(map);
+        }
+        maps.get(element).invalidateSize();
+    }));
+}
+
 function closeReview(dialog, returnValue = '') {
     if (!dialog.open || dialog.classList.contains('is-closing')) return;
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -125,7 +139,7 @@ document.addEventListener('click', event => {
     const review = event.target.closest('[data-review-target]');
     if (review) {
         const dialog = document.getElementById(review.dataset.reviewTarget);
-        if (dialog && !dialog.open) dialog.showModal();
+        openReview(dialog);
     }
     const back = event.target.closest('[data-back]');
     if (back) { if (history.length > 1) history.back(); else location.assign('/dashboard'); }
@@ -142,7 +156,7 @@ const focusedReview = new URLSearchParams(location.search).get('review');
 const reviewTarget = /^[1-9][0-9]*$/.test(focusedReview || '') ? 'review-' + focusedReview : (location.hash.startsWith('#review-') ? location.hash.slice(1) : null);
 if (reviewTarget) {
     const dialog = document.getElementById(reviewTarget);
-    if (dialog instanceof HTMLDialogElement && !dialog.open) dialog.showModal();
+    if (dialog instanceof HTMLDialogElement) openReview(dialog);
 }
 
 function recordGPS(button) {
