@@ -87,4 +87,14 @@ class EmailAuthController extends Controller
 
         return redirect()->route('login')->with('status', 'Kata sandi berhasil diganti. Silakan masuk dengan kata sandi baru.');
     }
+
+    public function preferences(Request $request): mixed
+    {
+        $request->validate(['updates' => 'sometimes|boolean', 'reminders' => 'sometimes|boolean', 'digest' => 'sometimes|boolean']);
+        $request->user()->forceFill(['email_preferences' => [
+            'updates' => $request->boolean('updates'), 'reminders' => $request->boolean('reminders'), 'digest' => $request->boolean('digest'),
+        ]])->save();
+
+        return back()->with('success', 'Pilihan email disimpan. Email keamanan dan transaksi penting tetap aktif.');
+    }
 }

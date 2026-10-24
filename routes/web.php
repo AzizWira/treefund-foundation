@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/email/verify-code', [EmailAuthController::class, 'code'])->middleware('throttle:10,1')->name('verification.code');
     Route::get('/settings', [AuthController::class, 'profile'])->name('settings');
     Route::put('/settings', [AuthController::class, 'updateProfile']);
+    Route::put('/email/preferences', [EmailAuthController::class, 'preferences'])->name('email.preferences');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
