@@ -1,0 +1,4 @@
+@extends('emails.layout')
+@section('content')
+<h1 style="font:700 29px/1.3 Georgia,serif;margin:0 0 16px">{{ $kind === 'admin_digest' ? 'Ringkasan aktivitas hari ini.' : $payload['title'] }}</h1><p style="font-size:14px;line-height:1.8">Halo {{ $recipientName }}, {{ $payload['body'] }}</p><table role="presentation" width="100%" cellpadding="14" cellspacing="0" style="margin:22px 0;border-top:1px solid #dce7d6">@foreach(($payload['stats'] ?? []) as $label=>$count)<tr><td style="font-size:13px;background:#f3f7ef;border-bottom:1px solid #e4ebdf;color:#60745e">{{ $label }}</td><td align="right" style="font-size:23px;font-weight:bold;background:#f3f7ef;border-bottom:1px solid #e4ebdf;color:#2b603f">{{ $count }}</td></tr>@endforeach</table><p style="font-size:12px;line-height:1.8;color:#71816e">Masuk ke konsol untuk meninjau dokumen, mengambil keputusan, dan melihat audit aktivitas sesuai kewenangan Anda.</p>
+@endsection

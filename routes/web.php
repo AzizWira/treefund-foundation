@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailAuthController;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PortalController;
 use App\Http\Controllers\PublicCatalogController;
 use App\Http\Controllers\PublicController;
@@ -36,6 +38,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [PortalController::class, 'dashboard'])->name('dashboard');
     Route::view('/notifications', 'portal.placeholder', ['pageTitle' => 'Notifikasi'])->name('notifications');
+    Route::get('/files/{type}/{id}', FileController::class)->where('type', 'legal')->whereNumber('id')->name('files');
     Route::middleware('role:admin')->group(function () {
         Route::view('/admin/partners', 'portal.placeholder', ['pageTitle' => 'Verifikasi Mitra'])->name('admin.partners');
         Route::view('/admin/plots', 'portal.placeholder', ['pageTitle' => 'Verifikasi Lahan'])->name('admin.plots');
@@ -47,7 +50,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::view('/admin/settings', 'portal.placeholder', ['pageTitle' => 'Pengaturan Sistem'])->name('admin.settings');
     });
     Route::middleware('role:partner')->group(function () {
-        Route::view('/partner/partnership', 'portal.placeholder', ['pageTitle' => 'Profil Kemitraan'])->name('partner.partnership');
+        Route::get('/partner/partnership', [PartnerController::class, 'partnership'])->name('partner.partnership');
+        Route::post('/partner/partnership', [PartnerController::class, 'savePartnership']);
         Route::view('/partner/plots', 'portal.placeholder', ['pageTitle' => 'Pengajuan Lahan'])->name('partner.plots');
         Route::view('/partner/work-orders', 'portal.placeholder', ['pageTitle' => 'Work Order Penanaman'])->name('partner.works');
         Route::view('/partner/work-orders/{work}', 'portal.placeholder', ['pageTitle' => 'Detail Work Order'])->name('partner.work');
