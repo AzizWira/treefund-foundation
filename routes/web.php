@@ -42,11 +42,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/files/{type}/{id}', FileController::class)->where('type', 'legal')->whereNumber('id')->name('files');
     Route::middleware('role:admin')->group(function () {
         Route::get('/admin/partners', [AdminController::class, 'queue'])->defaults('type', 'partners')->name('admin.partners');
-        Route::post('/admin/{type}/{id}/review', [AdminController::class, 'review'])->where('type', 'partners')->whereNumber('id');
-        Route::view('/admin/plots', 'portal.placeholder', ['pageTitle' => 'Verifikasi Lahan'])->name('admin.plots');
+        Route::post('/admin/{type}/{id}/review', [AdminController::class, 'review'])->where('type', 'partners|plots')->whereNumber('id');
+        Route::get('/admin/plots', [AdminController::class, 'queue'])->defaults('type', 'plots')->name('admin.plots');
         Route::view('/admin/plantings', 'portal.placeholder', ['pageTitle' => 'Verifikasi Bukti Tanam'])->name('admin.plantings');
         Route::view('/admin/monitorings', 'portal.placeholder', ['pageTitle' => 'Monitoring Berkala'])->name('admin.monitorings');
-        Route::view('/admin/catalog', 'portal.placeholder', ['pageTitle' => 'Pengelolaan Katalog'])->name('admin.catalog');
+        Route::get('/admin/catalog', [AdminController::class, 'catalog'])->name('admin.catalog');
+        Route::post('/admin/catalog', [AdminController::class, 'saveOffer']);
         Route::view('/admin/disbursements', 'portal.placeholder', ['pageTitle' => 'Pencairan Dana'])->name('admin.funds');
         Route::view('/admin/reports', 'portal.placeholder', ['pageTitle' => 'Rekapitulasi dan Laporan'])->name('admin.reports');
         Route::view('/admin/settings', 'portal.placeholder', ['pageTitle' => 'Pengaturan Sistem'])->name('admin.settings');
@@ -54,15 +55,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware('role:partner')->group(function () {
         Route::get('/partner/partnership', [PartnerController::class, 'partnership'])->name('partner.partnership');
         Route::post('/partner/partnership', [PartnerController::class, 'savePartnership']);
-        Route::view('/partner/plots', 'portal.placeholder', ['pageTitle' => 'Pengajuan Lahan'])->name('partner.plots');
+        Route::get('/partner/plots', [PartnerController::class, 'plots'])->name('partner.plots');
+        Route::post('/partner/plots', [PartnerController::class, 'savePlot']);
         Route::view('/partner/work-orders', 'portal.placeholder', ['pageTitle' => 'Work Order Penanaman'])->name('partner.works');
         Route::view('/partner/work-orders/{work}', 'portal.placeholder', ['pageTitle' => 'Detail Work Order'])->name('partner.work');
         Route::view('/partner/monitoring', 'portal.placeholder', ['pageTitle' => 'Log Monitoring'])->name('partner.monitoring');
         Route::view('/partner/funds', 'portal.placeholder', ['pageTitle' => 'Pencairan Dana'])->name('partner.funds');
-        Route::view('/partner/members', 'portal.placeholder', ['pageTitle' => 'Data Anggota Kelompok'])->name('partner.members');
+        Route::get('/partner/members', [PartnerController::class, 'members'])->name('partner.members');
+        Route::post('/partner/members', [PartnerController::class, 'saveMember']);
+        Route::put('/partner/members/{member}', [PartnerController::class, 'updateMember'])->whereNumber('member');
+        Route::delete('/partner/members/{member}', [PartnerController::class, 'deleteMember'])->whereNumber('member');
     });
     Route::middleware('role:donor')->group(function () {
-        Route::view('/donor/catalog', 'portal.placeholder', ['pageTitle' => 'Katalog Donatur'])->name('donor.catalog');
+        Route::get('/donor/catalog', [PublicCatalogController::class, 'catalog'])->name('donor.catalog');
         Route::view('/trees', 'portal.placeholder', ['pageTitle' => 'Portofolio Pohon dan WebGIS'])->name('trees');
         Route::view('/certificates', 'portal.placeholder', ['pageTitle' => 'E-Sertifikat Adopsi'])->name('certificates');
         Route::view('/orders', 'portal.placeholder', ['pageTitle' => 'Riwayat Transaksi'])->name('orders');

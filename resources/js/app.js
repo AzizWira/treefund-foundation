@@ -1,3 +1,4 @@
+import { initMemberDelete } from './member-delete.js';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
@@ -68,6 +69,20 @@ async function initPublicMap(scope = document) {
     }
 }
 
+function openReview(dialog) {
+    if (!dialog || dialog.open) return;
+    dialog.showModal();
+    requestAnimationFrame(() => dialog.querySelectorAll('[data-coordinate-map]').forEach(element => {
+        if (!maps.has(element)) {
+            const latitude = Number(element.dataset.lat);
+            const longitude = Number(element.dataset.lng);
+            const map = baseMap(element, latitude, longitude);
+            L.marker([latitude, longitude]).addTo(map);
+        }
+        maps.get(element).invalidateSize();
+    }));
+}
+
 function closeReview(dialog, returnValue = '') {
     if (!dialog.open || dialog.classList.contains('is-closing')) return;
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -125,7 +140,7 @@ document.addEventListener('click', event => {
     const review = event.target.closest('[data-review-target]');
     if (review) {
         const dialog = document.getElementById(review.dataset.reviewTarget);
-        if (dialog && !dialog.open) dialog.showModal();
+        openReview(dialog);
     }
     const back = event.target.closest('[data-back]');
     if (back) { if (history.length > 1) history.back(); else location.assign('/dashboard'); }
@@ -142,5 +157,38 @@ const focusedReview = new URLSearchParams(location.search).get('review');
 const reviewTarget = /^[1-9][0-9]*$/.test(focusedReview || '') ? 'review-' + focusedReview : (location.hash.startsWith('#review-') ? location.hash.slice(1) : null);
 if (reviewTarget) {
     const dialog = document.getElementById(reviewTarget);
-    if (dialog instanceof HTMLDialogElement && !dialog.open) dialog.showModal();
+    if (dialog instanceof HTMLDialogElement) openReview(dialog);
 }
+
+function recordGPS(button) {
+    const form = button.closest('form');
+    const status = form?.querySelector('[data-gps-status]');
+    if (!form || !navigator.geolocation) { if (status) status.textContent = 'GPS tidak tersedia. Masukkan koordinat secara manual.'; return; }
+    button.disabled = true;
+    if (status) status.textContent = 'Membaca lokasi perangkat…';
+    navigator.geolocation.getCurrentPosition(position => {
+        form.querySelector('[name=latitude]').value = position.coords.latitude.toFixed(7);
+        form.querySelector('[name=longitude]').value = position.coords.longitude.toFixed(7);
+        if (status) status.textContent = 'Koordinat terbaca. Akurasi perangkat sekitar ' + Math.round(position.coords.accuracy) + ' meter; tetap diperiksa Admin.';
+        button.disabled = false;
+    }, () => { button.disabled = false; if (status) status.textContent = 'Lokasi belum dapat diakses. Periksa izin browser atau masukkan koordinat secara manual.'; }, { enableHighAccuracy: true, timeout: 15000 });
+}
+
+
+document.addEventListener('click', event => {
+    const button = event.target.closest('[data-gps]');
+    if (button && !button.disabled) recordGPS(button);
+});
+
+document.addEventListener('click', event => {
+    const detailsTrigger = event.target.closest('[data-open-details]');
+    if (!detailsTrigger) return;
+    const section = document.getElementById(detailsTrigger.dataset.openDetails);
+    const details = section?.querySelector('details');
+    if (!details) return;
+    event.preventDefault();
+    details.open = true;
+    section.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
+});
+
+initMemberDelete(document, closeReview);
