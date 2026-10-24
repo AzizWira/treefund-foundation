@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Offer;
 use App\Models\Partner;
 use App\Models\Plot;
 use App\Services\ActivityService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
+use Throwable;
 
 class AdminController extends Controller
 {
@@ -52,5 +56,50 @@ class AdminController extends Controller
         });
 
         return back()->with('success', 'Keputusan verifikasi disimpan.');
+    }
+
+    public function catalog(Request $request): mixed
+    {
+        return view('admin.catalog', [
+            'offers' => $this->filteredRecords($request, Offer::with('plot.partner')->latest()->get(), fn ($offer) => $offer->species.' '.$offer->plot->name.' '.$offer->plot->partner->group_name, 15, fn ($offer) => $offer->active ? 'active' : 'inactive'),
+            'plots' => Plot::where('status', 'approved')->whereHas('partner', fn ($query) => $query->where('status', 'approved'))->get(),
+        ]);
+    }
+
+    public function saveOffer(Request $request, ActivityService $activity): mixed
+    {
+        $data = $request->validate(['offer_id' => 'nullable|integer', 'plot_id' => 'required|exists:plots,id', 'species' => 'required|string|max:120', 'description' => 'required|string|max:3000', 'price' => 'required|integer|min:1000|max:100000000', 'active' => 'nullable|boolean', 'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120']);
+        $newPhotoPath = null;
+        try {
+            DB::transaction(function () use ($request, $data, $activity, &$newPhotoPath): void {
+                $plot = Plot::lockForUpdate()->findOrFail($data['plot_id']);
+                $partner = Partner::whereKey($plot->partner_id)->lockForUpdate()->firstOrFail();
+                if ($plot->status !== 'approved' || $partner->status !== 'approved') {
+                    throw ValidationException::withMessages(['plot_id' => 'Lahan dan Mitra harus terverifikasi.']);
+                }
+                $offer = isset($data['offer_id']) ? Offer::lockForUpdate()->findOrFail($data['offer_id']) : new Offer;
+                unset($data['offer_id'], $data['photo']);
+                $data['active'] = $request->boolean('active');
+                if ($request->hasFile('photo')) {
+                    $newPhotoPath = $request->file('photo')->store('offers', 'public');
+                    $data['photo'] = $newPhotoPath;
+                }
+                $offer->fill($data)->save();
+                $activity->audit('catalog.saved', $offer);
+            });
+        } catch (Throwable $exception) {
+            if ($newPhotoPath !== null) {
+                try {
+                    if (! Offer::where('photo', $newPhotoPath)->exists()) {
+                        Storage::disk('public')->delete($newPhotoPath);
+                    }
+                } catch (Throwable $cleanupException) {
+                    report($cleanupException);
+                }
+            }
+            throw $exception;
+        }
+
+        return back()->with('success', 'Katalog disimpan. Riwayat transaksi tetap utuh.');
     }
 }

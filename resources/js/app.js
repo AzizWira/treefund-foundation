@@ -178,3 +178,14 @@ document.addEventListener('click', event => {
     const button = event.target.closest('[data-gps]');
     if (button && !button.disabled) recordGPS(button);
 });
+
+document.addEventListener('click', event => {
+    const detailsTrigger = event.target.closest('[data-open-details]');
+    if (!detailsTrigger) return;
+    const section = document.getElementById(detailsTrigger.dataset.openDetails);
+    const details = section?.querySelector('details');
+    if (!details) return;
+    event.preventDefault();
+    details.open = true;
+    section.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
+});
