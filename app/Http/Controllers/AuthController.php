@@ -46,4 +46,17 @@ class AuthController extends Controller
 
         return redirect('/');
     }
+
+    public function profile(Request $request): mixed
+    {
+        return view('profile', ['user' => $request->user()]);
+    }
+
+    public function updateProfile(Request $request): mixed
+    {
+        $data = $request->validate(['name' => 'required|string|max:120', 'phone' => 'nullable|string|max:25']);
+        $request->user()->fill(['name' => $data['name'], 'phone' => $data['phone'] ?? null])->save();
+
+        return back()->with('success', 'Pengaturan akun disimpan.');
+    }
 }

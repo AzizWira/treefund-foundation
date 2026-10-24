@@ -33,7 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/email/verify', [EmailAuthController::class, 'notice'])->name('verification.notice');
     Route::post('/email/verification-notification', [EmailAuthController::class, 'resend'])->middleware('throttle:6,1')->name('verification.send');
     Route::post('/email/verify-code', [EmailAuthController::class, 'code'])->middleware('throttle:10,1')->name('verification.code');
-    Route::view('/settings', 'portal.placeholder', ['pageTitle' => 'Pengaturan Akun'])->name('settings');
+    Route::get('/settings', [AuthController::class, 'profile'])->name('settings');
+    Route::put('/settings', [AuthController::class, 'updateProfile']);
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
