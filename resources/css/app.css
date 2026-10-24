@@ -348,3 +348,13 @@ main[aria-busy="true"] .filter-bar{border-color:var(--color-primary-container)}
 .leaflet-container>.map-network-note{z-index:1000}
 
 .foundation-placeholder{min-height:180px;display:flex;align-items:center;justify-content:center}.foundation-placeholder h1{font-size:clamp(22px,3vw,32px);margin:0;text-align:center}.sidebar-logout{margin-top:12px}.sidebar-logout .nav-link{width:100%;border:0;background:transparent;text-align:left;cursor:pointer;font:inherit}.app-content{min-height:100vh}.app-content>.page{flex:1}
+
+.review-dialog[open]{animation:review-drawer-in 240ms cubic-bezier(.2,.8,.2,1) both}
+.review-dialog[open]::backdrop{animation:review-backdrop-in 180ms ease-out both}
+@keyframes review-drawer-in{from{transform:translateX(100%);opacity:.75}to{transform:translateX(0);opacity:1}}
+@keyframes review-backdrop-in{from{background-color:transparent}to{background-color:#102a205c}}
+.review-dialog[open].is-closing{animation:review-drawer-out 200ms cubic-bezier(.4,0,1,1) both}
+.review-dialog[open].is-closing::backdrop{animation:review-backdrop-out 200ms ease-in both}
+@keyframes review-drawer-out{from{transform:translateX(0);opacity:1}to{transform:translateX(100%);opacity:.75}}
+@keyframes review-backdrop-out{from{background-color:#102a205c}to{background-color:transparent}}
+@media(prefers-reduced-motion:reduce){.review-dialog[open],.review-dialog[open]::backdrop,.review-dialog[open].is-closing,.review-dialog[open].is-closing::backdrop{animation:none}}

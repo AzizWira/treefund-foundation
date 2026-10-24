@@ -68,6 +68,42 @@ async function initPublicMap(scope = document) {
     }
 }
 
+function closeReview(dialog, returnValue = '') {
+    if (!dialog.open || dialog.classList.contains('is-closing')) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        dialog.close(returnValue);
+        return;
+    }
+    let fallback;
+    const finish = () => {
+        clearTimeout(fallback);
+        dialog.removeEventListener('animationend', onAnimationEnd);
+        if (dialog.open) dialog.close(returnValue);
+        dialog.classList.remove('is-closing');
+    };
+    const onAnimationEnd = event => {
+        if (event.target === dialog && event.animationName === 'review-drawer-out') finish();
+    };
+    dialog.addEventListener('animationend', onAnimationEnd);
+    dialog.classList.add('is-closing');
+    fallback = setTimeout(finish, 280);
+}
+
+document.querySelectorAll('dialog.review-dialog').forEach(dialog => {
+    dialog.addEventListener('cancel', event => {
+        event.preventDefault();
+        closeReview(dialog);
+    });
+});
+document.addEventListener('submit', event => {
+    const form = event.target;
+    if (!(form instanceof HTMLFormElement) || form.method !== 'dialog') return;
+    const dialog = form.closest('dialog.review-dialog');
+    if (!dialog) return;
+    event.preventDefault();
+    closeReview(dialog, event.submitter?.value ?? '');
+});
+
 const sidebar = document.getElementById('sidebar');
 const scrim = document.querySelector('[data-sidebar-close]');
 function setSidebar(open) {
@@ -86,6 +122,11 @@ document.addEventListener('click', event => {
         const form = document.querySelector('form[action="/login"]');
         if (form) { form.elements.email.value = trigger.dataset.demoAccount; form.elements.password.value = 'TreeFund!2026'; form.requestSubmit(); }
     }
+    const review = event.target.closest('[data-review-target]');
+    if (review) {
+        const dialog = document.getElementById(review.dataset.reviewTarget);
+        if (dialog && !dialog.open) dialog.showModal();
+    }
     const back = event.target.closest('[data-back]');
     if (back) { if (history.length > 1) history.back(); else location.assign('/dashboard'); }
     const anchor = event.target.closest('a[href^="#"]');
@@ -97,3 +138,9 @@ document.addEventListener('click', event => {
 document.addEventListener('keydown', event => { if (event.key === 'Escape') setSidebar(false); });
 if (document.getElementById('plot-preview-map')) window.TreeFund.miniMap('plot-preview-map');
 initPublicMap();
+const focusedReview = new URLSearchParams(location.search).get('review');
+const reviewTarget = /^[1-9][0-9]*$/.test(focusedReview || '') ? 'review-' + focusedReview : (location.hash.startsWith('#review-') ? location.hash.slice(1) : null);
+if (reviewTarget) {
+    const dialog = document.getElementById(reviewTarget);
+    if (dialog instanceof HTMLDialogElement && !dialog.open) dialog.showModal();
+}
