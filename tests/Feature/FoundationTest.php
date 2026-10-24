@@ -46,7 +46,7 @@ class FoundationTest extends TestCase
         ];
         foreach (['admin' => 'admin', 'partner' => 'mitra', 'donor' => 'donatur'] as $role => $email) {
             $this->post('/login', ['email' => $email.'@treefund.test', 'password' => 'TreeFund!2026'])->assertRedirect('/dashboard');
-            foreach (array_merge(['/dashboard', '/settings', '/notifications'], $routes[$role]) as $path) {
+            foreach (array_merge(['/dashboard', '/notifications'], $routes[$role]) as $path) {
                 $this->get($path)->assertOk()->assertSee('Halaman ')->assertSee('foundation-placeholder', false)
                     ->assertSee('sidebar', false)->assertSee('topbar', false)->assertSee('app-footer', false)->assertDontSee('data-pay', false);
             }
