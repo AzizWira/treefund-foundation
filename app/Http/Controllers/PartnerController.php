@@ -8,6 +8,7 @@ use App\Services\ActivityService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class PartnerController extends Controller
@@ -67,7 +68,9 @@ class PartnerController extends Controller
 
     public function plots(Request $request): mixed
     {
-        return view('partner.plots', ['partner' => $request->user()->partner, 'plots' => $this->filteredRecords($request, Plot::where('partner_id', $request->user()->partner?->id ?? 0)->latest()->get(), fn ($plot) => $plot->name.' '.$plot->location.' '.$plot->proposed_species, 8, fn ($plot) => $plot->status)]);
+        $partner = $request->user()->partner()->first();
+
+        return view('partner.plots', ['partner' => $partner, 'plots' => $this->filteredRecords($request, Plot::where('partner_id', $partner?->id ?? 0)->latest()->get(), fn ($plot) => $plot->name.' '.$plot->location.' '.$plot->proposed_species, 8, fn ($plot) => $plot->status)]);
     }
 
     public function savePlot(Request $request, ActivityService $activity): mixed
@@ -83,6 +86,9 @@ class PartnerController extends Controller
                 ? Plot::where('partner_id', $partner->id)->lockForUpdate()->findOrFail($data['plot_id'])
                 : new Plot(['partner_id' => $partner->id]);
             abort_if($plot->exists && $plot->status !== 'revision', 409, 'Hanya pengajuan yang dikembalikan dapat diperbaiki.');
+            if ($plot->exists && (int) $data['capacity'] < $plot->reserved + $plot->confirmed) {
+                throw ValidationException::withMessages(['capacity' => 'Kapasitas tidak boleh lebih kecil dari total pohon yang sudah dicadangkan dan dikonfirmasi.']);
+            }
             unset($data['plot_id']);
             $plot->fill(array_merge($data, ['status' => 'pending', 'review_note' => null, 'reviewed_by' => null]))->save();
             $activity->audit('plot.submitted', $plot);
