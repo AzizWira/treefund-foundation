@@ -39,6 +39,21 @@ class DonorCatalogTest extends TestCase
         Mail::assertNothingQueued();
     }
 
+    public function test_checkout_uses_catalog_price_and_rejects_unpublished_or_full_offers(): void
+    {
+        $offer = Offer::firstOrFail();
+        $url = route('checkout', $offer);
+        $this->get($url)->assertRedirect('/login');
+        $this->actingAs($this->donor())->get($url.'?price=1')->assertOk()
+            ->assertSee('data-price="'.$offer->price.'"', false)
+            ->assertSee('name="quantity"', false);
+        $offer->plot->update(['reserved' => $offer->plot->capacity]);
+        $this->get($url)->assertNotFound();
+        $offer->plot->update(['reserved' => 0]);
+        $offer->plot->partner->update(['status' => 'revision']);
+        $this->get($url)->assertNotFound();
+    }
+
     public function test_search_by_species_plot_or_location_combines_with_species_filter(): void
     {
         $offer = Offer::with('plot')->where('species', 'Alpukat')->firstOrFail();
