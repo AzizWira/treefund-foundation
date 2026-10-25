@@ -75,6 +75,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::view('/certificates', 'portal.placeholder', ['pageTitle' => 'E-Sertifikat Adopsi'])->name('certificates');
         Route::view('/orders', 'portal.placeholder', ['pageTitle' => 'Riwayat Transaksi'])->name('orders');
         Route::view('/orders/{order}', 'portal.placeholder', ['pageTitle' => 'Detail Transaksi'])->name('orders.show');
+        Route::post('/orders', [AdoptionController::class, 'store'])->middleware('throttle:10,1')->name('orders.store');
         Route::get('/checkout/{offer}', [AdoptionController::class, 'checkout'])->whereNumber('offer')->name('checkout');
     });
 });
