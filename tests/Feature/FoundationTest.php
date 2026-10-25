@@ -42,7 +42,7 @@ class FoundationTest extends TestCase
         $routes = [
             'admin' => ['/admin/plantings', '/admin/monitorings', '/admin/disbursements', '/admin/reports', '/admin/settings'],
             'partner' => ['/partner/work-orders', '/partner/work-orders/1', '/partner/monitoring', '/partner/funds'],
-            'donor' => ['/orders', '/orders/1', '/certificates', '/trees'],
+            'donor' => ['/certificates', '/trees'],
         ];
         foreach (['admin' => 'admin', 'partner' => 'mitra', 'donor' => 'donatur'] as $role => $email) {
             $this->post('/login', ['email' => $email.'@treefund.test', 'password' => 'TreeFund!2026'])->assertRedirect('/dashboard');
@@ -142,13 +142,13 @@ class FoundationTest extends TestCase
         $this->assertFalse(collect($data)->contains('name', $plot->name));
     }
 
-    public function test_business_transactions_are_not_installed_in_this_stage(): void
+    public function test_fulfillment_and_payment_webhook_are_not_installed_in_this_stage(): void
     {
-        foreach (['adoptions', 'adoption_items', 'trees', 'certificates', 'work_orders', 'plantings', 'monitorings', 'disbursements'] as $table) {
+        foreach (['trees', 'certificates', 'work_orders', 'plantings', 'monitorings', 'disbursements'] as $table) {
             $this->assertFalse(Schema::hasTable($table), $table.' must be added in a later module.');
         }
         $this->actingAs(User::where('role', 'donor')->firstOrFail());
-        $this->post('/orders')->assertStatus(405);
+        $this->postJson('/orders')->assertUnprocessable();
         $this->post('/payments/midtrans/notification')->assertNotFound();
         $this->post('/partner/partnership')->assertForbidden();
     }
