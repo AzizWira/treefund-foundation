@@ -192,3 +192,31 @@ document.addEventListener('click', event => {
 });
 
 initMemberDelete(document, closeReview);
+
+const checkoutForm = document.querySelector('[data-checkout]');
+if (checkoutForm) {
+    const quantity = checkoutForm.querySelector('[data-quantity]');
+    const total = document.querySelector('[data-total]');
+    const format = new Intl.NumberFormat('id-ID');
+    const updateTotal = () => {
+        total.textContent = 'Rp ' + format.format(Number(quantity.value) * Number(checkoutForm.dataset.price));
+    };
+    quantity.addEventListener('input', updateTotal);
+    updateTotal();
+    const confirmation = document.querySelector('#checkout-confirm');
+    confirmation.querySelector('[data-dialog-close]').addEventListener('click', () => confirmation.close());
+    checkoutForm.addEventListener('submit', event => {
+        if (checkoutForm.querySelector('button[type="submit"], button:not([type])').disabled) {
+            event.preventDefault();
+            return;
+        }
+        if (event.submitter?.hasAttribute('data-checkout-confirm')) {
+            return;
+        }
+        event.preventDefault();
+        confirmation.querySelector('[data-confirm-quantity]').textContent = quantity.value + ' pohon';
+        confirmation.querySelector('[data-confirm-name]').textContent = checkoutForm.elements.certificate_name.value.trim();
+        confirmation.querySelector('[data-confirm-total]').textContent = total.textContent;
+        confirmation.showModal();
+    });
+}

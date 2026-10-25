@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdoptionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailAuthController;
 use App\Http\Controllers\FileController;
@@ -74,6 +75,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::view('/certificates', 'portal.placeholder', ['pageTitle' => 'E-Sertifikat Adopsi'])->name('certificates');
         Route::view('/orders', 'portal.placeholder', ['pageTitle' => 'Riwayat Transaksi'])->name('orders');
         Route::view('/orders/{order}', 'portal.placeholder', ['pageTitle' => 'Detail Transaksi'])->name('orders.show');
-        Route::view('/checkout/{offer}', 'portal.placeholder', ['pageTitle' => 'Checkout Adopsi'])->name('checkout');
+        Route::get('/checkout/{offer}', [AdoptionController::class, 'checkout'])->whereNumber('offer')->name('checkout');
     });
 });
