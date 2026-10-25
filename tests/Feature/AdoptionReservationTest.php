@@ -35,4 +35,19 @@ class AdoptionReservationTest extends TestCase
         $this->assertEquals(0, $offer->plot->fresh()->reserved);
         $this->assertSame('expired', $order->fresh()->status);
     }
+
+    public function test_donors_can_search_and_open_only_their_own_orders(): void
+    {
+        $this->seed();
+        $owner = User::factory()->create(['role' => 'donor']);
+        $other = User::factory()->create(['role' => 'donor']);
+        $offer = Offer::published()->firstOrFail();
+        $mine = app(AdoptionService::class)->checkout($owner, $offer, 1, 'Pemilik');
+        $theirs = app(AdoptionService::class)->checkout($other, $offer, 1, 'Pengguna Lain');
+        $this->actingAs($owner)->get('/orders')->assertOk()->assertSee($mine->reference)->assertDontSee($theirs->reference);
+        $this->get('/orders?status=expired')->assertOk()->assertDontSee($mine->reference);
+        $this->get('/orders?q='.$theirs->reference)->assertOk()->assertViewHas('orders', fn ($orders) => $orders->isEmpty());
+        $this->get(route('orders.show', $mine))->assertOk()->assertSee($mine->reference);
+        $this->get(route('orders.show', $theirs))->assertForbidden();
+    }
 }

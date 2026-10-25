@@ -73,8 +73,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/donor/catalog', [PublicCatalogController::class, 'catalog'])->name('donor.catalog');
         Route::view('/trees', 'portal.placeholder', ['pageTitle' => 'Portofolio Pohon dan WebGIS'])->name('trees');
         Route::view('/certificates', 'portal.placeholder', ['pageTitle' => 'E-Sertifikat Adopsi'])->name('certificates');
-        Route::view('/orders', 'portal.placeholder', ['pageTitle' => 'Riwayat Transaksi'])->name('orders');
-        Route::view('/orders/{order}', 'portal.placeholder', ['pageTitle' => 'Detail Transaksi'])->name('orders.show');
+        Route::get('/orders', [AdoptionController::class, 'orders'])->name('orders');
+        Route::get('/orders/{order}', [AdoptionController::class, 'show'])->whereNumber('order')->name('orders.show');
         Route::post('/orders', [AdoptionController::class, 'store'])->middleware('throttle:10,1')->name('orders.store');
         Route::get('/checkout/{offer}', [AdoptionController::class, 'checkout'])->whereNumber('offer')->name('checkout');
     });
