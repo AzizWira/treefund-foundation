@@ -1,3 +1,4 @@
+import { initPaymentMethods, paymentOptions } from './payment-methods';
 import { initMemberDelete } from './member-delete.js';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -220,3 +221,28 @@ if (checkoutForm) {
         confirmation.showModal();
     });
 }
+
+initPaymentMethods();
+document.querySelectorAll('[data-payment-methods]').forEach(widget => {
+    const button = widget.querySelector('[data-pay]');
+    const message = document.querySelector('[data-payment-message]');
+    button.addEventListener('click', async () => {
+        if (!window.snap) {
+            message.textContent = 'Midtrans Sandbox belum tersedia.';
+            return;
+        }
+        button.disabled = true;
+        try {
+            const response = await fetch(button.dataset.pay, {
+                method: 'POST',
+                headers: { Accept: 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
+            });
+            const data = await response.json();
+            if (!response.ok || !data.token) throw new Error(data.message || 'Pembayaran belum dapat dibuka.');
+            window.snap.pay(data.token, { ...paymentOptions(button.dataset.method, button.dataset.bank), onClose: () => { button.disabled = false; } });
+        } catch (error) {
+            message.textContent = error.message;
+            button.disabled = false;
+        }
+    });
+});

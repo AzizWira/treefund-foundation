@@ -7,6 +7,7 @@ use App\Models\Offer;
 use App\Models\User;
 use App\Services\AdoptionService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class AdoptionReservationTest extends TestCase
@@ -49,5 +50,22 @@ class AdoptionReservationTest extends TestCase
         $this->get('/orders?q='.$theirs->reference)->assertOk()->assertViewHas('orders', fn ($orders) => $orders->isEmpty());
         $this->get(route('orders.show', $mine))->assertOk()->assertSee($mine->reference);
         $this->get(route('orders.show', $theirs))->assertForbidden();
+    }
+
+    public function test_snap_is_gated_and_uses_saved_order_value(): void
+    {
+        $this->seed();
+        Http::preventStrayRequests();
+        $donor = User::factory()->create(['role' => 'donor']);
+        $offer = Offer::published()->firstOrFail();
+        $order = app(AdoptionService::class)->checkout($donor, $offer, 2, 'Donatur');
+        $url = route('orders.pay', $order);
+        $this->actingAs($donor)->postJson($url)->assertNotFound();
+        config(['treefund.midtrans.enabled' => true, 'treefund.midtrans.server_key' => 'SB-Mid-server-test', 'treefund.midtrans.client_key' => 'SB-Mid-client-test']);
+        Http::fake([config('treefund.midtrans.snap_url') => Http::response(['token' => 'sandbox-test-token'])]);
+        $this->postJson($url, ['total' => 1])->assertOk()->assertJson(['token' => 'sandbox-test-token']);
+        $this->postJson($url)->assertOk();
+        Http::assertSentCount(1);
+        Http::assertSent(fn ($request) => $request['transaction_details']['gross_amount'] === $offer->price * 2);
     }
 }
