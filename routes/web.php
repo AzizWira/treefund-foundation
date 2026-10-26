@@ -75,6 +75,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::view('/certificates', 'portal.placeholder', ['pageTitle' => 'E-Sertifikat Adopsi'])->name('certificates');
         Route::get('/orders', [AdoptionController::class, 'orders'])->name('orders');
         Route::get('/orders/{order}', [AdoptionController::class, 'show'])->whereNumber('order')->name('orders.show');
+        Route::post('/orders/{order}/pay', [AdoptionController::class, 'pay'])->whereNumber('order')->middleware('throttle:10,1')->name('orders.pay');
         Route::post('/orders', [AdoptionController::class, 'store'])->middleware('throttle:10,1')->name('orders.store');
         Route::get('/checkout/{offer}', [AdoptionController::class, 'checkout'])->whereNumber('offer')->name('checkout');
     });

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Adoption;
 use App\Models\Offer;
 use App\Services\AdoptionService;
+use App\Services\MidtransService;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 
 class AdoptionController extends Controller
@@ -57,5 +60,19 @@ class AdoptionController extends Controller
     private function owner(Request $request, Adoption $order): void
     {
         abort_unless($order->user_id === $request->user()->id, 403);
+    }
+
+    public function pay(Request $request, Adoption $order, MidtransService $midtrans): mixed
+    {
+        $this->owner($request, $order);
+        abort_unless(config('treefund.midtrans.enabled') && ! $order->is_demo, 404);
+
+        try {
+            return response()->json(['token' => $midtrans->token($order)]);
+        } catch (ConnectionException|RequestException $exception) {
+            report($exception);
+
+            return response()->json(['message' => 'Midtrans Sandbox belum dapat dihubungi. Coba lagi nanti.'], 502);
+        }
     }
 }
