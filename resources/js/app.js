@@ -1,3 +1,4 @@
+import { initPaymentWatch } from './payment-watch';
 import { initPaymentMethods, paymentOptions } from './payment-methods';
 import { initMemberDelete } from './member-delete.js';
 import L from 'leaflet';
@@ -223,6 +224,7 @@ if (checkoutForm) {
 }
 
 initPaymentMethods();
+const paymentWatcher = initPaymentWatch();
 document.querySelectorAll('[data-payment-methods]').forEach(widget => {
     const button = widget.querySelector('[data-pay]');
     const message = document.querySelector('[data-payment-message]');
@@ -239,6 +241,7 @@ document.querySelectorAll('[data-payment-methods]').forEach(widget => {
             });
             const data = await response.json();
             if (!response.ok || !data.token) throw new Error(data.message || 'Pembayaran belum dapat dibuka.');
+            paymentWatcher?.start();
             window.snap.pay(data.token, { ...paymentOptions(button.dataset.method, button.dataset.bank), onClose: () => { button.disabled = false; } });
         } catch (error) {
             message.textContent = error.message;

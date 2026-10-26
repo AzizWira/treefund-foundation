@@ -5,6 +5,7 @@ use App\Http\Controllers\AdoptionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailAuthController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\MidtransWebhookController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PortalController;
 use App\Http\Controllers\PublicCatalogController;
@@ -39,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/email/preferences', [EmailAuthController::class, 'preferences'])->name('email.preferences');
 });
 
+Route::post('/payments/midtrans/notification', MidtransWebhookController::class)->middleware('throttle:120,1')->name('midtrans.notification');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [PortalController::class, 'dashboard'])->name('dashboard');
     Route::view('/notifications', 'portal.placeholder', ['pageTitle' => 'Notifikasi'])->name('notifications');
@@ -75,6 +77,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::view('/certificates', 'portal.placeholder', ['pageTitle' => 'E-Sertifikat Adopsi'])->name('certificates');
         Route::get('/orders', [AdoptionController::class, 'orders'])->name('orders');
         Route::get('/orders/{order}', [AdoptionController::class, 'show'])->whereNumber('order')->name('orders.show');
+        Route::post('/orders/{order}/sync', [AdoptionController::class, 'sync'])->whereNumber('order')->middleware('throttle:10,1')->name('orders.sync');
         Route::post('/orders/{order}/pay', [AdoptionController::class, 'pay'])->whereNumber('order')->middleware('throttle:10,1')->name('orders.pay');
         Route::post('/orders', [AdoptionController::class, 'store'])->middleware('throttle:10,1')->name('orders.store');
         Route::get('/checkout/{offer}', [AdoptionController::class, 'checkout'])->whereNumber('offer')->name('checkout');

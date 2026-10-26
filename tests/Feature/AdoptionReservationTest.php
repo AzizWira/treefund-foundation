@@ -68,4 +68,34 @@ class AdoptionReservationTest extends TestCase
         Http::assertSentCount(1);
         Http::assertSent(fn ($request) => $request['transaction_details']['gross_amount'] === $offer->price * 2);
     }
+
+    public function test_webhook_checks_signature_and_official_amount_before_releasing_quota(): void
+    {
+        $this->seed();
+        Http::preventStrayRequests();
+        $donor = User::factory()->create(['role' => 'donor']);
+        $offer = Offer::published()->firstOrFail();
+        $order = app(AdoptionService::class)->checkout($donor, $offer, 1, 'Donatur');
+        $order->update(['snap_token' => 'sandbox-test-token']);
+        $key = 'SB-Mid-server-test';
+        config(['treefund.midtrans.enabled' => true, 'treefund.midtrans.server_key' => $key]);
+        $payload = ['order_id' => $order->reference, 'status_code' => '202', 'gross_amount' => $order->total.'.00'];
+        $payload['signature_key'] = str_repeat('0', 128);
+        $this->postJson('/payments/midtrans/notification', $payload)->assertForbidden();
+        Http::assertNothingSent();
+        $payload['signature_key'] = hash('sha512', $order->reference.'202'.$payload['gross_amount'].$key);
+        Http::fakeSequence()->push([
+            'order_id' => $order->reference, 'gross_amount' => '1.00', 'transaction_status' => 'expire',
+        ])->push([
+            'order_id' => $order->reference, 'gross_amount' => $payload['gross_amount'], 'transaction_status' => 'expire',
+        ])->push([
+            'order_id' => $order->reference, 'gross_amount' => $payload['gross_amount'], 'transaction_status' => 'expire',
+        ]);
+        $this->postJson('/payments/midtrans/notification', $payload)->assertUnprocessable();
+        $this->assertSame('pending', $order->fresh()->status);
+        $this->postJson('/payments/midtrans/notification', $payload)->assertOk();
+        $this->postJson('/payments/midtrans/notification', $payload)->assertOk();
+        $this->assertSame('expired', $order->fresh()->status);
+        $this->assertEquals($offer->plot->reserved, $offer->plot->fresh()->reserved);
+    }
 }

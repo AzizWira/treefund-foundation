@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
             headers: Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_PROTO | Request::HEADER_X_FORWARDED_PORT,
         );
         $middleware->alias(['role' => RoleMiddleware::class]);
+        $middleware->validateCsrfTokens(except: ['payments/midtrans/notification']);
         $middleware->redirectGuestsTo('/login');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
