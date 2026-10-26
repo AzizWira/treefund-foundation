@@ -75,4 +75,27 @@ class AdoptionController extends Controller
             return response()->json(['message' => 'Midtrans Sandbox belum dapat dihubungi. Coba lagi nanti.'], 502);
         }
     }
+
+    public function sync(Request $request, Adoption $order, MidtransService $midtrans, AdoptionService $adoptions): mixed
+    {
+        $this->owner($request, $order);
+        abort_unless(config('treefund.midtrans.enabled') && ! $order->is_demo, 404);
+
+        try {
+            if ($order->snap_token) {
+                $adoptions->applyProviderStatus($order, $midtrans->status($order));
+            } else {
+                $adoptions->expireUnissued($order);
+            }
+        } catch (ConnectionException|RequestException $exception) {
+            report($exception);
+            $message = 'Status Midtrans belum dapat diperiksa. Coba lagi nanti.';
+
+            return $request->expectsJson() ? response()->json(['message' => $message], 502) : back()->withErrors(['payment' => $message]);
+        }
+
+        return $request->expectsJson()
+            ? response()->json(['status' => $order->refresh()->status])
+            : back()->with('success', 'Status pembayaran diperbarui.');
+    }
 }

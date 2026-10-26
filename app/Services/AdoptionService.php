@@ -53,4 +53,26 @@ class AdoptionService
             $order->update(['status' => 'expired']);
         }, 3);
     }
+
+    public function applyProviderStatus(Adoption $order, array $payment): void
+    {
+        DB::transaction(function () use ($order, $payment): void {
+            $order = Adoption::lockForUpdate()->findOrFail($order->id);
+            $state = $payment['transaction_status'] ?? '';
+            if ($order->status !== 'pending') {
+                return;
+            }
+            if (in_array($state, ['settlement', 'capture'], true)) {
+                throw new \LogicException('Penerbitan adopsi belum tersedia.');
+            }
+            if (in_array($state, ['deny', 'cancel', 'expire', 'failure'], true)) {
+                foreach ($order->items()->with('offer')->orderBy('id')->get() as $item) {
+                    Plot::lockForUpdate()->findOrFail($item->offer->plot_id)->decrement('reserved', $item->quantity);
+                }
+                $order->status = $state === 'expire' ? 'expired' : 'failed';
+            }
+            $order->provider_status = $state;
+            $order->save();
+        }, 3);
+    }
 }

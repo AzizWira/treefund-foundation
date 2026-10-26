@@ -52,4 +52,29 @@ class MidtransService
             return $result['token'];
         });
     }
+
+    public function status(Adoption $order): array
+    {
+        $data = Http::withBasicAuth($this->key(), '')->acceptJson()->timeout(15)->get(config('treefund.midtrans.api_url').'/'.rawurlencode($order->reference).'/status')->throw()->json();
+        $this->validateIdentity($order, $data);
+
+        return $data;
+    }
+
+    public function validateIdentity(Adoption $order, array $data): void
+    {
+        abort_unless(($data['order_id'] ?? null) === $order->reference, 422, 'Nomor pesanan tidak cocok.');
+        $gross = (string) ($data['gross_amount'] ?? '');
+        abort_unless(preg_match('/^0*'.preg_quote((string) $order->total, '/').'(\.0{1,2})?$/', $gross), 422, 'Nominal pembayaran tidak cocok.');
+    }
+
+    public function notification(array $payload): void
+    {
+        $signature = hash('sha512', ($payload['order_id'] ?? '').($payload['status_code'] ?? '').($payload['gross_amount'] ?? '').$this->key());
+        abort_unless(hash_equals($signature, (string) ($payload['signature_key'] ?? '')), 403, 'Signature Midtrans tidak valid.');
+        $order = Adoption::where('reference', $payload['order_id'] ?? '')->firstOrFail();
+        $this->validateIdentity($order, $payload);
+        // Status is obtained from the authenticated API: signature does not cover transaction_status.
+        app(AdoptionService::class)->applyProviderStatus($order, $this->status($order));
+    }
 }

@@ -3,6 +3,10 @@
 
 @if(config('treefund.midtrans.enabled') && !$order->is_demo && $order->status === 'pending' && $order->expires_at->isFuture())
 <x-payment-methods :order="$order"/><p data-payment-message role="status"></p>
+<div data-payment-watch data-sync-url="{{ route('orders.sync',$order) }}" data-payment-issued="{{ $order->snap_token ? 'true' : 'false' }}">
+<p data-payment-watch-status role="status"></p>
+</div>
+<form method="post" action="{{ route('orders.sync',$order) }}">@csrf<button class="button secondary">Periksa Status Pembayaran</button></form>
 @push('scripts')
 <script src="{{ config('treefund.midtrans.script_url') }}" data-client-key="{{ config('treefund.midtrans.client_key') }}"></script>
 @endpush
