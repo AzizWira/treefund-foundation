@@ -98,4 +98,28 @@ class AdoptionReservationTest extends TestCase
         $this->assertSame('expired', $order->fresh()->status);
         $this->assertEquals($offer->plot->reserved, $offer->plot->fresh()->reserved);
     }
+
+    public function test_settlement_issues_adoption_records_only_once_and_handles_late_capacity(): void
+    {
+        $this->seed();
+        $service = app(AdoptionService::class);
+        $offer = Offer::published()->firstOrFail();
+        $offer->plot->update(['capacity' => 3, 'reserved' => 0, 'confirmed' => 0]);
+        $donor = User::factory()->create(['role' => 'donor']);
+        $late = $service->checkout($donor, $offer, 3, 'Donatur');
+        $this->travel(61)->minutes();
+        $service->expireUnissued($late);
+        $order = $service->checkout($donor, $offer, 3, 'Donatur');
+        $payment = ['transaction_status' => 'settlement'];
+        $service->applyProviderStatus($order, $payment);
+        $service->applyProviderStatus($order, $payment);
+        $service->applyProviderStatus($late, $payment);
+        $this->assertSame('paid', $order->fresh()->status);
+        $this->assertSame('review', $late->fresh()->status);
+        $this->assertDatabaseCount('trees', 3);
+        $this->assertDatabaseCount('work_orders', 1);
+        $this->assertDatabaseCount('certificates', 1);
+        $this->assertEquals(0, $offer->plot->fresh()->reserved);
+        $this->assertEquals(3, $offer->plot->fresh()->confirmed);
+    }
 }

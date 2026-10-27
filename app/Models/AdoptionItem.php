@@ -19,4 +19,14 @@ class AdoptionItem extends Model
     {
         return $this->belongsTo(Offer::class);
     }
+
+    public function trees(): mixed
+    {
+        return $this->hasMany(Tree::class);
+    }
+
+    public function workOrder(): mixed
+    {
+        return $this->hasOne(WorkOrder::class);
+    }
 }

@@ -6,6 +6,7 @@ use App\Models\Adoption;
 use App\Models\Offer;
 use App\Models\Plot;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -42,37 +43,74 @@ class AdoptionService
 
     public function expireUnissued(Adoption $order): void
     {
-        DB::transaction(function () use ($order): void {
-            $order = Adoption::lockForUpdate()->findOrFail($order->id);
-            if ($order->status !== 'pending' || $order->snap_token || $order->expires_at->isFuture()) {
-                return;
-            }
-            foreach ($order->items()->with('offer')->orderBy('id')->get() as $item) {
-                Plot::lockForUpdate()->findOrFail($item->offer->plot_id)->decrement('reserved', $item->quantity);
-            }
-            $order->update(['status' => 'expired']);
-        }, 3);
+        Cache::lock('snap-order-'.$order->id, 35)->get(function () use ($order): void {
+            DB::transaction(function () use ($order): void {
+                $order = Adoption::lockForUpdate()->findOrFail($order->id);
+                if ($order->status !== 'pending' || $order->snap_token || $order->expires_at->isFuture()) {
+                    return;
+                }
+                foreach ($order->items()->with('offer')->orderBy('id')->get() as $item) {
+                    Plot::lockForUpdate()->findOrFail($item->offer->plot_id)->decrement('reserved', $item->quantity);
+                }
+                $order->update(['status' => 'expired']);
+            }, 3);
+        });
     }
 
     public function applyProviderStatus(Adoption $order, array $payment): void
     {
         DB::transaction(function () use ($order, $payment): void {
             $order = Adoption::lockForUpdate()->findOrFail($order->id);
-            $state = $payment['transaction_status'] ?? '';
-            if ($order->status !== 'pending') {
+            if ($order->status === 'paid') {
                 return;
             }
-            if (in_array($state, ['settlement', 'capture'], true)) {
-                throw new \LogicException('Penerbitan adopsi belum tersedia.');
-            }
-            if (in_array($state, ['deny', 'cancel', 'expire', 'failure'], true)) {
-                foreach ($order->items()->with('offer')->orderBy('id')->get() as $item) {
-                    Plot::lockForUpdate()->findOrFail($item->offer->plot_id)->decrement('reserved', $item->quantity);
+
+            $state = $payment['transaction_status'] ?? '';
+            $paid = $state === 'settlement' || ($state === 'capture' && ($payment['fraud_status'] ?? '') === 'accept');
+            $closed = in_array($state, ['deny', 'cancel', 'expire', 'failure'], true);
+            $reserved = $order->status === 'pending';
+            if (! $paid && (! $closed || ! $reserved)) {
+                if ($reserved) {
+                    $order->update(['provider_status' => $state]);
                 }
-                $order->status = $state === 'expire' ? 'expired' : 'failed';
+
+                return;
             }
-            $order->provider_status = $state;
-            $order->save();
+
+            $items = $order->items()->with('offer')->orderBy('id')->get();
+            $required = $items->groupBy(fn ($item) => $item->offer->plot_id)->map->sum('quantity');
+            $plots = Plot::whereIn('id', $required->keys())->orderBy('id')->lockForUpdate()->get()->keyBy('id');
+            if ($paid && ! $reserved && $required->contains(fn ($quantity, $id) => $plots[$id]->available < $quantity)) {
+                if ($order->status !== 'review') {
+                    $order->update(['status' => 'review', 'provider_status' => $state]);
+                    app(ActivityService::class)->audit('payment.review', $order);
+                }
+
+                return;
+            }
+
+            foreach ($required as $id => $quantity) {
+                if ($reserved) {
+                    $plots[$id]->decrement('reserved', $quantity);
+                }
+                if ($paid) {
+                    $plots[$id]->increment('confirmed', $quantity);
+                }
+            }
+
+            if ($paid) {
+                foreach ($items as $item) {
+                    for ($index = 1; $index <= $item->quantity; $index++) {
+                        $item->trees()->firstOrCreate(['code' => sprintf('%s-%d-%03d', $order->reference, $item->id, $index)]);
+                    }
+                    $item->workOrder()->firstOrCreate([], ['partner_id' => $plots[$item->offer->plot_id]->partner_id, 'allocated_amount' => 0, 'status' => 'waiting']);
+                }
+                $order->certificate()->firstOrCreate([], ['number' => 'CERT-'.$order->reference]);
+                $order->update(['status' => 'paid', 'paid_at' => now(), 'provider_status' => $state, 'transaction_id' => $payment['transaction_id'] ?? null]);
+            } else {
+                $order->update(['status' => $state === 'expire' ? 'expired' : 'failed', 'provider_status' => $state]);
+            }
+            app(ActivityService::class)->audit('payment.'.$order->status, $order, ['provider_status' => $state]);
         }, 3);
     }
 }

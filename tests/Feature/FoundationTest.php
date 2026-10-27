@@ -142,9 +142,9 @@ class FoundationTest extends TestCase
         $this->assertFalse(collect($data)->contains('name', $plot->name));
     }
 
-    public function test_fulfillment_and_payment_webhook_are_not_installed_in_this_stage(): void
+    public function test_unconfigured_payment_webhook_is_closed(): void
     {
-        foreach (['trees', 'certificates', 'work_orders', 'plantings', 'monitorings', 'disbursements'] as $table) {
+        foreach (['plantings', 'monitorings', 'disbursements'] as $table) {
             $this->assertFalse(Schema::hasTable($table), $table.' must be added in a later module.');
         }
         $this->actingAs(User::where('role', 'donor')->firstOrFail());
