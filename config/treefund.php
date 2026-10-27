@@ -3,7 +3,7 @@
 return [
     'reservation_minutes' => (int) env('TREEFUND_RESERVATION_MINUTES', 60),
     'midtrans' => [
-        'enabled' => false,
+        'enabled' => (bool) env('MIDTRANS_ENABLED', false),
         'server_key' => env('MIDTRANS_SERVER_KEY', ''),
         'client_key' => env('MIDTRANS_CLIENT_KEY', ''),
         'merchant_id' => env('MIDTRANS_MERCHANT_ID', ''),

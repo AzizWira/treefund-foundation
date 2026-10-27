@@ -26,4 +26,9 @@ class Adoption extends Model
     {
         return $this->hasMany(AdoptionItem::class);
     }
+
+    public function certificate(): mixed
+    {
+        return $this->hasOne(Certificate::class);
+    }
 }
