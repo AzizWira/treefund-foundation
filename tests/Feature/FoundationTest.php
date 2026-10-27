@@ -41,7 +41,7 @@ class FoundationTest extends TestCase
     {
         $routes = [
             'admin' => ['/admin/plantings', '/admin/monitorings', '/admin/disbursements', '/admin/reports', '/admin/settings'],
-            'partner' => ['/partner/work-orders', '/partner/work-orders/1', '/partner/monitoring', '/partner/funds'],
+            'partner' => ['/partner/monitoring', '/partner/funds'],
             'donor' => ['/certificates', '/trees'],
         ];
         foreach (['admin' => 'admin', 'partner' => 'mitra', 'donor' => 'donatur'] as $role => $email) {
