@@ -62,8 +62,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/partner/partnership', [PartnerController::class, 'savePartnership']);
         Route::get('/partner/plots', [PartnerController::class, 'plots'])->name('partner.plots');
         Route::post('/partner/plots', [PartnerController::class, 'savePlot']);
-        Route::view('/partner/work-orders', 'portal.placeholder', ['pageTitle' => 'Work Order Penanaman'])->name('partner.works');
-        Route::view('/partner/work-orders/{work}', 'portal.placeholder', ['pageTitle' => 'Detail Work Order'])->name('partner.work');
+        Route::get('/partner/work-orders', [PartnerController::class, 'workOrders'])->name('partner.works');
+        Route::get('/partner/work-orders/{work}', [PartnerController::class, 'workOrder'])->whereNumber('work')->name('partner.work');
         Route::view('/partner/monitoring', 'portal.placeholder', ['pageTitle' => 'Log Monitoring'])->name('partner.monitoring');
         Route::view('/partner/funds', 'portal.placeholder', ['pageTitle' => 'Pencairan Dana'])->name('partner.funds');
         Route::get('/partner/members', [PartnerController::class, 'members'])->name('partner.members');

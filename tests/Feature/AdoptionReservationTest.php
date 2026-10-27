@@ -122,4 +122,22 @@ class AdoptionReservationTest extends TestCase
         $this->assertEquals(0, $offer->plot->fresh()->reserved);
         $this->assertEquals(3, $offer->plot->fresh()->confirmed);
     }
+
+    public function test_work_order_is_visible_only_to_the_assigned_partner(): void
+    {
+        $this->seed();
+        $offer = Offer::published()->firstOrFail();
+        $donor = User::factory()->create(['role' => 'donor']);
+        $service = app(AdoptionService::class);
+        $order = $service->checkout($donor, $offer, 1, 'Donatur');
+        $service->applyProviderStatus($order, ['transaction_status' => 'settlement']);
+        $work = $order->items()->firstOrFail()->workOrder()->firstOrFail();
+        $url = route('partner.work', $work);
+        $this->actingAs($offer->plot->partner->user)->get('/partner/work-orders?q=WO-'.$work->id)
+            ->assertOk()->assertSee($url, false);
+        $this->get($url)->assertOk()->assertSee($work->item->trees->first()->code);
+        $other = User::factory()->create(['role' => 'partner']);
+        $this->actingAs($other)->get('/partner/work-orders')->assertOk()->assertDontSee($url, false);
+        $this->get($url)->assertForbidden();
+    }
 }

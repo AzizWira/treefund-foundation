@@ -6,6 +6,7 @@ use App\Models\Member;
 use App\Models\Partner;
 use App\Models\Plot;
 use App\Services\ActivityService;
+use App\Models\WorkOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -134,5 +135,33 @@ class PartnerController extends Controller
         $member->delete();
 
         return back()->with('success', 'Anggota dihapus.');
+    }
+
+    public function workOrders(Request $request): mixed
+    {
+        $filters = $request->validate(['q' => 'nullable|string|max:190', 'status' => 'nullable|in:waiting,pending,revision,planted']);
+        $search = trim($filters['q'] ?? '');
+        $works = WorkOrder::where('partner_id', $request->user()->partner?->id ?? 0)
+            ->with('item.offer.plot', 'item.adoption')
+            ->when($filters['status'] ?? null, fn ($query, $status) => $query->where('status', $status))
+            ->when($search !== '', fn ($query) => $query->where(function ($matching) use ($search): void {
+                if (preg_match('/^(?:WO-)?([0-9]+)$/i', $search, $parts)) {
+                    $matching->where('id', (int) $parts[1]);
+                }
+                $matching->orWhereHas('item.offer', fn ($offer) => $offer->where('species', 'like', '%'.$search.'%')
+                    ->orWhereHas('plot', fn ($plot) => $plot->where('name', 'like', '%'.$search.'%')))
+                    ->orWhereHas('item.adoption', fn ($adoption) => $adoption->where('certificate_name', 'like', '%'.$search.'%'));
+            }))
+            ->latest('id')->paginate(15)->withQueryString();
+
+        return view('partner.works', compact('works'));
+    }
+
+    public function workOrder(Request $request, WorkOrder $work): mixed
+    {
+        abort_unless($work->partner_id === $request->user()->partner?->id, 403);
+        $work->load('item.offer.plot', 'item.adoption', 'item.trees');
+
+        return view('partner.work', compact('work'));
     }
 }
