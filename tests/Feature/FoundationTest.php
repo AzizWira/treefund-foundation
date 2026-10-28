@@ -144,7 +144,7 @@ class FoundationTest extends TestCase
 
     public function test_unconfigured_payment_webhook_is_closed(): void
     {
-        foreach (['plantings', 'monitorings', 'disbursements'] as $table) {
+        foreach (['monitorings', 'disbursements'] as $table) {
             $this->assertFalse(Schema::hasTable($table), $table.' must be added in a later module.');
         }
         $this->actingAs(User::where('role', 'donor')->firstOrFail());

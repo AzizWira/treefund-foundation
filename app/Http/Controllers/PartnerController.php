@@ -6,6 +6,7 @@ use App\Models\Member;
 use App\Models\Partner;
 use App\Models\Plot;
 use App\Services\ActivityService;
+use App\Models\Tree;
 use App\Models\WorkOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -160,8 +161,44 @@ class PartnerController extends Controller
     public function workOrder(Request $request, WorkOrder $work): mixed
     {
         abort_unless($work->partner_id === $request->user()->partner?->id, 403);
-        $work->load('item.offer.plot', 'item.adoption', 'item.trees');
+        $work->load('item.offer.plot', 'item.adoption', 'item.trees.planting');
 
         return view('partner.work', compact('work'));
+    }
+
+    public function planting(Request $request, Tree $tree, ActivityService $activity): mixed
+    {
+        abort_unless($tree->item->workOrder?->partner_id === $request->user()->partner?->id && $request->user()->partner, 403);
+        $data = $request->validate([
+            'planted_at' => 'required|date|before_or_equal:today',
+            'latitude' => 'required|numeric|between:-90,90',
+            'longitude' => 'required|numeric|between:-180,180',
+            'photo' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
+        ]);
+        unset($data['photo']);
+        $path = $request->file('photo')->store('plantings', 'local');
+        abort_unless($path, 500);
+        try {
+            $old = DB::transaction(function () use ($tree, $data, $path, $activity): ?string {
+                $tree = Tree::lockForUpdate()->findOrFail($tree->id);
+                $existing = $tree->planting()->first();
+                abort_if($existing && $existing->status !== 'revision', 409, 'Bukti ini sedang diperiksa atau sudah disetujui.');
+                $row = $tree->planting()->updateOrCreate([], $data + [
+                    'photo' => $path, 'status' => 'pending', 'review_note' => null,
+                    'reviewed_by' => null, 'submission_version' => ($existing?->submission_version ?? 0) + 1,
+                ]);
+                $activity->audit('planting.submitted', $row);
+
+                return $existing?->photo;
+            });
+        } catch (\Throwable $exception) {
+            Storage::disk('local')->delete($path);
+            throw $exception;
+        }
+        if ($old) {
+            Storage::disk('local')->delete($old);
+        }
+
+        return back()->with('success', 'Bukti penanaman berhasil dikirim.');
     }
 }

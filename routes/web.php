@@ -44,7 +44,7 @@ Route::post('/payments/midtrans/notification', MidtransWebhookController::class)
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [PortalController::class, 'dashboard'])->name('dashboard');
     Route::view('/notifications', 'portal.placeholder', ['pageTitle' => 'Notifikasi'])->name('notifications');
-    Route::get('/files/{type}/{id}', FileController::class)->where('type', 'legal')->whereNumber('id')->name('files');
+    Route::get('/files/{type}/{id}', FileController::class)->where('type', 'legal|planting')->whereNumber('id')->name('files');
     Route::middleware('role:admin')->group(function () {
         Route::get('/admin/partners', [AdminController::class, 'queue'])->defaults('type', 'partners')->name('admin.partners');
         Route::post('/admin/{type}/{id}/review', [AdminController::class, 'review'])->where('type', 'partners|plots')->whereNumber('id');
@@ -63,6 +63,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/partner/plots', [PartnerController::class, 'plots'])->name('partner.plots');
         Route::post('/partner/plots', [PartnerController::class, 'savePlot']);
         Route::get('/partner/work-orders', [PartnerController::class, 'workOrders'])->name('partner.works');
+        Route::post('/partner/trees/{tree}/planting', [PartnerController::class, 'planting'])->whereNumber('tree')->name('partner.planting');
         Route::get('/partner/work-orders/{work}', [PartnerController::class, 'workOrder'])->whereNumber('work')->name('partner.work');
         Route::view('/partner/monitoring', 'portal.placeholder', ['pageTitle' => 'Log Monitoring'])->name('partner.monitoring');
         Route::view('/partner/funds', 'portal.placeholder', ['pageTitle' => 'Pencairan Dana'])->name('partner.funds');

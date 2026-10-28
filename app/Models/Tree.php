@@ -14,4 +14,9 @@ class Tree extends Model
     {
         return $this->belongsTo(AdoptionItem::class, 'adoption_item_id');
     }
+
+    public function planting(): mixed
+    {
+        return $this->hasOne(Planting::class);
+    }
 }
