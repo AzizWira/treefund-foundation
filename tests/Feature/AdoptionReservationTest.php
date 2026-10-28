@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Services\AdoptionService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class AdoptionReservationTest extends TestCase
@@ -139,5 +141,32 @@ class AdoptionReservationTest extends TestCase
         $other = User::factory()->create(['role' => 'partner']);
         $this->actingAs($other)->get('/partner/work-orders')->assertOk()->assertDontSee($url, false);
         $this->get($url)->assertForbidden();
+    }
+
+    public function test_planting_is_private_and_only_assigned_partner_can_submit(): void
+    {
+        $this->seed();
+        Storage::fake('local');
+        $offer = Offer::published()->firstOrFail();
+        $donor = User::factory()->create(['role' => 'donor']);
+        $service = app(AdoptionService::class);
+        $order = $service->checkout($donor, $offer, 1, 'Donatur');
+        $service->applyProviderStatus($order, ['transaction_status' => 'settlement']);
+        $tree = $order->items()->firstOrFail()->trees()->firstOrFail();
+        $url = route('partner.planting', $tree);
+        $payload = ['planted_at' => now()->toDateString(), 'latitude' => -7.2, 'longitude' => 112.7, 'photo' => UploadedFile::fake()->image('bukti.png')];
+        $this->actingAs(User::factory()->create(['role' => 'partner']))->post($url, $payload)->assertForbidden();
+        $this->actingAs($offer->plot->partner->user)->post($url, $payload)->assertRedirect();
+        $planting = $tree->planting()->firstOrFail();
+        Storage::disk('local')->assertExists($planting->photo);
+        $file = route('files', ['type' => 'planting', 'id' => $planting->id]);
+        $this->get($file)->assertOk();
+        $this->actingAs($donor)->get($file)->assertForbidden();
+        $this->actingAs($offer->plot->partner->user)->post($url, $payload)->assertConflict();
+        $planting->update(['status' => 'revision']);
+        $payload['photo'] = UploadedFile::fake()->image('revisi.png');
+        $this->post($url, $payload)->assertRedirect();
+        $this->assertEquals(2, $planting->fresh()->submission_version);
+        Storage::disk('local')->assertMissing($planting->photo);
     }
 }
