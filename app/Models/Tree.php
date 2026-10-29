@@ -19,4 +19,9 @@ class Tree extends Model
     {
         return $this->hasOne(Planting::class);
     }
+
+    public function monitorings(): mixed
+    {
+        return $this->hasMany(Monitoring::class)->orderByDesc('observed_at');
+    }
 }

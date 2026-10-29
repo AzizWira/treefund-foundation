@@ -175,5 +175,13 @@ class AdoptionReservationTest extends TestCase
         $this->post($review, ['decision' => 'approved', 'submission_version' => 2])->assertRedirect()->assertSessionHasNoErrors();
         $this->assertSame('planted', $tree->item->workOrder->fresh()->status);
         $this->actingAs($donor)->get($file)->assertOk();
+        $this->actingAs($offer->plot->partner->user)->get('/partner/monitoring')->assertOk()->assertSee($tree->code);
+        $monitor = route('partner.monitoring.store', $tree);
+        $observation = ['observed_at' => now()->toDateString(), 'height' => 25, 'health' => 'healthy', 'care_note' => 'Disiram', 'photo' => UploadedFile::fake()->image('laporan.png')];
+        $this->post($monitor, $observation)->assertRedirect()->assertSessionHasNoErrors();
+        $report = $tree->monitorings()->firstOrFail();
+        $reportFile = route('files', ['type' => 'monitoring', 'id' => $report->id]);
+        $this->get($reportFile)->assertOk();
+        $this->actingAs($donor)->get($reportFile)->assertForbidden();
     }
 }

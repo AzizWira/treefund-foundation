@@ -6,6 +6,7 @@ use App\Models\Member;
 use App\Models\Partner;
 use App\Models\Plot;
 use App\Services\ActivityService;
+use App\Models\Monitoring;
 use App\Models\Tree;
 use App\Models\WorkOrder;
 use Illuminate\Http\Request;
@@ -200,5 +201,52 @@ class PartnerController extends Controller
         }
 
         return back()->with('success', 'Bukti penanaman berhasil dikirim.');
+    }
+
+    public function monitoring(Request $request): mixed
+    {
+        $trees = Tree::with('item.offer.plot', 'planting', 'monitorings')
+            ->whereHas('item.workOrder', fn ($query) => $query->where('partner_id', $request->user()->partner?->id ?? 0))
+            ->whereHas('planting', fn ($query) => $query->where('status', 'approved'))
+            ->latest('id')->paginate(8);
+
+        return view('partner.monitoring', compact('trees'));
+    }
+
+    public function saveMonitoring(Request $request, Tree $tree, ActivityService $activity): mixed
+    {
+        abort_unless($request->user()->partner && $tree->item->workOrder?->partner_id === $request->user()->partner->id, 403);
+        abort_unless($tree->planting?->status === 'approved', 409, 'Bukti tanam belum disetujui.');
+        $data = $request->validate([
+            'monitoring_id' => 'nullable|integer',
+            'observed_at' => 'required|date|after_or_equal:'.$tree->planting->planted_at->toDateString().'|before_or_equal:today',
+            'height' => 'required|numeric|min:0|max:100000',
+            'health' => 'required|in:healthy,care,dead',
+            'care_note' => 'required|string|max:2000',
+            'photo' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
+        ]);
+        $id = $data['monitoring_id'] ?? null;
+        unset($data['monitoring_id'], $data['photo']);
+        $path = $request->file('photo')->store('monitorings', 'local');
+        abort_unless($path, 500);
+        try {
+            $old = DB::transaction(function () use ($tree, $id, $data, $path, $activity): ?string {
+                $tree = Tree::lockForUpdate()->findOrFail($tree->id);
+                $row = $id ? $tree->monitorings()->where('status', 'revision')->findOrFail($id) : new Monitoring(['tree_id' => $tree->id]);
+                $old = $row->photo;
+                $row->fill($data + ['photo' => $path, 'status' => 'pending', 'review_note' => null, 'reviewed_by' => null, 'submission_version' => ($row->submission_version ?? 0) + 1])->save();
+                $activity->audit('monitoring.submitted', $row);
+
+                return $old;
+            });
+        } catch (\Throwable $exception) {
+            Storage::disk('local')->delete($path);
+            throw $exception;
+        }
+        if ($old) {
+            Storage::disk('local')->delete($old);
+        }
+
+        return back()->with('success', 'Log monitoring dikirim untuk verifikasi.');
     }
 }

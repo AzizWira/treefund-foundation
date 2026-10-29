@@ -41,7 +41,7 @@ class FoundationTest extends TestCase
     {
         $routes = [
             'admin' => ['/admin/monitorings', '/admin/disbursements', '/admin/reports', '/admin/settings'],
-            'partner' => ['/partner/monitoring', '/partner/funds'],
+            'partner' => ['/partner/funds'],
             'donor' => ['/certificates', '/trees'],
         ];
         foreach (['admin' => 'admin', 'partner' => 'mitra', 'donor' => 'donatur'] as $role => $email) {
@@ -144,7 +144,7 @@ class FoundationTest extends TestCase
 
     public function test_unconfigured_payment_webhook_is_closed(): void
     {
-        foreach (['monitorings', 'disbursements'] as $table) {
+        foreach (['disbursements'] as $table) {
             $this->assertFalse(Schema::hasTable($table), $table.' must be added in a later module.');
         }
         $this->actingAs(User::where('role', 'donor')->firstOrFail());
