@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdoptionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailAuthController;
+use App\Http\Controllers\FieldReviewController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MidtransWebhookController;
 use App\Http\Controllers\PartnerController;
@@ -49,7 +50,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/admin/partners', [AdminController::class, 'queue'])->defaults('type', 'partners')->name('admin.partners');
         Route::post('/admin/{type}/{id}/review', [AdminController::class, 'review'])->where('type', 'partners|plots')->whereNumber('id');
         Route::get('/admin/plots', [AdminController::class, 'queue'])->defaults('type', 'plots')->name('admin.plots');
-        Route::view('/admin/plantings', 'portal.placeholder', ['pageTitle' => 'Verifikasi Bukti Tanam'])->name('admin.plantings');
+        Route::get('/admin/plantings', [FieldReviewController::class, 'plantings'])->name('admin.plantings');
+        Route::post('/admin/plantings/{planting}/review', [FieldReviewController::class, 'reviewPlanting'])->whereNumber('planting')->name('admin.plantings.review');
         Route::view('/admin/monitorings', 'portal.placeholder', ['pageTitle' => 'Monitoring Berkala'])->name('admin.monitorings');
         Route::get('/admin/catalog', [AdminController::class, 'catalog'])->name('admin.catalog');
         Route::post('/admin/catalog', [AdminController::class, 'saveOffer']);

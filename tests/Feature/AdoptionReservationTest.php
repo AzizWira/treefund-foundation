@@ -168,5 +168,12 @@ class AdoptionReservationTest extends TestCase
         $this->post($url, $payload)->assertRedirect();
         $this->assertEquals(2, $planting->fresh()->submission_version);
         Storage::disk('local')->assertMissing($planting->photo);
+        $admin = User::where('role', 'admin')->firstOrFail();
+        $review = route('admin.plantings.review', $planting);
+        $this->actingAs($admin)->get('/admin/plantings?review='.$planting->id)->assertOk()->assertSee($tree->code);
+        $this->post($review, ['decision' => 'approved', 'submission_version' => 1])->assertConflict();
+        $this->post($review, ['decision' => 'approved', 'submission_version' => 2])->assertRedirect()->assertSessionHasNoErrors();
+        $this->assertSame('planted', $tree->item->workOrder->fresh()->status);
+        $this->actingAs($donor)->get($file)->assertOk();
     }
 }
