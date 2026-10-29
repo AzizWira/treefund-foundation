@@ -183,5 +183,10 @@ class AdoptionReservationTest extends TestCase
         $reportFile = route('files', ['type' => 'monitoring', 'id' => $report->id]);
         $this->get($reportFile)->assertOk();
         $this->actingAs($donor)->get($reportFile)->assertForbidden();
+        $reviewReport = route('admin.monitorings.review', $report);
+        $this->actingAs($admin)->get('/admin/monitorings?review='.$report->id)->assertOk()->assertSee('Disiram');
+        $this->post($reviewReport, ['decision' => 'approved', 'submission_version' => 2])->assertConflict();
+        $this->post($reviewReport, ['decision' => 'approved', 'submission_version' => 1])->assertRedirect()->assertSessionHasNoErrors();
+        $this->actingAs($donor)->get($reportFile)->assertOk();
     }
 }

@@ -52,7 +52,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/admin/plots', [AdminController::class, 'queue'])->defaults('type', 'plots')->name('admin.plots');
         Route::get('/admin/plantings', [FieldReviewController::class, 'plantings'])->name('admin.plantings');
         Route::post('/admin/plantings/{planting}/review', [FieldReviewController::class, 'reviewPlanting'])->whereNumber('planting')->name('admin.plantings.review');
-        Route::view('/admin/monitorings', 'portal.placeholder', ['pageTitle' => 'Monitoring Berkala'])->name('admin.monitorings');
+        Route::get('/admin/monitorings', [FieldReviewController::class, 'monitorings'])->name('admin.monitorings');
+        Route::post('/admin/monitorings/{monitoring}/review', [FieldReviewController::class, 'reviewMonitoring'])->whereNumber('monitoring')->name('admin.monitorings.review');
         Route::get('/admin/catalog', [AdminController::class, 'catalog'])->name('admin.catalog');
         Route::post('/admin/catalog', [AdminController::class, 'saveOffer']);
         Route::view('/admin/disbursements', 'portal.placeholder', ['pageTitle' => 'Pencairan Dana'])->name('admin.funds');
