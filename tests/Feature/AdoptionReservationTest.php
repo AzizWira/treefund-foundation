@@ -188,5 +188,8 @@ class AdoptionReservationTest extends TestCase
         $this->post($reviewReport, ['decision' => 'approved', 'submission_version' => 2])->assertConflict();
         $this->post($reviewReport, ['decision' => 'approved', 'submission_version' => 1])->assertRedirect()->assertSessionHasNoErrors();
         $this->actingAs($donor)->get($reportFile)->assertOk();
+        $this->get('/trees?tree='.$tree->id)->assertOk()->assertSee('Disiram')->assertSee($tree->code);
+        $this->getJson('/map/data')->assertOk()->assertJsonPath('0.code', $tree->code);
+        $this->actingAs(User::factory()->create(['role' => 'donor']))->getJson('/map/data')->assertOk()->assertExactJson([]);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Adoption;
 use App\Models\Offer;
+use App\Models\Tree;
 use App\Services\AdoptionService;
 use App\Services\MidtransService;
 use Illuminate\Http\Client\ConnectionException;
@@ -97,5 +98,19 @@ class AdoptionController extends Controller
         return $request->expectsJson()
             ? response()->json(['status' => $order->refresh()->status])
             : back()->with('success', 'Status pembayaran diperbarui.');
+    }
+
+    public function trees(Request $request): mixed
+    {
+        $trees = Tree::with(['item.offer.plot.partner', 'planting', 'monitorings' => fn ($query) => $query->where('status', 'approved')])->whereHas('item.adoption', fn ($q) => $q->where('user_id', $request->user()->id)->where('status', 'paid'))->get();
+
+        return view('trees', compact('trees'));
+    }
+
+    public function mapData(Request $request): mixed
+    {
+        $trees = Tree::with(['item.offer.plot', 'planting', 'monitorings' => fn ($query) => $query->where('status', 'approved')])->whereHas('item.adoption', fn ($q) => $q->where('user_id', $request->user()->id)->where('status', 'paid'))->whereHas('planting', fn ($q) => $q->where('status', 'approved'))->get();
+
+        return response()->json($trees->map(fn ($t) => ['id' => $t->id, 'code' => $t->code, 'species' => $t->item->offer->species, 'plot' => $t->item->offer->plot->name, 'latitude' => (float) $t->planting->latitude, 'longitude' => (float) $t->planting->longitude, 'updated_at' => $t->monitorings->where('status', 'approved')->first()?->observed_at?->format('d M Y') ?? $t->planting->planted_at->format('d M Y')]));
     }
 }
