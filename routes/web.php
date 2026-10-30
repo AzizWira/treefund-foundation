@@ -78,7 +78,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
     Route::middleware('role:donor')->group(function () {
         Route::get('/donor/catalog', [PublicCatalogController::class, 'catalog'])->name('donor.catalog');
-        Route::view('/trees', 'portal.placeholder', ['pageTitle' => 'Portofolio Pohon dan WebGIS'])->name('trees');
+        Route::get('/trees', [AdoptionController::class, 'trees'])->name('trees');
+        Route::get('/map/data', [AdoptionController::class, 'mapData'])->name('map.data');
         Route::view('/certificates', 'portal.placeholder', ['pageTitle' => 'E-Sertifikat Adopsi'])->name('certificates');
         Route::get('/orders', [AdoptionController::class, 'orders'])->name('orders');
         Route::get('/orders/{order}', [AdoptionController::class, 'show'])->whereNumber('order')->name('orders.show');

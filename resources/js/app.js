@@ -47,6 +47,29 @@ window.TreeFund = {
 
 
 async function initPublicMap(scope = document) {
+    const treeElement = scope.querySelector('#tree-map');
+    if (treeElement) {
+        const map = baseMap(treeElement, -7.5, 112, 7);
+        try {
+            const response = await fetch(treeElement.dataset.mapUrl, { headers: { Accept: 'application/json' } });
+            if (!response.ok) throw new Error();
+            const rows = await response.json();
+            if (!treeElement.isConnected) return;
+            const selected = Number(new URLSearchParams(location.search).get('tree'));
+            const markers = rows.map(row => {
+                const popup = document.createElement('div');
+                popup.append(text('strong', row.species), text('p', row.code), text('p', row.plot), text('small', 'Diperbarui ' + row.updated_at));
+                const marker = L.marker([row.latitude, row.longitude]).addTo(map).bindPopup(popup);
+                marker.on('click', () => { if (selected !== row.id) location.assign('/trees?tree=' + encodeURIComponent(row.id)); });
+                if (selected === row.id) { marker.openPopup(); map.setView([row.latitude, row.longitude], 15); }
+                return marker;
+            });
+            if (!rows.some(row => row.id === selected)) fitMap(map, markers);
+            scope.querySelector('[data-map-fit]')?.addEventListener('click', () => fitMap(map, markers));
+        } catch {
+            if (treeElement.isConnected) { const note = text('p', 'Peta belum dapat memuat titik. Foto dan timeline tetap dapat dibaca.'); note.className = 'map-network-note'; note.setAttribute('role', 'status'); treeElement.append(note); }
+        }
+    }
     const publicElement = scope.querySelector('#public-map');
     if (publicElement) {
         const status = scope.querySelector('[data-public-map-status]');
