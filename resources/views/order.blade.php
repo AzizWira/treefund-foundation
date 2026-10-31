@@ -12,4 +12,9 @@
 @endpush
 
 @endif
+
+@if($order->status === 'paid')
+    <a class="button secondary" href="{{ route('orders.certificate', [$order, 'preview' => 1]) }}">Unduh E-Sertifikat</a>
+    <a class="button secondary" href="{{ route('trees') }}">Pantau Pohon</a>
+@endif
 </aside></div>@endsection

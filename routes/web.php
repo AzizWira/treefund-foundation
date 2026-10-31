@@ -80,7 +80,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/donor/catalog', [PublicCatalogController::class, 'catalog'])->name('donor.catalog');
         Route::get('/trees', [AdoptionController::class, 'trees'])->name('trees');
         Route::get('/map/data', [AdoptionController::class, 'mapData'])->name('map.data');
-        Route::view('/certificates', 'portal.placeholder', ['pageTitle' => 'E-Sertifikat Adopsi'])->name('certificates');
+        Route::get('/certificates', [AdoptionController::class, 'certificates'])->name('certificates');
+        Route::get('/orders/{order}/certificate', [AdoptionController::class, 'certificate'])->whereNumber('order')->name('orders.certificate');
         Route::get('/orders', [AdoptionController::class, 'orders'])->name('orders');
         Route::get('/orders/{order}', [AdoptionController::class, 'show'])->whereNumber('order')->name('orders.show');
         Route::post('/orders/{order}/sync', [AdoptionController::class, 'sync'])->whereNumber('order')->middleware('throttle:10,1')->name('orders.sync');

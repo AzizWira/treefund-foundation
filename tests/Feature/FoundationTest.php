@@ -42,7 +42,7 @@ class FoundationTest extends TestCase
         $routes = [
             'admin' => ['/admin/disbursements', '/admin/reports', '/admin/settings'],
             'partner' => ['/partner/funds'],
-            'donor' => ['/certificates'],
+            'donor' => [],
         ];
         foreach (['admin' => 'admin', 'partner' => 'mitra', 'donor' => 'donatur'] as $role => $email) {
             $this->post('/login', ['email' => $email.'@treefund.test', 'password' => 'TreeFund!2026'])->assertRedirect('/dashboard');
