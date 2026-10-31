@@ -46,7 +46,10 @@ class FoundationTest extends TestCase
         ];
         foreach (['admin' => 'admin', 'partner' => 'mitra', 'donor' => 'donatur'] as $role => $email) {
             $this->post('/login', ['email' => $email.'@treefund.test', 'password' => 'TreeFund!2026'])->assertRedirect('/dashboard');
-            foreach (array_merge(['/dashboard', '/notifications'], $routes[$role]) as $path) {
+            if ($role === 'donor') {
+                $this->get('/dashboard')->assertOk()->assertDontSee('foundation-placeholder', false);
+            }
+            foreach (array_merge(['/notifications'], $routes[$role]) as $path) {
                 $this->get($path)->assertOk()->assertSee('Halaman ')->assertSee('foundation-placeholder', false)
                     ->assertSee('sidebar', false)->assertSee('topbar', false)->assertSee('app-footer', false)->assertDontSee('data-pay', false);
             }
@@ -79,7 +82,7 @@ class FoundationTest extends TestCase
         $this->post('/email/verify-code', ['code' => $message->payload['code']])->assertRedirect('/dashboard');
         $this->assertTrue($user->fresh()->hasVerifiedEmail());
         app('auth')->forgetGuards();
-        $this->get('/dashboard')->assertOk()->assertSee('Halaman Dashboard Donatur');
+        $this->get('/dashboard')->assertOk()->assertDontSee('foundation-placeholder', false);
         $this->assertDatabaseMissing('email_verification_challenges', ['user_id' => $user->id]);
     }
 

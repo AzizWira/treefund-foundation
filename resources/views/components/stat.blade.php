@@ -1,0 +1,1 @@
+@props(['label','value','icon'=>'forest','note'=>'','tone'=>'green'])<article class="stat-card"><div class="stat-top"><span>{{ $label }}</span><span class="stat-icon {{ $tone }} material-symbols-outlined">{{ $icon }}</span></div><div class="stat-value">{{ $value }}</div>@if($note)<div class="stat-note">{{ $note }}</div>@endif</article>
