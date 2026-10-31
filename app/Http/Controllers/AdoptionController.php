@@ -113,4 +113,23 @@ class AdoptionController extends Controller
 
         return response()->json($trees->map(fn ($t) => ['id' => $t->id, 'code' => $t->code, 'species' => $t->item->offer->species, 'plot' => $t->item->offer->plot->name, 'latitude' => (float) $t->planting->latitude, 'longitude' => (float) $t->planting->longitude, 'updated_at' => $t->monitorings->where('status', 'approved')->first()?->observed_at?->format('d M Y') ?? $t->planting->planted_at->format('d M Y')]));
     }
+
+    public function certificates(Request $request): mixed
+    {
+        return view('certificates', ['orders' => Adoption::where('user_id', $request->user()->id)->where('status', 'paid')->whereHas('certificate')->with('items.offer.plot', 'certificate')->when($request->filled('q'), fn ($q) => $q->where(fn ($q) => $q->where('certificate_name', 'like', '%'.$request->input('q').'%')->orWhere('reference', 'like', '%'.$request->input('q').'%')->orWhereHas('certificate', fn ($q) => $q->where('number', 'like', '%'.$request->input('q').'%'))))->latest('paid_at')->paginate(9)->withQueryString()]);
+    }
+
+    public function certificate(Request $request, Adoption $order): mixed
+    {
+        $this->owner($request, $order);
+        abort_unless($order->status === 'paid' && $order->certificate, 404);
+        $order->load('user', 'items.offer.plot', 'items.trees', 'certificate');
+        if ($request->boolean('preview')) {
+            return view('certificate-preview', compact('order'));
+        }
+        $pdf = app('dompdf.wrapper')->loadView('certificate', compact('order'))->setPaper('a4', 'landscape');
+
+        return $pdf->download($order->certificate->number.'.pdf');
+    }
+
 }

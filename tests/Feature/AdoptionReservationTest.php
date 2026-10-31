@@ -192,4 +192,21 @@ class AdoptionReservationTest extends TestCase
         $this->getJson('/map/data')->assertOk()->assertJsonPath('0.code', $tree->code);
         $this->actingAs(User::factory()->create(['role' => 'donor']))->getJson('/map/data')->assertOk()->assertExactJson([]);
     }
+
+    public function test_certificate_preview_and_pdf_are_for_the_paid_order_owner_only(): void
+    {
+        $this->seed();
+        $donor = User::factory()->create(['role' => 'donor']);
+        $offer = Offer::published()->firstOrFail();
+        $service = app(AdoptionService::class);
+        $order = $service->checkout($donor, $offer, 1, 'Donatur Sertifikat');
+        $url = route('orders.certificate', $order);
+        $this->actingAs($donor)->get($url)->assertNotFound();
+        $service->applyProviderStatus($order, ['transaction_status' => 'settlement']);
+        $number = $order->fresh()->certificate->number;
+        $this->get('/certificates')->assertOk()->assertSee($number);
+        $this->get($url.'?preview=1')->assertOk()->assertSee($number);
+        $this->get($url)->assertOk()->assertHeader('Content-Type', 'application/pdf');
+        $this->actingAs(User::factory()->create(['role' => 'donor']))->get($url)->assertForbidden();
+    }
 }
