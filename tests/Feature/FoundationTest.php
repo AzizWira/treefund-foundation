@@ -49,6 +49,9 @@ class FoundationTest extends TestCase
             if ($role === 'donor') {
                 $this->get('/dashboard')->assertOk()->assertDontSee('foundation-placeholder', false);
             }
+            if ($role === 'partner') {
+                $this->get('/dashboard')->assertOk()->assertDontSee('foundation-placeholder', false);
+            }
             foreach (array_merge(['/notifications'], $routes[$role]) as $path) {
                 $this->get($path)->assertOk()->assertSee('Halaman ')->assertSee('foundation-placeholder', false)
                     ->assertSee('sidebar', false)->assertSee('topbar', false)->assertSee('app-footer', false)->assertDontSee('data-pay', false);
