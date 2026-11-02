@@ -10,6 +10,7 @@ use App\Models\Monitoring;
 use App\Models\Planting;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use App\Models\ActivityNotification;
 use Illuminate\Http\Request;
 
 class PortalController extends Controller
@@ -51,5 +52,35 @@ class PortalController extends Controller
         };
 
         return view('portal.placeholder', compact('pageTitle'));
+    }
+
+    public function notifications(Request $request): mixed
+    {
+        $filters = $request->validate(['q' => 'nullable|string|max:190']);
+        $notifications = ActivityNotification::where('user_id', $request->user()->id)
+            ->when($filters['q'] ?? null, fn ($query, $term) => $query->where(fn ($search) => $search
+                ->where('title', 'like', '%'.$term.'%')->orWhere('body', 'like', '%'.$term.'%')))
+            ->latest('id')->paginate(15)->withQueryString();
+
+        return view('notifications', compact('notifications'));
+    }
+
+    public function readAllNotifications(Request $request): mixed
+    {
+        ActivityNotification::where('user_id', $request->user()->id)->whereNull('read_at')->update(['read_at' => now()]);
+
+        return back()->with('success', 'Semua notifikasi telah ditandai dibaca.');
+    }
+
+    public function readNotification(Request $request, ActivityNotification $notification): mixed
+    {
+        abort_unless($notification->user_id === $request->user()->id, 403);
+        $notification->update(['read_at' => now()]);
+        $target = $notification->url;
+        if (! is_string($target) || ! preg_match('#^/(?![/\\\\])[^\\\\\r\n]*$#D', $target)) {
+            $target = route('dashboard');
+        }
+
+        return redirect($target);
     }
 }

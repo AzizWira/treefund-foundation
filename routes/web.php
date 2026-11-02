@@ -44,7 +44,9 @@ Route::middleware('auth')->group(function () {
 Route::post('/payments/midtrans/notification', MidtransWebhookController::class)->middleware('throttle:120,1')->name('midtrans.notification');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [PortalController::class, 'dashboard'])->name('dashboard');
-    Route::view('/notifications', 'portal.placeholder', ['pageTitle' => 'Notifikasi'])->name('notifications');
+    Route::get('/notifications', [PortalController::class, 'notifications'])->name('notifications');
+    Route::post('/notifications/read-all', [PortalController::class, 'readAllNotifications'])->name('notifications.read-all');
+    Route::post('/notifications/{notification}/read', [PortalController::class, 'readNotification'])->whereNumber('notification');
     Route::get('/files/{type}/{id}', FileController::class)->where('type', 'legal|planting|monitoring')->whereNumber('id')->name('files');
     Route::middleware('role:admin')->group(function () {
         Route::get('/admin/partners', [AdminController::class, 'queue'])->defaults('type', 'partners')->name('admin.partners');
