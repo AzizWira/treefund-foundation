@@ -1,0 +1,4 @@
+@extends('emails.layout')
+@section('content')
+<p style="font-size:34px;color:#ab8640;margin:0">◷</p><h1 style="font:700 29px/1.3 Georgia,serif;margin:14px 0 18px">{{ $payload['title'] }}</h1><p style="font-size:14px;line-height:1.8">Halo {{ $recipientName }}, {{ $payload['body'] }}</p><div style="border:1px solid #e8dab9;background:#fff9ed;padding:20px;border-radius:8px"><strong style="font-size:13px">{{ $payload['reference'] ?? 'Jadwal kegiatan kelompok Anda' }}</strong>@if(isset($payload['deadline']))<p style="font-size:12px;color:#897143;margin-bottom:0">Batas pembayaran: {{ $payload['deadline'] }}</p>@endif<p style="font-size:12px;color:#897143;line-height:1.8;margin-bottom:0">{{ $kind === 'payment_reminder' ? 'Jika sudah menyelesaikan simulasi pembayaran, buka detail pesanan untuk mengonfirmasi status dari server.' : 'Lengkapi laporan lapangan agar perkembangan pohon tetap dapat dipantau.' }}</p></div>
+@endsection

@@ -1,0 +1,4 @@
+@extends('emails.layout')
+@section('content')
+<div style="background:#173e2a;padding:24px;border-radius:9px;color:#fff"><p style="font-size:10px;color:#b6d8b8;letter-spacing:2px;margin:0">PENUGASAN BARU UNTUK KELOMPOK ANDA</p><h1 style="font:700 29px/1.3 Georgia,serif;margin:14px 0 0;color:#fff">Saatnya menanam<br>harapan baru.</h1></div><p style="font-size:14px;line-height:1.8;margin-top:24px">Halo {{ $recipientName }}, {{ $payload['body'] }}</p>@if(isset($payload['species']))<p style="padding:14px 18px;background:#f0f6ec;font-size:14px"><strong>{{ $payload['quantity'] ?? '' }} pohon {{ $payload['species'] }}</strong><br><span style="color:#72816f;font-size:12px">{{ $payload['plot'] ?? '' }}</span></p>@endif<ol style="padding-left:20px;font-size:12px;line-height:2;color:#5f735f"><li>Periksa rincian penugasan.</li><li>Tanam bibit dan catat lokasi.</li><li>Unggah foto, tanggal, serta koordinat untuk verifikasi.</li></ol>
+@endsection

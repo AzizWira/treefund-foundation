@@ -1,0 +1,4 @@
+@extends('emails.layout')
+@section('content')
+<div style="border:1px solid #d8c9a0;outline:4px solid #faf7ec;padding:28px 18px;text-align:center;margin:8px 0 24px"><p style="font-size:28px;color:#9c7d39;margin:0 0 12px">✧</p><p style="font-size:10px;letter-spacing:3px;color:#927a41">BUKTI KONTRIBUSI PENGHIJAUAN</p><h1 style="font:700 29px/1.3 Georgia,serif;color:#294f37;margin:18px 0">Sertifikat adopsi<br>Anda sudah siap.</h1><p style="font:italic 21px Georgia,serif;color:#806126">{{ $recipientName }}</p><p style="font-size:12px;line-height:1.8;color:#687c6a">{{ $payload['body'] }}</p><p style="font-size:10px;color:#9a8a62">{{ $payload['reference'] ?? '' }}</p></div><p style="font-size:12px;line-height:1.8">Unduh PDF melalui akun Anda. Dokumen hanya dapat diakses oleh pemilik adopsi.</p>
+@endsection

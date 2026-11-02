@@ -77,6 +77,9 @@ class FieldReviewController extends Controller
             abort_unless($row->status === 'pending' && $row->submission_version === (int) $data['submission_version'], 409, 'Laporan sudah berubah. Muat ulang sebelum memeriksa.');
             $row->update(['status' => $data['decision'], 'review_note' => $data['review_note'] ?? null, 'reviewed_by' => $request->user()->id]);
             $activity->audit('monitorings.'.$data['decision'], $row);
+            if ($data['decision'] === 'approved') {
+                $activity->notify($row->tree->item->adoption->user_id, 'Pembaruan pohon adopsi', 'Laporan lapangan baru telah disetujui.', '/trees?tree='.$row->tree_id, 'field_report', ['tree' => $row->tree->code]);
+            }
         }, 3);
 
         return back()->with('success', 'Keputusan monitoring disimpan.');
