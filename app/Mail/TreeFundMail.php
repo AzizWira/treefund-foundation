@@ -32,9 +32,16 @@ class TreeFundMail extends Mailable implements ShouldBeEncrypted, ShouldQueue
         $template = match ($this->kind) {
             'verification' => 'verification',
             'password_reset' => 'password-reset',
-            'admin_request' => 'admin',
+            'security' => 'security',
+            'payment_pending', 'payment_success', 'payment_failed' => 'payment',
+            'certificate' => 'certificate',
+            'field_report' => 'field-report',
             'partnership' => 'partnership',
-            default => 'security',
+            'work_order' => 'work-order',
+            'funds' => 'funds',
+            'reminder', 'payment_reminder' => 'reminder',
+            'admin_digest', 'admin_request', 'payment_review' => 'admin',
+            default => 'activity',
         };
 
         return new Content(view: 'emails.'.$template, text: 'emails.text');

@@ -107,6 +107,12 @@ class AdoptionService
                 }
                 $order->certificate()->firstOrCreate([], ['number' => 'CERT-'.$order->reference]);
                 $order->update(['status' => 'paid', 'paid_at' => now(), 'provider_status' => $state, 'transaction_id' => $payment['transaction_id'] ?? null]);
+                $activity = app(ActivityService::class);
+                $activity->notify($order->user_id, 'Adopsi berhasil dibayar', 'Identitas pohon dan sertifikat telah terbit.', '/orders/'.$order->id, 'payment_success', ['reference' => $order->reference, 'amount' => $order->total]);
+                foreach ($items as $item) {
+                    $work = $item->workOrder;
+                    $activity->notify($work->partner->user_id, 'Tugas penanaman baru', 'Lihat rincian penugasan dan kirim bukti tanam.', '/partner/work-orders/'.$work->id, 'work_order', ['reference' => $order->reference, 'quantity' => $item->quantity, 'species' => $item->offer->species, 'plot' => $item->offer->plot->name]);
+                }
             } else {
                 $order->update(['status' => $state === 'expire' ? 'expired' : 'failed', 'provider_status' => $state]);
             }
