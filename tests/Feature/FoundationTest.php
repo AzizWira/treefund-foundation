@@ -40,7 +40,7 @@ class FoundationTest extends TestCase
     public function test_seeded_users_log_in_and_unfinished_portal_menus_remain_placeholders(): void
     {
         $routes = [
-            'admin' => ['/admin/disbursements', '/admin/reports', '/admin/settings'],
+            'admin' => ['/admin/disbursements', '/admin/reports'],
             'partner' => ['/partner/funds'],
             'donor' => [],
         ];
@@ -154,9 +154,6 @@ class FoundationTest extends TestCase
 
     public function test_unconfigured_payment_webhook_is_closed(): void
     {
-        foreach (['disbursements'] as $table) {
-            $this->assertFalse(Schema::hasTable($table), $table.' must be added in a later module.');
-        }
         $this->actingAs(User::where('role', 'donor')->firstOrFail());
         $this->postJson('/orders')->assertUnprocessable();
         $this->post('/payments/midtrans/notification')->assertNotFound();

@@ -6,6 +6,9 @@ use App\Models\Offer;
 use App\Models\Partner;
 use App\Models\Plot;
 use App\Services\ActivityService;
+use App\Models\TerminRule;
+use App\Models\Disbursement;
+use App\Models\AuditLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -101,5 +104,32 @@ class AdminController extends Controller
         }
 
         return back()->with('success', 'Katalog disimpan. Riwayat transaksi tetap utuh.');
+    }
+
+public function settings(Request $request): mixed
+    {
+        return view('admin.settings', ['rules' => TerminRule::all(), 'rulesLocked' => Disbursement::exists(), 'logs' => AuditLog::with('actor')->when($request->filled('q'), fn ($q) => $q->where(fn ($q) => $q->where('action', 'like', '%'.$request->input('q').'%')->orWhere('subject_type', 'like', '%'.$request->input('q').'%')->orWhereHas('actor', fn ($q) => $q->where('name', 'like', '%'.$request->input('q').'%'))))->latest()->paginate(15)->withQueryString()]);
+    }
+
+    public function rules(Request $request): mixed
+    {
+        abort_unless($request->user()->can_manage_finance, 403);
+        $data = $request->validate(['percentages' => 'required|array|list|size:3', 'percentages.*' => 'required|integer|min:1|max:100']);
+        if (array_sum($data['percentages']) !== 100) {
+            throw ValidationException::withMessages(['percentages' => 'Total tiga termin harus 100%.']);
+        }
+
+        DB::transaction(function () use ($data): void {
+            $rules = TerminRule::orderBy('id')->lockForUpdate()->get();
+            if (Disbursement::exists()) {
+                throw ValidationException::withMessages(['percentages' => 'Aturan termin dikunci setelah ada pengajuan.']);
+            }
+            foreach ($rules as $index => $rule) {
+                $rule->update(['percentage' => $data['percentages'][$index]]);
+                app(ActivityService::class)->audit('termin.updated', $rule, ['percentage' => (int) $data['percentages'][$index]]);
+            }
+        }, 3);
+
+        return back()->with('success', 'Persentase termin diperbarui.');
     }
 }
