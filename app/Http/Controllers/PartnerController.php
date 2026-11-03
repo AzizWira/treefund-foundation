@@ -9,6 +9,8 @@ use App\Services\ActivityService;
 use App\Models\Monitoring;
 use App\Models\Tree;
 use App\Models\WorkOrder;
+use App\Models\TerminRule;
+use App\Services\DisbursementService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -248,5 +250,25 @@ class PartnerController extends Controller
         }
 
         return back()->with('success', 'Log monitoring dikirim untuk verifikasi.');
+    }
+
+    public function funds(Request $request): mixed
+    {
+        $works = WorkOrder::with('item.offer.plot', 'item.trees.planting', 'item.trees.monitorings', 'disbursements.rule')->where('partner_id', $request->user()->partner?->id ?? 0)->get();
+        $rules = TerminRule::orderBy('id')->get();
+
+        $works = $this->filteredRecords($request, $works, fn ($work) => 'WO-'.$work->id.' '.$work->item->offer->species.' '.$work->item->offer->plot->name, 8);
+
+        return view('partner.funds', compact('works', 'rules'));
+    }
+
+    public function submitFunds(Request $request, DisbursementService $service): mixed
+    {
+        $data = $request->validate(['work_order_id' => 'required|exists:work_orders,id', 'termin_rule_id' => 'required|exists:termin_rules,id']);
+        $work = WorkOrder::findOrFail($data['work_order_id']);
+        abort_unless($work->partner_id === $request->user()->partner?->id, 403);
+        $service->submit($work, TerminRule::findOrFail($data['termin_rule_id']));
+
+        return back()->with('success', 'Pengajuan pencairan dikirim.');
     }
 }
