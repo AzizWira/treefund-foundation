@@ -19,4 +19,9 @@ class WorkOrder extends Model
     {
         return $this->belongsTo(Partner::class);
     }
+
+    public function disbursements(): mixed
+    {
+        return $this->hasMany(Disbursement::class);
+    }
 }

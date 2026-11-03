@@ -23,4 +23,25 @@ class FinanceFlowTest extends TestCase
         $admin->forceFill(['can_manage_finance' => false])->save();
         $this->actingAs($admin)->post('/admin/settings/terms', ['percentages' => [30, 40, 30]])->assertForbidden();
     }
+
+    private function paidWork(): \App\Models\WorkOrder
+    {
+        $offer = \App\Models\Offer::published()->firstOrFail();
+        $service = app(\App\Services\AdoptionService::class);
+        $order = $service->checkout(User::factory()->create(['role' => 'donor']), $offer, 1, 'Donatur Uji');
+        $service->applyProviderStatus($order, ['transaction_status' => 'settlement']);
+
+        return $order->items()->firstOrFail()->workOrder()->firstOrFail();
+    }
+
+    public function test_allocation_is_bounded_by_the_paid_item(): void
+    {
+        $this->seed();
+        $work = $this->paidWork();
+        $admin = User::where('role', 'admin')->firstOrFail();
+        $this->actingAs($admin)->get('/admin/disbursements')->assertOk()->assertSee('WO-'.$work->id);
+        $this->postJson('/admin/allocations/'.$work->id, ['allocated_amount' => $work->item->unit_price + 1])->assertUnprocessable();
+        $this->post('/admin/allocations/'.$work->id, ['allocated_amount' => 10000])->assertRedirect()->assertSessionHasNoErrors();
+        $this->assertEquals(10000, $work->fresh()->allocated_amount);
+    }
 }

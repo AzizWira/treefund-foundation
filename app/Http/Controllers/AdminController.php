@@ -9,6 +9,7 @@ use App\Services\ActivityService;
 use App\Models\TerminRule;
 use App\Models\Disbursement;
 use App\Models\AuditLog;
+use App\Models\WorkOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -131,5 +132,28 @@ public function settings(Request $request): mixed
         }, 3);
 
         return back()->with('success', 'Persentase termin diperbarui.');
+    }
+
+    public function funds(Request $request): mixed
+    {
+        abort_unless($request->user()->can_manage_finance, 403);
+
+        return view('admin.funds', ['works' => $this->filteredRecords($request, WorkOrder::with('partner', 'item.offer')->withExists('disbursements')->latest()->get(), fn ($work) => 'WO-'.$work->id.' '.$work->partner->group_name.' '.$work->item->offer->species, 8, null, 'allocation_page', 'allocation_'), 'records' => $this->filteredRecords($request, Disbursement::with('workOrder.partner', 'workOrder.item.offer.plot', 'rule')->latest()->get(), fn ($fund) => 'WO-'.$fund->work_order_id.' '.$fund->rule->name.' '.$fund->workOrder->partner->group_name.' '.$fund->workOrder->item->offer->plot->name, 15, fn ($fund) => $fund->status)]);
+    }
+
+    public function allocation(Request $request, WorkOrder $work, ActivityService $activity): mixed
+    {
+        abort_unless($request->user()->can_manage_finance, 403);
+        $data = $request->validate(['allocated_amount' => 'required|integer|min:0|max:'.($work->item->unit_price * $work->item->quantity)]);
+        DB::transaction(function () use ($work, $data, $activity) {
+            $work = WorkOrder::lockForUpdate()->findOrFail($work->id);
+            if ($work->disbursements()->exists()) {
+                throw ValidationException::withMessages(['allocated_amount' => 'Alokasi WO-'.$work->id.' dikunci karena sudah ada pengajuan pencairan. Nilai alokasi tidak diubah.']);
+            }
+            $work->update($data);
+            $activity->audit('work_order.allocation_set', $work, ['amount' => $data['allocated_amount']]);
+        });
+
+        return back()->with('success', 'Alokasi dana work order ditetapkan.');
     }
 }
