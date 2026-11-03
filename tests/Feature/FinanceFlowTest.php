@@ -44,4 +44,26 @@ class FinanceFlowTest extends TestCase
         $this->post('/admin/allocations/'.$work->id, ['allocated_amount' => 10000])->assertRedirect()->assertSessionHasNoErrors();
         $this->assertEquals(10000, $work->fresh()->allocated_amount);
     }
+
+    private function pendingFunds(): \App\Models\Disbursement
+    {
+        $work = $this->paidWork();
+        $work->update(['allocated_amount' => 10000]);
+
+        return app(\App\Services\DisbursementService::class)->submit($work, TerminRule::where('milestone', 'paid')->firstOrFail());
+    }
+
+    public function test_partner_can_claim_only_eligible_terms_and_locks_allocation(): void
+    {
+        $this->seed();
+        $work = $this->paidWork();
+        $work->update(['allocated_amount' => 10000]);
+        $this->actingAs($work->partner->user)->get('/partner/funds')->assertOk();
+        $data = ['work_order_id' => $work->id, 'termin_rule_id' => TerminRule::where('milestone', 'planted')->value('id')];
+        $this->postJson('/partner/funds', $data)->assertUnprocessable();
+        $data['termin_rule_id'] = TerminRule::where('milestone', 'paid')->value('id');
+        $this->post('/partner/funds', $data)->assertRedirect()->assertSessionHasNoErrors();
+        $this->postJson('/partner/funds', $data)->assertUnprocessable();
+        $this->actingAs(User::where('role', 'admin')->firstOrFail())->postJson('/admin/allocations/'.$work->id, ['allocated_amount' => 9000])->assertUnprocessable();
+    }
 }

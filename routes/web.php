@@ -74,7 +74,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/partner/work-orders/{work}', [PartnerController::class, 'workOrder'])->whereNumber('work')->name('partner.work');
         Route::get('/partner/monitoring', [PartnerController::class, 'monitoring'])->name('partner.monitoring');
         Route::post('/partner/trees/{tree}/monitoring', [PartnerController::class, 'saveMonitoring'])->whereNumber('tree')->name('partner.monitoring.store');
-        Route::view('/partner/funds', 'portal.placeholder', ['pageTitle' => 'Pencairan Dana'])->name('partner.funds');
+        Route::get('/partner/funds', [PartnerController::class, 'funds'])->name('partner.funds');
+        Route::post('/partner/funds', [PartnerController::class, 'submitFunds']);
         Route::get('/partner/members', [PartnerController::class, 'members'])->name('partner.members');
         Route::post('/partner/members', [PartnerController::class, 'saveMember']);
         Route::put('/partner/members/{member}', [PartnerController::class, 'updateMember'])->whereNumber('member');
