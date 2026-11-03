@@ -60,7 +60,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/admin/catalog', [AdminController::class, 'saveOffer']);
         Route::view('/admin/disbursements', 'portal.placeholder', ['pageTitle' => 'Pencairan Dana'])->name('admin.funds');
         Route::view('/admin/reports', 'portal.placeholder', ['pageTitle' => 'Rekapitulasi dan Laporan'])->name('admin.reports');
-        Route::view('/admin/settings', 'portal.placeholder', ['pageTitle' => 'Pengaturan Sistem'])->name('admin.settings');
+        Route::get('/admin/settings', [AdminController::class, 'settings'])->name('admin.settings');
+        Route::post('/admin/settings/terms', [AdminController::class, 'rules']);
     });
     Route::middleware('role:partner')->group(function () {
         Route::get('/partner/partnership', [PartnerController::class, 'partnership'])->name('partner.partnership');
