@@ -77,4 +77,22 @@ class FinanceFlowTest extends TestCase
         $this->post($url, ['decision' => 'approved', 'submission_version' => 1])->assertRedirect()->assertSessionHasNoErrors();
         $this->assertSame('approved', $fund->fresh()->status);
     }
+
+    public function test_transfer_requires_approval_correct_amount_and_private_proof(): void
+    {
+        $this->seed();
+        \Illuminate\Support\Facades\Storage::fake('local');
+        $fund = $this->pendingFunds();
+        $url = '/admin/disbursements/'.$fund->id.'/transfer';
+        $data = ['amount' => $fund->amount, 'transferred_at' => now()->toDateString(), 'proof' => \Illuminate\Http\UploadedFile::fake()->image('bukti.png')];
+        $this->actingAs(User::where('role', 'admin')->firstOrFail())->post($url, $data)->assertConflict();
+        $fund->update(['status' => 'approved']);
+        $this->post($url, array_replace($data, ['amount' => 1]))->assertUnprocessable();
+        $this->post($url, $data)->assertRedirect()->assertSessionHasNoErrors();
+        $this->post($url, $data)->assertConflict();
+        $this->assertSame('paid', $fund->fresh()->status);
+        $file = route('files', ['type' => 'transfer', 'id' => $fund->id]);
+        $this->actingAs($fund->workOrder->partner->user)->get($file)->assertOk();
+        $this->actingAs(User::factory()->create(['role' => 'partner']))->get($file)->assertForbidden();
+    }
 }

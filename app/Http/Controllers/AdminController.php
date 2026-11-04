@@ -178,4 +178,21 @@ public function settings(Request $request): mixed
 
         return back()->with('success', 'Keputusan pencairan disimpan.');
     }
+
+    public function recordTransfer(Request $request, Disbursement $disbursement, ActivityService $activity): mixed
+    {
+        abort_unless($request->user()->can_manage_finance, 403);
+        $data = $request->validate(['amount' => 'required|integer', 'transferred_at' => 'required|date|before_or_equal:today', 'proof' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120']);
+        DB::transaction(function () use ($request, $disbursement, $data, $activity) {
+            $row = Disbursement::lockForUpdate()->findOrFail($disbursement->id);
+            abort_unless($row->status === 'approved', 409, 'Transfer sudah dicatat atau pengajuan belum disetujui.');
+            abort_unless((int) $data['amount'] === $row->amount, 422, 'Nominal harus sama dengan nilai yang disetujui.');
+            $proof = $request->file('proof')->store('transfers', 'local');
+            $row->update(['status' => 'paid', 'transferred_at' => $data['transferred_at'], 'proof' => $proof, 'recorded_by' => $request->user()->id]);
+            $activity->audit('disbursement.transfer_recorded', $row);
+            $activity->notify($row->workOrder->partner->user_id, 'Dana kemitraan telah ditransfer', 'Bukti transfer '.$row->rule->name.' sudah dicatat oleh Admin Keuangan dan tersedia melalui akun Anda.', '/partner/funds', 'funds', ['term' => $row->rule->name, 'amount' => $row->amount, 'reference' => 'WO-'.$row->work_order_id]);
+        });
+
+        return back()->with('success', 'Bukti transfer dicatat. Tidak ada transfer bank otomatis dari aplikasi.');
+    }
 }

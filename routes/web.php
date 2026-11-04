@@ -47,7 +47,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/notifications', [PortalController::class, 'notifications'])->name('notifications');
     Route::post('/notifications/read-all', [PortalController::class, 'readAllNotifications'])->name('notifications.read-all');
     Route::post('/notifications/{notification}/read', [PortalController::class, 'readNotification'])->whereNumber('notification');
-    Route::get('/files/{type}/{id}', FileController::class)->where('type', 'legal|planting|monitoring')->whereNumber('id')->name('files');
+    Route::get('/files/{type}/{id}', FileController::class)->where('type', 'legal|planting|monitoring|transfer')->whereNumber('id')->name('files');
     Route::middleware('role:admin')->group(function () {
         Route::get('/admin/partners', [AdminController::class, 'queue'])->defaults('type', 'partners')->name('admin.partners');
         Route::post('/admin/{type}/{id}/review', [AdminController::class, 'review'])->where('type', 'partners|plots')->whereNumber('id');
@@ -60,6 +60,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/admin/catalog', [AdminController::class, 'saveOffer']);
         Route::get('/admin/disbursements', [AdminController::class, 'funds'])->name('admin.funds');
         Route::post('/admin/disbursements/{disbursement}/review', [AdminController::class, 'reviewFunds'])->whereNumber('disbursement');
+        Route::post('/admin/disbursements/{disbursement}/transfer', [AdminController::class, 'recordTransfer'])->whereNumber('disbursement');
         Route::post('/admin/allocations/{work}', [AdminController::class, 'allocation'])->whereNumber('work');
         Route::view('/admin/reports', 'portal.placeholder', ['pageTitle' => 'Rekapitulasi dan Laporan'])->name('admin.reports');
         Route::get('/admin/settings', [AdminController::class, 'settings'])->name('admin.settings');
