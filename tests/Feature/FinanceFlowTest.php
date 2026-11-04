@@ -95,4 +95,16 @@ class FinanceFlowTest extends TestCase
         $this->actingAs($fund->workOrder->partner->user)->get($file)->assertOk();
         $this->actingAs(User::factory()->create(['role' => 'partner']))->get($file)->assertForbidden();
     }
+
+    public function test_report_totals_only_include_paid_orders_and_recorded_transfers(): void
+    {
+        $this->seed();
+        $fund = $this->pendingFunds();
+        $this->actingAs(User::where('role', 'admin')->firstOrFail())
+            ->get('/admin/reports')->assertOk()->assertViewHas('transferred', fn ($amount) => (int) $amount === 0);
+        $fund->update(['status' => 'paid']);
+        $this->get('/admin/reports')->assertOk()->assertViewHas('transferred', fn ($amount) => (int) $amount === (int) $fund->amount);
+        $response = $this->get('/admin/reports/export')->assertOk()->assertHeader('Content-Type', 'text/csv; charset=UTF-8');
+        $this->assertStringContainsString($fund->workOrder->item->adoption->reference, $response->streamedContent());
+    }
 }

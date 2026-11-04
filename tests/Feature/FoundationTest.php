@@ -40,7 +40,7 @@ class FoundationTest extends TestCase
     public function test_seeded_users_log_in_and_unfinished_portal_menus_remain_placeholders(): void
     {
         $routes = [
-            'admin' => ['/admin/reports'],
+            'admin' => [],
             'partner' => [],
             'donor' => [],
         ];
