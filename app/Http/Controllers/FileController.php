@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Disbursement;
 use App\Models\Monitoring;
 use App\Models\Partner;
 use App\Models\Planting;
@@ -12,6 +13,15 @@ class FileController extends Controller
 {
     public function __invoke(Request $request, string $type, int $id, PrivateEvidenceService $evidence): mixed
     {
+        if ($type === 'transfer') {
+            $row = Disbursement::with('workOrder')->findOrFail($id);
+            $user = $request->user();
+            abort_unless(($user->role === 'admin' && $user->can_manage_finance) || ($user->role === 'partner' && $user->partner && $row->workOrder->partner_id === $user->partner->id), 403);
+            abort_unless($row->status === 'paid', 404);
+
+            return $evidence->respond($request, $row->proof, 'Bukti Transfer', $type, $id);
+        }
+
         if (in_array($type, ['planting', 'monitoring'], true)) {
             $row = ($type === 'planting' ? Planting::class : Monitoring::class)::with('tree.item.workOrder', 'tree.item.adoption')->findOrFail($id);
             $user = $request->user();
