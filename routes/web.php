@@ -62,7 +62,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/admin/disbursements/{disbursement}/review', [AdminController::class, 'reviewFunds'])->whereNumber('disbursement');
         Route::post('/admin/disbursements/{disbursement}/transfer', [AdminController::class, 'recordTransfer'])->whereNumber('disbursement');
         Route::post('/admin/allocations/{work}', [AdminController::class, 'allocation'])->whereNumber('work');
-        Route::view('/admin/reports', 'portal.placeholder', ['pageTitle' => 'Rekapitulasi dan Laporan'])->name('admin.reports');
+        Route::get('/admin/reports', [AdminController::class, 'reports'])->name('admin.reports');
+        Route::get('/admin/reports/export', [AdminController::class, 'export'])->name('admin.export');
+        Route::get('/admin/orders', [AdminController::class, 'reports']);
         Route::get('/admin/settings', [AdminController::class, 'settings'])->name('admin.settings');
         Route::post('/admin/settings/terms', [AdminController::class, 'rules']);
     });

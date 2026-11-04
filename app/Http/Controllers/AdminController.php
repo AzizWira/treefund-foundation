@@ -11,6 +11,9 @@ use App\Models\Disbursement;
 use App\Models\AuditLog;
 use App\Models\WorkOrder;
 use App\Services\DisbursementService;
+use App\Models\Adoption;
+use App\Models\Planting;
+use App\Models\Tree;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -194,5 +197,32 @@ public function settings(Request $request): mixed
         });
 
         return back()->with('success', 'Bukti transfer dicatat. Tidak ada transfer bank otomatis dari aplikasi.');
+    }
+
+    public function reports(Request $request): mixed
+    {
+        $data = ['paidTotal' => Adoption::where('status', 'paid')->sum('total'), 'paidCount' => Adoption::where('status', 'paid')->count(), 'plantedCount' => Planting::where('status', 'approved')->count(), 'transferred' => Disbursement::where('status', 'paid')->sum('amount'), 'orders' => Adoption::with('user', 'items.offer.plot')->when($request->filled('status'), fn ($q) => $q->where('status', $request->input('status')))->when($request->filled('q'), fn ($q) => $q->where(fn ($q) => $q->where('reference', 'like', '%'.$request->input('q').'%')->orWhereHas('user', fn ($q) => $q->where('name', 'like', '%'.$request->input('q').'%'))))->latest()->paginate(15)->withQueryString()];
+        $data['healthCounts'] = Tree::with(['monitorings' => fn ($q) => $q->where('status', 'approved')])->whereHas('planting', fn ($q) => $q->where('status', 'approved'))->get()->groupBy(fn ($tree) => $tree->monitorings->first()?->health ?? 'unknown')->map->count();
+        $data['termTotals'] = TerminRule::all()->map(fn ($rule) => ['name' => $rule->name, 'amount' => Disbursement::where('termin_rule_id', $rule->id)->where('status', 'paid')->sum('amount'), 'count' => Disbursement::where('termin_rule_id', $rule->id)->where('status', 'paid')->count()]);
+
+        return view('admin.reports', $data);
+    }
+
+    public function export(): mixed
+    {
+        return response()->streamDownload(function () {
+            $out = fopen('php://output', 'w');
+            fwrite($out, "\xEF\xBB\xBF");
+            fputcsv($out, ['Referensi', 'Donatur', 'Total IDR', 'Status', 'Tanggal']);
+            Adoption::with('user')->orderBy('id')->chunk(100, function ($rows) use ($out) {
+                foreach ($rows as $row) {
+                    $name = $row->user->name;
+                    if (preg_match('/^[=+@\-\t\r]/', $name)) {
+                        $name = "'".$name;
+                    } fputcsv($out, [$row->reference, $name, $row->total, $row->status, $row->created_at->toDateString()]);
+                }
+            });
+            fclose($out);
+        }, 'rekap-treefund-'.now()->toDateString().'.csv', ['Content-Type' => 'text/csv; charset=UTF-8']);
     }
 }
