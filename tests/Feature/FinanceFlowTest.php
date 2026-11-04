@@ -66,4 +66,15 @@ class FinanceFlowTest extends TestCase
         $this->postJson('/partner/funds', $data)->assertUnprocessable();
         $this->actingAs(User::where('role', 'admin')->firstOrFail())->postJson('/admin/allocations/'.$work->id, ['allocated_amount' => 9000])->assertUnprocessable();
     }
+
+    public function test_finance_review_rejects_stale_submission(): void
+    {
+        $this->seed();
+        $fund = $this->pendingFunds();
+        $url = '/admin/disbursements/'.$fund->id.'/review';
+        $this->actingAs(User::where('role', 'admin')->firstOrFail());
+        $this->post($url, ['decision' => 'approved', 'submission_version' => 2])->assertConflict();
+        $this->post($url, ['decision' => 'approved', 'submission_version' => 1])->assertRedirect()->assertSessionHasNoErrors();
+        $this->assertSame('approved', $fund->fresh()->status);
+    }
 }

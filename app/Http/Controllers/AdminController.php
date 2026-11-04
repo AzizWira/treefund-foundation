@@ -10,6 +10,7 @@ use App\Models\TerminRule;
 use App\Models\Disbursement;
 use App\Models\AuditLog;
 use App\Models\WorkOrder;
+use App\Services\DisbursementService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -155,5 +156,26 @@ public function settings(Request $request): mixed
         });
 
         return back()->with('success', 'Alokasi dana work order ditetapkan.');
+    }
+
+    public function reviewFunds(Request $request, Disbursement $disbursement, DisbursementService $service, ActivityService $activity): mixed
+    {
+        abort_unless($request->user()->can_manage_finance, 403);
+        $data = $request->validate(['decision' => 'required|in:approved,revision', 'submission_version' => 'required|integer|min:1', 'note' => 'required_if:decision,revision|nullable|string|max:2000']);
+        DB::transaction(function () use ($disbursement, $service, $activity, $request, $data) {
+            $work = WorkOrder::lockForUpdate()->findOrFail($disbursement->work_order_id);
+            $row = Disbursement::lockForUpdate()->findOrFail($disbursement->id);
+            abort_unless($row->status === 'pending' && $row->submission_version === (int) $data['submission_version'], 409);
+            if ($data['decision'] === 'approved') {
+                abort_unless($service->eligible($work, $row->rule), 422, 'Milestone belum terpenuhi.');
+                $used = $work->disbursements()->where('id', '!=', $row->id)->whereIn('status', ['approved', 'paid'])->sum('amount');
+                abort_if($used + $row->amount > $work->allocated_amount, 422, 'Melebihi alokasi dana.');
+            }
+            $row->update(['status' => $data['decision'], 'approved_by' => $request->user()->id, 'note' => $data['note'] ?? null]);
+            $activity->audit('disbursement.'.$data['decision'], $row);
+            $activity->notify($work->partner->user_id, 'Hasil verifikasi pencairan', $data['decision'] === 'approved' ? 'Pengajuan pencairan Anda disetujui dan menunggu proses transfer.' : 'Pengajuan pencairan memerlukan perbaikan. Periksa catatan Admin.', '/partner/funds', 'funds', ['term' => $row->rule->name, 'amount' => $row->amount, 'reference' => 'WO-'.$work->id, 'note' => $data['note'] ?? null]);
+        });
+
+        return back()->with('success', 'Keputusan pencairan disimpan.');
     }
 }
