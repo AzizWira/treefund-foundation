@@ -358,3 +358,24 @@ main[aria-busy="true"] .filter-bar{border-color:var(--color-primary-container)}
 @keyframes review-drawer-out{from{transform:translateX(0);opacity:1}to{transform:translateX(100%);opacity:.75}}
 @keyframes review-backdrop-out{from{background-color:#102a205c}to{background-color:transparent}}
 @media(prefers-reduced-motion:reduce){.review-dialog[open],.review-dialog[open]::backdrop,.review-dialog[open].is-closing,.review-dialog[open].is-closing::backdrop{animation:none}}
+
+@media (max-width: 640px) {
+    .app-content .filter-bar > * {
+        min-width: 0;
+        width: 100%;
+    }
+    .app-content .work-row {
+        flex-wrap: wrap;
+        overflow-wrap: anywhere;
+    }
+    .app-content .action-button-group {
+        flex-wrap: wrap;
+    }
+    .app-content .review-dialog {
+        max-width: 100%;
+    }
+    .app-content .review-detail-panel img {
+        max-width: 100%;
+        height: auto;
+    }
+}
