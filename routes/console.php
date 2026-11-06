@@ -1,5 +1,6 @@
 <?php
 
+use App\Mail\TreeFundMail;
 use App\Models\ActivityNotification;
 use App\Models\Adoption;
 use App\Models\Disbursement;
@@ -13,7 +14,9 @@ use App\Services\ActivityService;
 use App\Services\AdoptionService;
 use App\Services\MidtransService;
 use Illuminate\Support\Facades\Artisan;
+use Dompdf\Dompdf;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schedule;
 use Illuminate\Support\Facades\Schema;
 
@@ -117,3 +120,112 @@ Artisan::command('treefund:admin-digest', function (): void {
 
 Schedule::command('treefund:payment-reminders')->everyTenMinutes()->withoutOverlapping();
 Schedule::command('treefund:admin-digest')->dailyAt('08:30')->withoutOverlapping();
+
+Artisan::command('treefund:doctor', function (): int {
+    $this->info('Pemeriksaan instalasi TreeFund');
+    $errors = 0;
+    foreach (['curl', 'fileinfo', 'mbstring', 'openssl', 'dom', 'gd'] as $extension) {
+        if (extension_loaded($extension)) {
+            $this->line('[OK] PHP '.$extension);
+        } else {
+            $errors++;
+            $this->error('[GAGAL] PHP '.$extension.' belum aktif.');
+        }
+    }
+    try {
+        DB::connection()->getPdo();
+        $this->line('[OK] Database '.config('database.default').' terhubung.');
+    } catch (Throwable $exception) {
+        $errors++;
+        $this->error('[GAGAL] Database belum terhubung. Periksa DB_* pada .env.');
+    }
+    if (file_exists(public_path('build/manifest.json'))) {
+        $this->line('[OK] Aset frontend hasil build tersedia.');
+    } else {
+        $errors++;
+        $this->error('[GAGAL] Jalankan npm ci dan npm run build.');
+    }
+    if (class_exists(Dompdf::class)) {
+        $this->line('[OK] Generator e-sertifikat PDF tersedia.');
+    } else {
+        $errors++;
+        $this->error('[GAGAL] Jalankan composer install untuk dependency PDF.');
+    }
+    foreach (['server_key' => 'SB-Mid-server-', 'client_key' => 'SB-Mid-client-'] as $key => $prefix) {
+        if (str_starts_with((string) config('treefund.midtrans.'.$key), $prefix)) {
+            $this->line('[OK] Format Midtrans '.$key.' Sandbox terisi.');
+        } else {
+            $value = (string) config('treefund.midtrans.'.$key);
+            $this->warn(($value === '' ? '[BELUM DIISI] ' : '[FORMAT TIDAK SESUAI SANDBOX] ').'MIDTRANS_'.strtoupper($key).' harus diambil dari mode Sandbox (awalan '.$prefix.').');
+        }
+    }
+    $this->line('Kunci tidak ditampilkan. Validitas merchant baru dapat diperiksa melalui transaksi Sandbox.');
+
+    return $errors ? 1 : 0;
+})->purpose('Periksa runtime, database, build, dan konfigurasi Midtrans tanpa mencetak kunci.');
+
+Artisan::command('treefund:admin {email} {--name=} {--finance}', function (): int {
+    $email = strtolower((string) $this->argument('email'));
+    if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $this->error('Format email tidak valid.');
+
+        return 1;
+    }
+    if (User::where('email', $email)->exists()) {
+        $this->error('Email sudah terdaftar. Gunakan email baru agar akun lama tidak diubah.');
+
+        return 1;
+    }
+    $password = $this->secret('Kata sandi Admin baru (minimal 12 karakter)');
+    if (! is_string($password) || mb_strlen($password) < 12) {
+        $this->error('Kata sandi minimal 12 karakter.');
+
+        return 1;
+    }
+    if ($password !== $this->secret('Ulangi kata sandi')) {
+        $this->error('Konfirmasi kata sandi tidak sama.');
+
+        return 1;
+    }
+    $user = new User(['name' => $this->option('name') ?: 'Admin TreeFund', 'email' => $email, 'password' => $password]);
+    $user->role = 'admin';
+    $user->can_manage_finance = (bool) $this->option('finance');
+    $user->save();
+    $this->info('Akun Admin berhasil dibuat.');
+
+    return 0;
+})->purpose('Buat Admin tanpa membuka registrasi Admin untuk publik.');
+Artisan::command('treefund:email-preview {--path=}', function (): int {
+    if (! app()->environment(['local', 'testing'])) {
+        $this->error('Pratinjau hanya tersedia di lingkungan local/testing.');
+
+        return 1;
+    }
+    $directory = $this->option('path') ?: storage_path('app/private/email-previews');
+    File::ensureDirectoryExists($directory);
+    $types = [
+        'verification' => 'Verifikasi kode dan tautan', 'password_reset' => 'Reset kata sandi', 'security' => 'Keamanan akun',
+        'payment_pending' => 'Pesanan menunggu pembayaran', 'payment_success' => 'Pembayaran berhasil', 'payment_failed' => 'Pembayaran berakhir',
+        'certificate' => 'E-sertifikat siap', 'field_report' => 'Kabar perkembangan pohon', 'partnership' => 'Keputusan pengajuan',
+        'work_order' => 'Work order baru', 'funds' => 'Pencairan dana', 'reminder' => 'Pengingat monitoring',
+        'payment_reminder' => 'Pengingat pembayaran', 'admin_digest' => 'Ringkasan Admin', 'admin_request' => 'Antrean pengajuan',
+        'payment_review' => 'Rekonsiliasi pembayaran', 'activity' => 'Aktivitas akun',
+    ];
+    $links = '';
+    foreach ($types as $kind => $title) {
+        $payload = [
+            'title' => $title, 'body' => 'Kabar terbaru dari TreeFund untuk perjalanan penghijauan Anda. Ini adalah contoh tampilan email, bukan transaksi atau kode verifikasi nyata.',
+            'url' => url('/'), 'action' => 'Lihat Detail', 'code' => '123456', 'minutes' => 15,
+            'amount' => 125000, 'reference' => 'TF-CONTOH-2026', 'deadline' => '18 Oktober 2026, 19:00',
+            'species' => 'Alpukat', 'quantity' => 1, 'plot' => 'Lereng Hijau Malang', 'tree_code' => 'TF-CONTOH-001',
+            'decision' => 'revision', 'note' => 'Mohon lengkapi foto agar lokasi dan kondisi bibit terlihat lebih jelas.',
+            'term' => 'Termin 2 — Bukti tanam terverifikasi', 'stats' => ['Bukti tanam menunggu' => 3, 'Monitoring menunggu' => 2],
+        ];
+        File::put($directory.'/'.$kind.'.html', (new TreeFundMail($kind, 'Sahabat TreeFund', $payload))->render());
+        $links .= '<a href="'.$kind.'.html" target="email-preview">'.e($title).'</a>';
+    }
+    File::put($directory.'/index.html', '<!doctype html><html lang="id"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pratinjau Email TreeFund</title><style>body{margin:0;background:#edf3e8;font:14px Arial;color:#244733}header{padding:22px 28px;background:#143f2a;color:white}h1{font:700 26px Georgia;margin:0 0 8px}.grid{display:grid;grid-template-columns:270px 1fr;height:calc(100vh - 100px)}nav{padding:18px;overflow:auto}nav a{display:block;text-decoration:none;color:#295d3c;padding:12px;border-radius:7px;margin:4px 0;background:#fff}nav a:hover{background:#d8e8cf}iframe{width:100%;height:100%;border:0}@media(max-width:700px){.grid{display:block}nav{max-height:150px}iframe{height:900px}}</style><header><h1>TreeFund · Studio Email</h1>17 varian pesan, satu tema. Pratinjau lokal ini tidak mengirim email.</header><div class="grid"><nav>'.$links.'</nav><iframe title="Pratinjau email" name="email-preview" src="verification.html"></iframe></div></html>');
+    $this->info('17 pratinjau email dibuat di '.$directory);
+
+    return 0;
+})->purpose('Render galeri semua desain email dengan data contoh yang aman.');
