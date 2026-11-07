@@ -24,4 +24,16 @@ class WorkOrder extends Model
     {
         return $this->hasMany(Disbursement::class);
     }
+
+    public function refreshPlantingStatus(): void
+    {
+        $states = $this->item->trees()->with('planting')->get()->map(fn (Tree $tree) => $tree->planting?->status);
+        $status = match (true) {
+            $states->isNotEmpty() && $states->every(fn ($state) => $state === 'approved') => 'planted',
+            $states->contains('revision') => 'revision',
+            $states->contains('pending') => 'pending',
+            default => 'waiting',
+        };
+        $this->update(['status' => $status]);
+    }
 }

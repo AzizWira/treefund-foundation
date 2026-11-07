@@ -45,6 +45,11 @@ class AdoptionJourneyTest extends TestCase
 
         $this->actingAs($partner)->get(route('partner.work', $work))->assertOk()->assertSee($tree->code);
         $this->post(route('partner.planting', $tree), ['planted_at' => $today, 'latitude' => -7.2, 'longitude' => 112.7, 'photo' => UploadedFile::fake()->image('tanam.png')])->assertRedirect()->assertSessionHasNoErrors();
+        $this->assertSame('pending', $work->fresh()->status);
+        $this->actingAs($admin)->get('/admin/plantings?work_order_id='.$work->id)->assertOk()
+            ->assertViewHas('records', fn ($records) => $records->count() === 1);
+        $this->get('/admin/plantings?work_order_id='.($work->id + 1))->assertOk()
+            ->assertViewHas('records', fn ($records) => $records->isEmpty());
         $this->actingAs($donor)->getJson('/map/data')->assertOk()->assertExactJson([]);
         $this->actingAs($admin)->post(route('admin.plantings.review', $tree->planting()->firstOrFail()), ['decision' => 'approved', 'submission_version' => 1])->assertRedirect()->assertSessionHasNoErrors();
         $this->actingAs($partner)->post(route('partner.monitoring.store', $tree), ['observed_at' => $today, 'height' => 25, 'health' => 'healthy', 'care_note' => 'Pohon tumbuh sehat', 'photo' => UploadedFile::fake()->image('monitoring.png')])->assertRedirect()->assertSessionHasNoErrors();
