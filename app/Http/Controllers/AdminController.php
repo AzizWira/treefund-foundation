@@ -213,13 +213,18 @@ public function settings(Request $request): mixed
         return response()->streamDownload(function () {
             $out = fopen('php://output', 'w');
             fwrite($out, "\xEF\xBB\xBF");
-            fputcsv($out, ['Referensi', 'Donatur', 'Total IDR', 'Status', 'Tanggal']);
-            Adoption::with('user')->orderBy('id')->chunk(100, function ($rows) use ($out) {
+            fputcsv($out, ['Referensi', 'Donatur', 'Total IDR', 'Status', 'Tanggal', 'Dana disalurkan IDR']);
+            Adoption::with('user')->addSelect(['disbursed_total' => Disbursement::query()
+                ->selectRaw('COALESCE(SUM(disbursements.amount), 0)')
+                ->join('work_orders', 'work_orders.id', '=', 'disbursements.work_order_id')
+                ->join('adoption_items', 'adoption_items.id', '=', 'work_orders.adoption_item_id')
+                ->whereColumn('adoption_items.adoption_id', 'adoptions.id')
+                ->where('disbursements.status', 'paid')])->orderBy('id')->chunk(100, function ($rows) use ($out) {
                 foreach ($rows as $row) {
                     $name = $row->user->name;
                     if (preg_match('/^[=+@\-\t\r]/', $name)) {
                         $name = "'".$name;
-                    } fputcsv($out, [$row->reference, $name, $row->total, $row->status, $row->created_at->toDateString()]);
+                    } fputcsv($out, [$row->reference, $name, $row->total, $row->status, $row->created_at->toDateString(), (int) $row->disbursed_total]);
                 }
             });
             fclose($out);
