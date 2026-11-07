@@ -183,6 +183,7 @@ class PartnerController extends Controller
         abort_unless($path, 500);
         try {
             $old = DB::transaction(function () use ($tree, $data, $path, $activity): ?string {
+                $work = WorkOrder::lockForUpdate()->findOrFail($tree->item->workOrder->id);
                 $tree = Tree::lockForUpdate()->findOrFail($tree->id);
                 $existing = $tree->planting()->first();
                 abort_if($existing && $existing->status !== 'revision', 409, 'Bukti ini sedang diperiksa atau sudah disetujui.');
@@ -190,6 +191,7 @@ class PartnerController extends Controller
                     'photo' => $path, 'status' => 'pending', 'review_note' => null,
                     'reviewed_by' => null, 'submission_version' => ($existing?->submission_version ?? 0) + 1,
                 ]);
+                $work->refreshPlantingStatus();
                 $activity->audit('planting.submitted', $row);
 
                 return $existing?->photo;

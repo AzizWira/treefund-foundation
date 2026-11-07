@@ -14,8 +14,9 @@ class FieldReviewController extends Controller
 {
     public function plantings(Request $request): mixed
     {
-        $filters = $request->validate(['review' => 'nullable|integer|min:1', 'q' => 'nullable|string|max:190', 'status' => 'nullable|in:pending,approved,revision']);
+        $filters = $request->validate(['review' => 'nullable|integer|min:1', 'work_order_id' => 'nullable|integer|min:1', 'q' => 'nullable|string|max:190', 'status' => 'nullable|in:pending,approved,revision']);
         $records = Planting::with('tree.item.offer.plot')
+            ->when($filters['work_order_id'] ?? null, fn ($query, $workId) => $query->whereHas('tree.item.workOrder', fn ($work) => $work->whereKey($workId)))
             ->when($filters['review'] ?? null, fn ($query, $id) => $query->whereKey($id))
             ->when($filters['status'] ?? null, fn ($query, $status) => $query->where('status', $status))
             ->when($filters['q'] ?? null, fn ($query, $search) => $query->whereHas('tree', fn ($tree) => $tree->where('code', 'like', '%'.$search.'%')))
@@ -37,14 +38,7 @@ class FieldReviewController extends Controller
             $row = Planting::lockForUpdate()->findOrFail($planting->id);
             abort_unless($row->status === 'pending' && $row->submission_version === (int) $data['submission_version'], 409, 'Bukti sudah berubah. Muat ulang sebelum memeriksa.');
             $row->update(['status' => $data['decision'], 'review_note' => $data['review_note'] ?? null, 'reviewed_by' => $request->user()->id]);
-            $states = $work->item->trees()->with('planting')->get()->map(fn (Tree $tree) => $tree->planting?->status);
-            $status = match (true) {
-                $states->isNotEmpty() && $states->every(fn ($state) => $state === 'approved') => 'planted',
-                $states->contains('revision') => 'revision',
-                $states->contains('pending') => 'pending',
-                default => 'waiting',
-            };
-            $work->update(['status' => $status]);
+            $work->refreshPlantingStatus();
             $activity->audit('plantings.'.$data['decision'], $row);
         }, 3);
 
@@ -53,8 +47,9 @@ class FieldReviewController extends Controller
 
     public function monitorings(Request $request): mixed
     {
-        $filters = $request->validate(['review' => 'nullable|integer|min:1', 'q' => 'nullable|string|max:190', 'status' => 'nullable|in:pending,approved,revision']);
+        $filters = $request->validate(['review' => 'nullable|integer|min:1', 'work_order_id' => 'nullable|integer|min:1', 'q' => 'nullable|string|max:190', 'status' => 'nullable|in:pending,approved,revision']);
         $records = Monitoring::with('tree.item.offer.plot')
+            ->when($filters['work_order_id'] ?? null, fn ($query, $workId) => $query->whereHas('tree.item.workOrder', fn ($work) => $work->whereKey($workId)))
             ->when($filters['review'] ?? null, fn ($query, $id) => $query->whereKey($id))
             ->when($filters['status'] ?? null, fn ($query, $status) => $query->where('status', $status))
             ->when($filters['q'] ?? null, fn ($query, $search) => $query->whereHas('tree', fn ($tree) => $tree->where('code', 'like', '%'.$search.'%')))
