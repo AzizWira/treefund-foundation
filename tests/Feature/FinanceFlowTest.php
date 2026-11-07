@@ -107,4 +107,29 @@ class FinanceFlowTest extends TestCase
         $response = $this->get('/admin/reports/export')->assertOk()->assertHeader('Content-Type', 'text/csv; charset=UTF-8');
         $this->assertStringContainsString($fund->workOrder->item->adoption->reference, $response->streamedContent());
     }
+
+    public function test_three_terms_match_paid_funds_dashboard_reports_and_export(): void
+    {
+        $this->seed();
+        \Illuminate\Support\Facades\Storage::fake('local');
+        \Illuminate\Support\Facades\Mail::fake();
+        $work = $this->paidWork();
+        $work->update(['allocated_amount' => 10000]);
+        $tree = $work->item->trees()->firstOrFail();
+        $tree->planting()->create(['planted_at' => now()->toDateString(), 'latitude' => -7, 'longitude' => 112, 'photo' => 'simulasi.png', 'status' => 'approved']);
+        $tree->monitorings()->create(['observed_at' => now()->toDateString(), 'height' => 25, 'health' => 'healthy', 'care_note' => 'Sehat', 'photo' => 'simulasi.png', 'status' => 'approved']);
+        $admin = User::where('role', 'admin')->firstOrFail();
+        $partner = $work->partner->user;
+        foreach (TerminRule::orderBy('id')->get() as $rule) {
+            $this->actingAs($partner)->post('/partner/funds', ['work_order_id' => $work->id, 'termin_rule_id' => $rule->id])->assertRedirect()->assertSessionHasNoErrors();
+            $fund = $work->disbursements()->where('termin_rule_id', $rule->id)->firstOrFail();
+            $this->actingAs($admin)->post('/admin/disbursements/'.$fund->id.'/review', ['decision' => 'approved', 'submission_version' => 1])->assertRedirect()->assertSessionHasNoErrors();
+            $this->post('/admin/disbursements/'.$fund->id.'/transfer', ['amount' => $fund->amount, 'transferred_at' => now()->toDateString(), 'proof' => \Illuminate\Http\UploadedFile::fake()->image('bukti.png')])->assertRedirect()->assertSessionHasNoErrors();
+        }
+        $this->get('/admin/reports')->assertOk()->assertViewHas('transferred', fn ($value) => (int) $value === 10000);
+        $csv = $this->get('/admin/reports/export')->assertOk()->streamedContent();
+        $this->assertStringContainsString('Dana disalurkan IDR', $csv);
+        $this->assertMatchesRegularExpression('/,10000\\R/', $csv);
+        $this->actingAs($partner)->get('/dashboard')->assertOk()->assertSee('Rp 10.000');
+    }
 }
