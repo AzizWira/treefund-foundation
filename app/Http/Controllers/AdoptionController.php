@@ -38,7 +38,7 @@ class AdoptionController extends Controller
     {
         $filters = $request->validate(['q' => 'nullable|string|max:190', 'status' => 'nullable|in:pending,paid,failed,expired,review']);
         $search = trim($filters['q'] ?? '');
-        $orders = Adoption::where('user_id', $request->user()->id)->with('items.offer.plot')
+        $orders = Adoption::where('user_id', $request->user()->id)->with('items.offer.plot', 'certificate')
             ->when($search !== '', fn ($query) => $query->where(fn ($matching) => $matching
                 ->where('reference', 'like', '%'.$search.'%')
                 ->orWhere('certificate_name', 'like', '%'.$search.'%')
@@ -53,7 +53,7 @@ class AdoptionController extends Controller
     public function show(Request $request, Adoption $order): mixed
     {
         $this->owner($request, $order);
-        $order->load('items.offer.plot');
+        $order->load('items.offer.plot', 'items.trees.planting', 'certificate');
 
         return view('order', compact('order'));
     }

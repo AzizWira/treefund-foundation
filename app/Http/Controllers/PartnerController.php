@@ -193,6 +193,7 @@ class PartnerController extends Controller
                 ]);
                 $work->refreshPlantingStatus();
                 $activity->audit('planting.submitted', $row);
+                $activity->notifyAdmins('Bukti tanam menunggu verifikasi', $tree->code, '/admin/plantings?review='.$row->id);
 
                 return $existing?->photo;
             });
@@ -209,10 +210,16 @@ class PartnerController extends Controller
 
     public function monitoring(Request $request): mixed
     {
+        $filters = $request->validate(['q' => 'nullable|string|max:190']);
+        $search = trim($filters['q'] ?? '');
         $trees = Tree::with('item.offer.plot', 'planting', 'monitorings')
             ->whereHas('item.workOrder', fn ($query) => $query->where('partner_id', $request->user()->partner?->id ?? 0))
             ->whereHas('planting', fn ($query) => $query->where('status', 'approved'))
-            ->latest('id')->paginate(8);
+            ->when($search !== '', fn ($query) => $query->where(fn ($match) => $match
+                ->where('code', 'like', '%'.$search.'%')
+                ->orWhereHas('item.offer', fn ($offer) => $offer->where('species', 'like', '%'.$search.'%')
+                    ->orWhereHas('plot', fn ($plot) => $plot->where('name', 'like', '%'.$search.'%')))))
+            ->latest('id')->paginate(8)->withQueryString();
 
         return view('partner.monitoring', compact('trees'));
     }
@@ -240,6 +247,7 @@ class PartnerController extends Controller
                 $old = $row->photo;
                 $row->fill($data + ['photo' => $path, 'status' => 'pending', 'review_note' => null, 'reviewed_by' => null, 'submission_version' => ($row->submission_version ?? 0) + 1])->save();
                 $activity->audit('monitoring.submitted', $row);
+                $activity->notifyAdmins('Laporan monitoring menunggu verifikasi', $tree->code, '/admin/monitorings?review='.$row->id);
 
                 return $old;
             });

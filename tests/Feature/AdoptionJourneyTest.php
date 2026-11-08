@@ -43,7 +43,7 @@ class AdoptionJourneyTest extends TestCase
         $partner = $work->partner->user;
         $today = now()->toDateString();
 
-        $this->actingAs($partner)->get(route('partner.work', $work))->assertOk()->assertSee($tree->code);
+        $this->actingAs($partner)->get(route('partner.work', $work))->assertOk()->assertSee($tree->code)->assertSee('data-gps', false);
         $this->post(route('partner.planting', $tree), ['planted_at' => $today, 'latitude' => -7.2, 'longitude' => 112.7, 'photo' => UploadedFile::fake()->image('tanam.png')])->assertRedirect()->assertSessionHasNoErrors();
         $this->assertSame('pending', $work->fresh()->status);
         $this->actingAs($admin)->get('/admin/plantings?work_order_id='.$work->id)->assertOk()
@@ -58,5 +58,10 @@ class AdoptionJourneyTest extends TestCase
         $this->actingAs($donor)->get('/trees')->assertOk()->assertSee('Pohon tumbuh sehat');
         $this->getJson('/map/data')->assertOk()->assertJsonPath('0.code', $tree->code);
         $this->get(route('orders.certificate', $order))->assertOk()->assertHeader('Content-Type', 'application/pdf');
+        $this->get(route('orders.show', $order))->assertOk()->assertSee($tree->code);
+        $this->get('/orders')->assertOk()->assertSee('Unduh PDF');
+        $this->assertDatabaseHas('activity_notifications', ['user_id' => $donor->id, 'title' => 'Pohon Anda sudah ditanam']);
+        $this->actingAs($partner)->get('/partner/monitoring?q='.urlencode($tree->code))->assertOk()->assertSee('Pohon tumbuh sehat');
+        $this->get('/partner/monitoring?q=tidak-ada')->assertOk()->assertDontSee('Pohon tumbuh sehat');
     }
 }
