@@ -36,6 +36,10 @@ class AdoptionController extends Controller
 
     public function orders(Request $request): mixed
     {
+        if ($request->query('view') === 'certificates') {
+            return redirect()->route('certificates');
+        }
+
         $filters = $request->validate(['q' => 'nullable|string|max:190', 'status' => 'nullable|in:pending,paid,failed,expired,review']);
         $search = trim($filters['q'] ?? '');
         $orders = Adoption::where('user_id', $request->user()->id)->with('items.offer.plot', 'certificate')

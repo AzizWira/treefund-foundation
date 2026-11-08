@@ -35,7 +35,9 @@ class AdoptionService
             ]);
             $order->items()->create(['offer_id' => $offer->id, 'quantity' => $quantity, 'unit_price' => $offer->price]);
             $plot->increment('reserved', $quantity);
-            app(ActivityService::class)->audit('adoption.checkout', $order);
+            $activity = app(ActivityService::class);
+            $activity->audit('adoption.checkout', $order);
+            $activity->notify($user->id, 'Pesanan adopsi Anda siap dibayar', 'Kuota pohon pilihan Anda telah dicadangkan. Selesaikan pembayaran sebelum batas waktu.', '/orders/'.$order->id, 'payment_pending', ['reference' => $order->reference, 'amount' => $order->total]);
 
             return $order;
         }, 3);
@@ -53,6 +55,7 @@ class AdoptionService
                     Plot::lockForUpdate()->findOrFail($item->offer->plot_id)->decrement('reserved', $item->quantity);
                 }
                 $order->update(['status' => 'expired']);
+                app(ActivityService::class)->notify($order->user_id, 'Batas pembayaran berakhir', 'Reservasi kuota untuk '.$order->reference.' telah dilepas. Anda dapat membuat adopsi baru melalui katalog.', '/orders/'.$order->id, 'payment_failed', ['reference' => $order->reference, 'amount' => $order->total]);
             }, 3);
         });
     }
@@ -115,6 +118,7 @@ class AdoptionService
                 }
             } else {
                 $order->update(['status' => $state === 'expire' ? 'expired' : 'failed', 'provider_status' => $state]);
+                app(ActivityService::class)->notify($order->user_id, 'Pembaruan status pembayaran', 'Pembayaran '.$order->reference.' '.($state === 'expire' ? 'telah kedaluwarsa.' : 'belum berhasil atau dibatalkan.'), '/orders/'.$order->id, 'payment_failed', ['reference' => $order->reference, 'amount' => $order->total]);
             }
             app(ActivityService::class)->audit('payment.'.$order->status, $order, ['provider_status' => $state]);
         }, 3);

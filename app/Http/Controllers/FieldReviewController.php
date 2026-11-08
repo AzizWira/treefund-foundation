@@ -15,7 +15,10 @@ class FieldReviewController extends Controller
     public function plantings(Request $request): mixed
     {
         $filters = $request->validate(['review' => 'nullable|integer|min:1', 'work_order_id' => 'nullable|integer|min:1', 'q' => 'nullable|string|max:190', 'status' => 'nullable|in:pending,approved,revision']);
-        $records = Planting::with('tree.item.offer.plot')
+        $work = isset($filters['work_order_id'])
+            ? WorkOrder::with('partner', 'item.offer.plot')->findOrFail($filters['work_order_id'])
+            : null;
+        $records = Planting::with('tree.item.offer.plot.partner')
             ->when($filters['work_order_id'] ?? null, fn ($query, $workId) => $query->whereHas('tree.item.workOrder', fn ($work) => $work->whereKey($workId)))
             ->when($filters['review'] ?? null, fn ($query, $id) => $query->whereKey($id))
             ->when($filters['status'] ?? null, fn ($query, $status) => $query->where('status', $status))
@@ -26,7 +29,7 @@ class FieldReviewController extends Controller
                         ->orWhereHas('partner', fn ($partner) => $partner->where('group_name', 'like', '%'.$search.'%')))))))
             ->latest('id')->paginate(15)->withQueryString();
 
-        return view('admin.field-review', ['records' => $records, 'kind' => 'planting', 'heading' => 'Verifikasi Bukti Tanam']);
+        return view('admin.queue', ['records' => $records, 'type' => 'plantings', 'work' => $work]);
     }
 
     public function reviewPlanting(Request $request, Planting $planting, ActivityService $activity): mixed
@@ -56,7 +59,10 @@ class FieldReviewController extends Controller
     public function monitorings(Request $request): mixed
     {
         $filters = $request->validate(['review' => 'nullable|integer|min:1', 'work_order_id' => 'nullable|integer|min:1', 'q' => 'nullable|string|max:190', 'status' => 'nullable|in:pending,approved,revision']);
-        $records = Monitoring::with('tree.item.offer.plot')
+        $work = isset($filters['work_order_id'])
+            ? WorkOrder::with('partner', 'item.offer.plot')->findOrFail($filters['work_order_id'])
+            : null;
+        $records = Monitoring::with('tree.item.offer.plot.partner')
             ->when($filters['work_order_id'] ?? null, fn ($query, $workId) => $query->whereHas('tree.item.workOrder', fn ($work) => $work->whereKey($workId)))
             ->when($filters['review'] ?? null, fn ($query, $id) => $query->whereKey($id))
             ->when($filters['status'] ?? null, fn ($query, $status) => $query->where('status', $status))
@@ -67,7 +73,7 @@ class FieldReviewController extends Controller
                         ->orWhereHas('partner', fn ($partner) => $partner->where('group_name', 'like', '%'.$search.'%')))))))
             ->latest('id')->paginate(15)->withQueryString();
 
-        return view('admin.field-review', ['records' => $records, 'kind' => 'monitoring', 'heading' => 'Monitoring Berkala']);
+        return view('admin.queue', ['records' => $records, 'type' => 'monitorings', 'work' => $work]);
     }
 
     public function reviewMonitoring(Request $request, Monitoring $monitoring, ActivityService $activity): mixed

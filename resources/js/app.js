@@ -1,6 +1,7 @@
 import { initPaymentWatch } from './payment-watch';
 import { initPaymentMethods, paymentOptions } from './payment-methods';
 import { initMemberDelete } from './member-delete.js';
+import { initFilterNavigation } from './filter-navigation';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
@@ -97,6 +98,10 @@ async function initPublicMap(scope = document) {
 function openReview(dialog) {
     if (!dialog || dialog.open) return;
     dialog.showModal();
+    dialog.querySelectorAll('[data-evidence-src]').forEach(image => {
+        image.src = image.dataset.evidenceSrc;
+        image.removeAttribute('data-evidence-src');
+    });
     requestAnimationFrame(() => dialog.querySelectorAll('[data-coordinate-map]').forEach(element => {
         if (!maps.has(element)) {
             const latitude = Number(element.dataset.lat);
@@ -129,12 +134,12 @@ function closeReview(dialog, returnValue = '') {
     fallback = setTimeout(finish, 280);
 }
 
-document.querySelectorAll('dialog.review-dialog').forEach(dialog => {
-    dialog.addEventListener('cancel', event => {
-        event.preventDefault();
-        closeReview(dialog);
-    });
-});
+document.addEventListener('cancel', event => {
+    const dialog = event.target;
+    if (!dialog.matches('dialog.review-dialog')) return;
+    event.preventDefault();
+    closeReview(dialog);
+}, true);
 document.addEventListener('submit', event => {
     const form = event.target;
     if (!(form instanceof HTMLFormElement) || form.method !== 'dialog') return;
@@ -169,6 +174,7 @@ document.addEventListener('click', event => {
     }
     const back = event.target.closest('[data-back]');
     if (back) { if (history.length > 1) history.back(); else location.assign('/dashboard'); }
+    if (event.target.closest('[data-print]')) window.print();
     const anchor = event.target.closest('a[href^="#"]');
     if (anchor && anchor.hash.length > 1) {
         const destination = document.getElementById(decodeURIComponent(anchor.hash.slice(1)));
@@ -176,14 +182,29 @@ document.addEventListener('click', event => {
     }
 });
 document.addEventListener('keydown', event => { if (event.key === 'Escape') setSidebar(false); });
-if (document.getElementById('plot-preview-map')) window.TreeFund.miniMap('plot-preview-map');
-initPublicMap();
-const focusedReview = new URLSearchParams(location.search).get('review');
-const reviewTarget = /^[1-9][0-9]*$/.test(focusedReview || '') ? 'review-' + focusedReview : (location.hash.startsWith('#review-') ? location.hash.slice(1) : null);
-if (reviewTarget) {
-    const dialog = document.getElementById(reviewTarget);
-    if (dialog instanceof HTMLDialogElement) openReview(dialog);
+function initializeContent(scope) {
+    if (scope.querySelector('#plot-preview-map')) window.TreeFund.miniMap('plot-preview-map');
+    initPublicMap(scope);
+    initMemberDelete(scope, closeReview);
+    const focusedReview = new URLSearchParams(location.search).get('review');
+    const reviewTarget = /^[1-9][0-9]*$/.test(focusedReview || '') ? 'review-' + focusedReview : (location.hash.startsWith('#review-') ? location.hash.slice(1) : null);
+    if (reviewTarget) {
+        const dialog = document.getElementById(reviewTarget);
+        if (dialog instanceof HTMLDialogElement) openReview(dialog);
+    }
 }
+initializeContent(document.querySelector('main') || document);
+initFilterNavigation({
+    beforeReplace(main) {
+        for (const [element, map] of maps) {
+            if (main.contains(element)) {
+                map.remove();
+                maps.delete(element);
+            }
+        }
+    },
+    afterReplace: initializeContent,
+});
 
 function recordGPS(button) {
     const form = button.closest('form');
@@ -216,8 +237,6 @@ document.addEventListener('click', event => {
     section.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
 });
 
-initMemberDelete(document, closeReview);
-
 const checkoutForm = document.querySelector('[data-checkout]');
 if (checkoutForm) {
     const quantity = checkoutForm.querySelector('[data-quantity]');
@@ -229,13 +248,20 @@ if (checkoutForm) {
     quantity.addEventListener('input', updateTotal);
     updateTotal();
     const confirmation = document.querySelector('#checkout-confirm');
-    confirmation.querySelector('[data-dialog-close]').addEventListener('click', () => confirmation.close());
+    const agreement = checkoutForm.elements.agree;
+    agreement.required = false;
+    agreement.closest('label').hidden = true;
+    confirmation.querySelectorAll('[data-dialog-close]').forEach(button => {
+        button.addEventListener('click', () => confirmation.close());
+    });
     checkoutForm.addEventListener('submit', event => {
         if (checkoutForm.querySelector('button[type="submit"], button:not([type])').disabled) {
             event.preventDefault();
             return;
         }
         if (event.submitter?.hasAttribute('data-checkout-confirm')) {
+            agreement.checked = true;
+            event.submitter.disabled = true;
             return;
         }
         event.preventDefault();

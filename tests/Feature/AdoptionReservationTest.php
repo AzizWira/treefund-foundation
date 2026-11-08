@@ -2,12 +2,14 @@
 
 namespace Tests\Feature;
 
+use App\Mail\TreeFundMail;
 use App\Models\Adoption;
 use App\Models\Offer;
 use App\Models\User;
 use App\Services\AdoptionService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -19,6 +21,7 @@ class AdoptionReservationTest extends TestCase
     public function test_checkout_reserves_shared_plot_quota_and_ignores_a_forged_price(): void
     {
         $this->seed();
+        Mail::fake();
         $offer = Offer::published()->firstOrFail();
         $offer->plot->update(['capacity' => 3, 'reserved' => 0, 'confirmed' => 0]);
         $other = $offer->replicate();
@@ -37,6 +40,7 @@ class AdoptionReservationTest extends TestCase
         app(AdoptionService::class)->expireUnissued($order);
         $this->assertEquals(0, $offer->plot->fresh()->reserved);
         $this->assertSame('expired', $order->fresh()->status);
+        $this->assertCount(1, Mail::queued(TreeFundMail::class, fn (TreeFundMail $mail) => $mail->kind === 'payment_failed' && $mail->hasTo($order->user->email)));
     }
 
     public function test_donors_can_search_and_open_only_their_own_orders(): void

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Mail\TreeFundMail;
 use App\Models\Adoption;
 use App\Models\Offer;
 use App\Models\User;
@@ -28,6 +29,7 @@ class AdoptionJourneyTest extends TestCase
         $offer = Offer::published()->firstOrFail();
         $this->actingAs($donor)->post('/orders', ['offer_id' => $offer->id, 'quantity' => 1, 'certificate_name' => 'Donatur Uji', 'agree' => true])->assertRedirect()->assertSessionHasNoErrors();
         $order = Adoption::firstOrFail();
+        Mail::assertQueued(TreeFundMail::class, fn (TreeFundMail $mail) => $mail->kind === 'payment_pending' && $mail->hasTo($donor->email));
         $payload = ['order_id' => $order->reference, 'status_code' => '200', 'gross_amount' => $order->total.'.00'];
         $payload['signature_key'] = hash('sha512', $order->reference.'200'.$payload['gross_amount'].$key);
         Http::fake([
@@ -36,7 +38,9 @@ class AdoptionJourneyTest extends TestCase
         ]);
         $this->postJson(route('orders.pay', $order))->assertOk()->assertJsonPath('token', 'sandbox-test-token');
         $this->postJson(route('midtrans.notification'), $payload)->assertOk();
+        $this->postJson(route('midtrans.notification'), $payload)->assertOk();
         $this->postJson(route('orders.sync', $order))->assertOk()->assertJsonPath('status', 'paid');
+        $this->assertCount(1, Mail::queued(TreeFundMail::class, fn (TreeFundMail $mail) => $mail->kind === 'certificate' && $mail->hasTo($donor->email)));
         $tree = $order->items()->firstOrFail()->trees()->firstOrFail();
         $work = $tree->item->workOrder;
         $admin = User::where('role', 'admin')->firstOrFail();
@@ -47,9 +51,11 @@ class AdoptionJourneyTest extends TestCase
         $this->post(route('partner.planting', $tree), ['planted_at' => $today, 'latitude' => -7.2, 'longitude' => 112.7, 'photo' => UploadedFile::fake()->image('tanam.png')])->assertRedirect()->assertSessionHasNoErrors();
         $this->assertSame('pending', $work->fresh()->status);
         $this->actingAs($admin)->get('/admin/plantings?work_order_id='.$work->id)->assertOk()
+            ->assertSee('Menampilkan data WO-'.$work->id)
+            ->assertSee('data-review-target', false)
+            ->assertSee('name="submission_version"', false)
             ->assertViewHas('records', fn ($records) => $records->count() === 1);
-        $this->get('/admin/plantings?work_order_id='.($work->id + 1))->assertOk()
-            ->assertViewHas('records', fn ($records) => $records->isEmpty());
+        $this->get('/admin/plantings?work_order_id='.($work->id + 1))->assertNotFound();
         $this->actingAs($donor)->getJson('/map/data')->assertOk()->assertExactJson([]);
         $this->actingAs($admin)->post(route('admin.plantings.review', $tree->planting()->firstOrFail()), ['decision' => 'approved', 'submission_version' => 1])->assertRedirect()->assertSessionHasNoErrors();
         $this->actingAs($partner)->post(route('partner.monitoring.store', $tree), ['observed_at' => $today, 'height' => 25, 'health' => 'healthy', 'care_note' => 'Pohon tumbuh sehat', 'photo' => UploadedFile::fake()->image('monitoring.png')])->assertRedirect()->assertSessionHasNoErrors();
@@ -60,6 +66,7 @@ class AdoptionJourneyTest extends TestCase
         $this->get(route('orders.certificate', $order))->assertOk()->assertHeader('Content-Type', 'application/pdf');
         $this->get(route('orders.show', $order))->assertOk()->assertSee($tree->code);
         $this->get('/orders')->assertOk()->assertSee('Unduh PDF');
+        $this->get('/orders?view=certificates')->assertRedirect(route('certificates'));
         $this->assertDatabaseHas('activity_notifications', ['user_id' => $donor->id, 'title' => 'Pohon Anda sudah ditanam']);
         $this->actingAs($partner)->get('/partner/monitoring?q='.urlencode($tree->code))->assertOk()->assertSee('Pohon tumbuh sehat');
         $this->get('/partner/monitoring?q=tidak-ada')->assertOk()->assertDontSee('Pohon tumbuh sehat');

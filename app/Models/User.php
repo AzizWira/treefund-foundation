@@ -45,4 +45,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(Partner::class);
     }
+
+    public function activityNotifications(): mixed
+    {
+        return $this->hasMany(ActivityNotification::class);
+    }
 }
