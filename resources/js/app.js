@@ -190,7 +190,11 @@ document.addEventListener('click', event => {
     const demo = event.target.closest('[data-demo-account]');
     if (demo) {
         const form = document.querySelector('form[action="/login"]');
-        if (form) { form.elements.email.value = demo.dataset.demoAccount; form.elements.password.value = 'TreeFund!2026'; form.requestSubmit(); }
+        if (form) {
+            form.elements.namedItem('email').value = demo.dataset.demoAccount;
+            form.elements.namedItem('password').value = demo.dataset.demoPassword;
+            form.querySelector('button[type="submit"]').focus();
+        }
     }
     const pay = event.target.closest('[data-pay]');
     if (pay) payOrder(pay);

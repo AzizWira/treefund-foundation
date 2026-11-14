@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'demo_accounts_file' => env('TREEFUND_DEMO_ACCOUNTS_FILE'),
     'reservation_minutes' => (int) env('TREEFUND_RESERVATION_MINUTES', 60),
     'midtrans' => [
         'server_key' => env('MIDTRANS_SERVER_KEY', ''),
