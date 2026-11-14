@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html lang="id"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "on-tertiary": "#ffffff", "surface-tint": "#2c694e", "primary-fixed": "#b1f0ce", "on-tertiary-container": "#ffd473", "surface-container": "#ecefe9", "on-error": "#ffffff", "error-container": "#ffdad6", "secondary-container": "#fdbb93", "secondary-fixed-dim": "#fab890", "on-primary-fixed": "#002114", "error": "#ba1a1a", "inverse-on-surface": "#eff2ec", "tertiary-fixed-dim": "#f1c048", "on-secondary-fixed-variant": "#693b1d", "on-primary-container": "#a8e7c5", "primary-fixed-dim": "#95d4b3", "surface": "#f7faf5", "surface-bright": "#f7faf5", "on-primary": "#ffffff", "on-error-container": "#93000a", "surface-container-highest": "#e0e3de", "inverse-surface": "#2d312e", "surface-container-lowest": "#ffffff", "tertiary-fixed": "#ffdf9c", "surface-variant": "#e0e3de", "on-secondary": "#ffffff", "secondary": "#855232", "background": "#f7faf5", "outline-variant": "#bfc9c1", "on-secondary-container": "#794829", "on-primary-fixed-variant": "#0e5138", "primary": "#0f5238", "on-tertiary-fixed": "#251a00", "surface-container-low": "#f1f4ef", "secondary-fixed": "#ffdbc8", "surface-dim": "#d8dbd6", "tertiary-container": "#795a00", "surface-container-high": "#e6e9e4", "on-surface": "#191d1a", "tertiary": "#5b4400", "on-tertiary-fixed-variant": "#5b4300", "on-background": "#191d1a", "on-surface-variant": "#404943", "outline": "#707973", "on-secondary-fixed": "#321300", "inverse-primary": "#95d4b3", "primary-container": "#2d6a4f" }, borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, spacing: { "space-lg": "1.5rem", "space-xl": "2rem", "margin": "2rem", "gutter": "1.5rem", "space-xs": "0.25rem", "space-md": "1rem", "space-sm": "0.5rem", "gutter-mobile": "0.75rem", "margin-mobile": "1rem" }, fontFamily: { "body-lg": ["Inter"], "headline-xl-mobile": ["Plus Jakarta Sans"], "body-sm": ["Inter"], "headline-md": ["Plus Jakarta Sans"], "headline-xl": ["Plus Jakarta Sans"], "body-md": ["Inter"], "label-md": ["Inter"], "label-sm": ["Inter"], "headline-sm": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"] }, fontSize: { "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }], "headline-xl-mobile": ["26px", { lineHeight: "34px", fontWeight: "700" }], "body-sm": ["13px", { lineHeight: "18px", fontWeight: "400" }], "headline-md": ["20px", { lineHeight: "28px", fontWeight: "700" }], "headline-xl": ["32px", { lineHeight: "40px", fontWeight: "700" }], "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }], "label-md": ["12px", { lineHeight: "16px", fontWeight: "500" }], "label-sm": ["11px", { lineHeight: "14px", fontWeight: "600" }], "headline-sm": ["18px", { lineHeight: "24px", fontWeight: "700" }], "headline-lg": ["24px", { lineHeight: "32px", fontWeight: "700" }] } } } };</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>html,body{min-height:884px}</style></head><body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 bg-primary-container shadow-[0_1px_8px_rgba(0,0,0,0.06)] pt-safe"><div class="h-14 px-margin-mobile flex items-center justify-between"><div class="flex items-center gap-space-sm min-w-0"><button aria-label="Menu Utama" class="w-11 h-11 -ml-space-xs flex items-center justify-center text-on-primary rounded active:bg-primary/40 transition-colors"><span class="material-symbols-outlined text-[24px]">menu</span></button><img alt="TreeFund brand logo icon. Minimalist geometric tree emblem combined with leaf and growth rings, modern ecology fintech aesthetic, vector flat icon using emerald forest green #2D6A4F and subtle warm amber gold accent. Clean, crisp SVG silhouette.. Design context: - Primary color: #2d6a4f
+- Font: plusJakartaSans
+- Mode: light
+- Roundness: rounded-sm
+. The logo should be visually consistent with these brand tokens." class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WKHhxXOVNnR6_N5BLXIh3coYtXGJmja0nBni9Uf0e_LAtyB5Tv8uq20jHbIMR9XZB7uMuFfW_lS_5rdIdDCtnwrPQcnvAxyO5Dct0LTN5KyJvwuL81dMPb8omDH6BQa-ztgQW-HarDCgQ_ezFQM-pr7fYjmfWKsEl9yp2ZCnxm3wzgREC5vtKsncjTbnqfQqTgB6ApYMFlE0Sx5m6pNb0mu-WkjWEBySgYPsBkseV3lC1nBVYipdMT4Rg"/><div class="flex flex-col min-w-0"><span class="text-label-sm font-label-sm uppercase tracking-wider text-primary-fixed">TreeFund Mitra</span><h1 class="text-headline-sm font-headline-sm text-on-primary truncate">Tugas</h1></div></div><div class="flex items-center gap-space-xs"><button aria-label="Notifikasi Operasional" class="w-11 h-11 flex items-center justify-center text-on-primary rounded active:bg-primary/40 transition-colors"><span class="material-symbols-outlined text-[22px]">notifications</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-14 pb-20 bg-surface"><div class="flex flex-col w-full pb-28">
+<!-- Sub-Header Info Banner -->
+<div class="bg-primary-container px-margin-mobile py-space-md text-on-primary shadow-sm flex items-center justify-between">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-primary-fixed shadow-sm flex-shrink-0">
+<span class="material-symbols-outlined text-[24px]">account_balance_wallet</span>
+</div>
+<div class="min-w-0">
+<span class="text-label-sm font-label-sm uppercase tracking-wider text-primary-fixed block truncate">Alokasi Dana Kemitraan</span>
+<h2 class="text-headline-sm font-headline-sm text-on-primary truncate">Pencairan Dana Termin</h2>
+</div>
+</div>
+<div class="bg-primary px-space-sm py-1 rounded-full flex items-center gap-1.5 flex-shrink-0">
+<span class="w-2 h-2 rounded-full bg-primary-fixed animate-pulse"></span>
+<span class="text-label-sm font-label-sm text-primary-fixed">Tahap 2/3</span>
+</div>
+</div>
+<div class="px-margin-mobile space-y-space-md mt-space-md">
+<!-- Card Dana Siap Cair -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-[0_2px_12px_rgba(27,35,30,0.06)] relative overflow-hidden">
+<div class="absolute -right-6 -bottom-6 w-28 h-28 bg-primary-fixed/20 rounded-full blur-xl pointer-events-none"></div>
+<div class="flex items-center justify-between gap-space-sm mb-space-xs">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-primary" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Dana Siap Dicairkan</span>
+</div>
+<span class="text-label-sm font-label-sm px-space-xs py-0.5 rounded bg-primary-fixed text-on-primary-fixed font-bold tracking-tight">SIAP KLAIM</span>
+</div>
+<div class="flex items-baseline gap-space-xs mt-1">
+<span class="text-headline-xl-mobile font-headline-xl-mobile text-primary tracking-tight font-extrabold">Rp 3.750.000</span>
+</div>
+<div class="mt-space-sm p-space-sm rounded-lg bg-surface-container-low flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5 flex-shrink-0">task_alt</span>
+<div class="min-w-0">
+<p class="text-body-sm font-body-sm text-on-surface font-semibold leading-tight">Termin 2: Hasil Selesai Tanam 250 Pohon</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant mt-0.5">100% Terverifikasi Admin &amp; Surveyor Geotagging</p>
+</div>
+</div>
+</div>
+<!-- Milestone Visual Progress -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-[0_2px_8px_rgba(27,35,30,0.04)]">
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">timeline</span>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Jadwal Termin Pembayaran</h3>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant font-medium">Total: Rp 12.500.000</span>
+</div>
+<div class="relative pl-6 space-y-space-md">
+<!-- Connecting Line -->
+<div class="absolute left-2.5 top-3 bottom-3 w-0.5 bg-surface-container-highest"></div>
+<div class="absolute left-2.5 top-3 h-1/2 w-0.5 bg-primary"></div>
+<!-- Termin 1: Selesai -->
+<div class="relative flex items-start justify-between gap-space-sm">
+<div class="absolute -left-[19px] top-0.5 w-5 h-5 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-sm ring-4 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[13px] font-bold">check</span>
+</div>
+<div class="min-w-0 flex-1">
+<div class="flex items-center gap-1.5">
+<span class="text-label-sm font-label-sm text-on-surface-variant font-semibold">Termin 1</span>
+<span class="text-label-sm font-label-sm px-1.5 py-0.2 rounded bg-surface-container-high text-on-surface-variant">40%</span>
+</div>
+<p class="text-body-md font-body-md font-bold text-on-surface">Rp 5.000.000</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Uang Muka Persiapan Lahan &amp; Bibit</p>
+</div>
+<div class="flex items-center gap-1 text-primary flex-shrink-0 self-start mt-1">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-label-sm font-label-sm font-semibold">Dicairkan</span>
+</div>
+</div>
+<!-- Termin 2: Aktif / Siap Cair -->
+<div class="relative flex items-start justify-between gap-space-sm bg-surface-container-low p-space-sm rounded-lg -ml-space-sm pl-space-md">
+<div class="absolute -left-[11px] top-2.5 w-5 h-5 rounded-full bg-primary-container flex items-center justify-center text-on-primary ring-4 ring-primary-fixed shadow-sm animate-bounce">
+<span class="material-symbols-outlined text-[13px]">arrow_downward</span>
+</div>
+<div class="min-w-0 flex-1">
+<div class="flex items-center gap-1.5">
+<span class="text-label-sm font-label-sm text-primary font-bold">Termin 2 (Saat Ini)</span>
+<span class="text-label-sm font-label-sm px-1.5 py-0.2 rounded bg-primary-fixed text-on-primary-fixed font-bold">30%</span>
+</div>
+<p class="text-body-md font-body-md font-extrabold text-primary">Rp 3.750.000</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Penyelesaian Tanam 250 Pohon</p>
+</div>
+<div class="flex items-center gap-1 bg-primary text-on-primary px-2 py-1 rounded text-label-sm font-label-sm font-bold shadow-sm flex-shrink-0 self-start mt-0.5">
+<span>Siap Cair</span>
+</div>
+</div>
+<!-- Termin 3: Mendatang -->
+<div class="relative flex items-start justify-between gap-space-sm opacity-70">
+<div class="absolute -left-[19px] top-0.5 w-5 h-5 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant ring-4 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[13px]">schedule</span>
+</div>
+<div class="min-w-0 flex-1">
+<div class="flex items-center gap-1.5">
+<span class="text-label-sm font-label-sm text-on-surface-variant font-semibold">Termin 3</span>
+<span class="text-label-sm font-label-sm px-1.5 py-0.2 rounded bg-surface-container-high text-on-surface-variant">30%</span>
+</div>
+<p class="text-body-md font-body-md font-bold text-on-surface">Rp 3.750.000</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Monitoring Pertumbuhan Bulan Ke-6</p>
+</div>
+<div class="text-label-sm font-label-sm text-on-surface-variant flex items-center gap-1 flex-shrink-0 self-start mt-1">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+<span>Terkunci</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Verifikasi Lapangan & Geotagging Preview Visual -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-[0_2px_8px_rgba(27,35,30,0.04)]">
+<div class="flex items-center justify-between mb-space-sm">
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Bukti Kerja Lapangan</h3>
+<span class="text-label-sm font-label-sm text-primary font-bold">Audit Sukses</span>
+</div>
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="relative h-24 rounded-lg overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Close up of a newly planted macadamia and avocado sapling in rich organic volcanic soil, clearly marked with a yellow RFID ecological monitoring stake tag bearing GPS coordinates, soft morning sun, cinematic realism" src="/assets/reference/769d78f4805e5b1b3771.jpg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-transparent to-transparent flex items-end p-1.5">
+<span class="text-[10px] text-inverse-on-surface font-mono font-medium truncate">LAT -8.0583, LON 114.242</span>
+</div>
+</div>
+<div class="relative h-24 rounded-lg overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Indonesian smallholder farmer standing with local agricultural cooperative leader holding signed official verification document in lush terraced agroforestry hillside farm, natural lighting, high dynamic range" src="/assets/reference/769d78f4805e5b1b3771.jpg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-transparent to-transparent flex items-end p-1.5">
+<span class="text-[10px] text-inverse-on-surface font-mono font-medium truncate">BAP-IJEN-2024-08</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Daftar Periksa (Checklist) Persyaratan -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-[0_2px_8px_rgba(27,35,30,0.04)]">
+<div class="flex items-center justify-between mb-space-xs">
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Kelayakan Pencairan</h3>
+<span class="text-label-sm font-label-sm text-primary font-bold px-2 py-0.5 rounded-full bg-primary-fixed/60">4/4 Terpenuhi</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mb-space-md">Sistem otomatis memvalidasi seluruh syarat tata kelola sebelum pencairan diproses.</p>
+<div class="space-y-space-sm" id="checklist-container">
+<!-- Item 1 -->
+<label class="flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low transition-colors cursor-pointer select-none">
+<div class="mt-0.5 w-5 h-5 rounded bg-primary text-on-primary flex items-center justify-center flex-shrink-0 shadow-xs">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div class="min-w-0 flex-1">
+<p class="text-body-sm font-body-sm font-semibold text-on-surface">Seluruh 250 bibit pohon telah ditanam dan lolos geotagging</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant mt-0.5">Koordinat poligon Blok A, Sub-Plot B1-B5 terpetakan WebGIS.</p>
+</div>
+</label>
+<!-- Item 2 -->
+<label class="flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low transition-colors cursor-pointer select-none">
+<div class="mt-0.5 w-5 h-5 rounded bg-primary text-on-primary flex items-center justify-center flex-shrink-0 shadow-xs">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div class="min-w-0 flex-1">
+<p class="text-body-sm font-body-sm font-semibold text-on-surface">Laporan verifikasi disetujui tim verifikator KLHK/TreeFund</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant mt-0.5">Tervalidasi oleh Ir. Hendrawan (ID: V-88912) pada 24 Okt 2024.</p>
+</div>
+</label>
+<!-- Item 3 -->
+<label class="flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low transition-colors cursor-pointer select-none">
+<div class="mt-0.5 w-5 h-5 rounded bg-primary text-on-primary flex items-center justify-center flex-shrink-0 shadow-xs">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div class="min-w-0 flex-1">
+<p class="text-body-sm font-body-sm font-semibold text-on-surface">Berita Acara Penanaman (BAP) ditandatangani Ketua Poktan</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant mt-0.5">Dokumen digital tersimpan dengan tanda tangan basah &amp; meterai digital.</p>
+</div>
+</label>
+<!-- Item 4 -->
+<label class="flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low transition-colors cursor-pointer select-none">
+<div class="mt-0.5 w-5 h-5 rounded bg-primary text-on-primary flex items-center justify-center flex-shrink-0 shadow-xs">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div class="min-w-0 flex-1">
+<p class="text-body-sm font-body-sm font-semibold text-on-surface">Rekening bank KTH Ijen Lestari di Bank BRI aktif sesuai SK</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant mt-0.5 font-mono">No. 0129-01-002931-50-8 • Terverifikasi BI-FAST</p>
+</div>
+</label>
+</div>
+</div>
+<!-- Rincian Rekening Penerima -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-[0_2px_8px_rgba(27,35,30,0.04)] space-y-space-sm">
+<div class="flex items-center justify-between">
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Rekening Bank Tujuan</h3>
+<span class="text-label-sm font-label-sm px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-medium">Rekening KTH</span>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-low flex items-center gap-space-md">
+<!-- Logo / Icon Bank BRI Aesthetic Badge -->
+<div class="w-12 h-12 rounded-xl bg-primary-container text-on-primary flex flex-col items-center justify-center font-bold tracking-tighter flex-shrink-0 shadow-sm">
+<span class="text-[12px] leading-tight font-extrabold">BRI</span>
+<span class="text-[8px] font-sans opacity-80 uppercase tracking-widest">Bank</span>
+</div>
+<div class="min-w-0 flex-1">
+<div class="flex items-center gap-1.5">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Bank Rakyat Indonesia</span>
+<span class="material-symbols-outlined text-primary text-[16px]">verified_user</span>
+</div>
+<p class="text-body-lg font-body-lg font-bold text-on-surface font-mono tracking-tight truncate">0129-01-002931-50-8</p>
+<p class="text-label-md font-label-md font-semibold text-secondary truncate uppercase">KTH IJEN LESTARI</p>
+</div>
+</div>
+<!-- Detail Biaya & SLA -->
+<div class="space-y-space-xs pt-space-xs text-body-sm font-body-sm">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span>Nominal Dicairkan</span>
+<span class="font-semibold text-on-surface font-mono">Rp 3.750.000</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="flex items-center gap-1">
+            Biaya Transfer Antarbank
+            <span class="material-symbols-outlined text-[14px] text-primary">info</span>
+</span>
+<span class="font-bold text-primary">Rp 0 (Gratis Ditanggung Platform)</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant">
+<span>Estimasi Masuk</span>
+<span class="font-semibold text-on-surface">Maks. 1x24 Jam Kerja</span>
+</div>
+</div>
+<div class="bg-secondary-fixed/30 p-space-sm rounded-lg flex items-center gap-space-xs text-on-secondary-fixed-variant">
+<span class="material-symbols-outlined text-[20px] text-secondary flex-shrink-0">shield</span>
+<p class="text-label-sm font-label-sm leading-snug">
+          Dana disalurkan via escrow account resmi TreeFund yang diawasi OJK &amp; Kementerian Lingkungan Hidup.
+        </p>
+</div>
+</div>
+</div>
+<!-- Sticky Confirmation Bottom Floating Bar -->
+<div class="fixed bottom-16 left-0 w-full z-40 px-margin-mobile py-space-sm bg-surface-container-lowest/95 backdrop-blur-md shadow-[0_-4px_16px_rgba(27,35,30,0.08)]">
+<div class="flex items-center justify-between mb-2 px-1">
+<div>
+<span class="text-label-sm font-label-sm text-on-surface-variant block">Total Pencairan Bersih</span>
+<span class="text-headline-sm font-headline-sm text-primary font-bold">Rp 3.750.000</span>
+</div>
+<div class="text-right">
+<span class="text-label-sm font-label-sm text-primary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">security</span> Aman &amp; Terverifikasi
+        </span>
+</div>
+</div>
+<button class="w-full h-12 bg-primary hover:bg-primary-container active:scale-[0.99] text-on-primary rounded-xl font-headline-sm text-headline-sm flex items-center justify-center gap-space-xs transition-all shadow-md" id="btn-submit-pencairan">
+<span class="material-symbols-outlined text-[22px]">send</span>
+<span>Kirim Pengajuan Pencairan Dana</span>
+</button>
+</div>
+<!-- Interactive Feedback Dialog (Hidden initially) -->
+<div class="fixed inset-0 z-50 bg-inverse-surface/50 backdrop-blur-sm hidden items-center justify-center p-margin-mobile" id="success-dialog">
+<div class="bg-surface-container-lowest rounded-xl p-space-lg w-full max-w-sm text-center shadow-xl space-y-space-md">
+<div 90="" backdrop-blur-xl="" bg-surface="" bottom-0="" class="w-16 h-16 rounded-full bg&lt;/main&gt;&lt;nav class=" data-active-classes="text-primary font-bold" fixed="" pb-safe="" shadow-[0_-1px_12px_rgba(27,35,30,0.06)]"="" w-full="" z-50=""><div class="flex justify-around items-center h-16 px-space-xs"><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface active:opacity-70 transition-all" data-path="tugas" href="#"><span class="material-symbols-outlined text-[22px]">task_alt</span><span class="text-label-sm font-label-sm mt-0.5">Tugas</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface active:opacity-70 transition-all" data-path="lahan" href="#"><span class="material-symbols-outlined text-[22px]">map</span><span class="text-label-sm font-label-sm mt-0.5">Lahan</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface active:opacity-70 transition-all" data-path="tanam" href="#"><span class="material-symbols-outlined text-[22px]">potted_plant</span><span class="text-label-sm font-label-sm mt-0.5">Tanam</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface active:opacity-70 transition-all" data-path="pencairan" href="#"><span class="material-symbols-outlined text-[22px]">payments</span><span class="text-label-sm font-label-sm mt-0.5">Pencairan</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface active:opacity-70 transition-all" data-path="akun" href="#"><span class="material-symbols-outlined text-[22px]">account_circle</span><span class="text-label-sm font-label-sm mt-0.5">Akun</span></a></div></div></div></div></div></main></body></html>

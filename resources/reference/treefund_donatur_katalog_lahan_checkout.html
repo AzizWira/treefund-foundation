@@ -1,0 +1,823 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"surface-container-high":"#e6e9e4","on-secondary-fixed":"#321300","surface":"#f7f9f8","inverse-surface":"#2d312e","surface-tint":"#2c694e","primary":"#0f5238","surface-container-lowest":"#ffffff","surface-container-highest":"#e0e3de","secondary-fixed-dim":"#fab890","primary-fixed":"#b1f0ce","on-primary":"#ffffff","on-error-container":"#93000a","on-primary-container":"#a8e7c5","secondary-container":"#fdbb93","surface-container":"#ecefe9","on-surface-variant":"#404943","primary-fixed-dim":"#95d4b3","on-primary-fixed-variant":"#0e5138","error-container":"#ffdad6","surface-dim":"#d8dbd6","on-secondary-container":"#794829","on-secondary":"#ffffff","on-primary-fixed":"#002114","on-tertiary-fixed":"#251a00","on-error":"#ffffff","on-tertiary-container":"#ffd473","secondary":"#855232","on-background":"#191d1a","on-tertiary":"#ffffff","on-secondary-fixed-variant":"#693b1d","outline-variant":"#bfc9c1","outline":"#707973","on-surface":"#191d1a","tertiary-container":"#795a00","surface-bright":"#f7faf5","background":"#f7f9f8","tertiary-fixed-dim":"#f1c048","error":"#ba1a1a","primary-container":"#2d6a4f","secondary-fixed":"#ffdbc8","surface-variant":"#e0e3de","tertiary-fixed":"#ffdf9c","surface-container-low":"#f1f4ef","on-tertiary-fixed-variant":"#5b4300","inverse-primary":"#95d4b3","inverse-on-surface":"#eff2ec","tertiary":"#5b4400"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"space-md":"1rem","gutter-mobile":"0.75rem","space-lg":"1.5rem","margin":"2rem","margin-mobile":"1rem","space-sm":"0.5rem","gutter":"1.5rem","space-xs":"0.25rem","space-xl":"2rem"},"fontFamily":{"body-sm":["Inter"],"headline-md":["Plus Jakarta Sans"],"label-sm":["Inter"],"headline-xl-mobile":["Plus Jakarta Sans"],"body-md":["Inter"],"body-lg":["Inter"],"headline-sm":["Plus Jakarta Sans"],"headline-lg":["Plus Jakarta Sans"],"label-md":["Inter"],"headline-xl":["Plus Jakarta Sans"]},"fontSize":{"body-sm":["13px",{"lineHeight":"18px","fontWeight":"400"}],"headline-md":["20px",{"lineHeight":"28px","fontWeight":"700"}],"label-sm":["11px",{"lineHeight":"14px","fontWeight":"600"}],"headline-xl-mobile":["26px",{"lineHeight":"34px","fontWeight":"700"}],"body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}],"body-lg":["16px",{"lineHeight":"24px","fontWeight":"400"}],"headline-sm":["18px",{"lineHeight":"24px","fontWeight":"700"}],"headline-lg":["24px",{"lineHeight":"32px","fontWeight":"700"}],"label-md":["12px",{"lineHeight":"16px","fontWeight":"500"}],"headline-xl":["32px",{"lineHeight":"40px","fontWeight":"700"}]}}}};</script></head><body class="bg-surface text-on-surface font-body-md text-body-md antialiased flex min-h-screen">
+<!-- LEFT SIDEBAR: PERMANENT SAAS DASHBOARD NAVIGATION (260px, Forest Green Deep #11231A) -->
+<aside class="w-[260px] bg-[#11231A] text-white flex flex-col fixed inset-y-0 left-0 z-40 border-r border-[#1e3b2d]">
+<!-- Logo Section -->
+<div class="h-16 px-5 flex items-center gap-3 border-b border-[#1c382b]">
+<div class="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-400">
+<span class="material-symbols-outlined text-[20px]">forest</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-white leading-tight font-bold tracking-tight">TreeFund</span>
+<span class="text-[11px] text-emerald-400/80 font-medium tracking-wide uppercase">Portal Donatur</span>
+</div>
+</div>
+<!-- Navigation Menu Section -->
+<div class="flex-1 py-4 px-3 space-y-6 overflow-y-auto">
+<div>
+<span class="block px-3 mb-2 text-[10px] font-semibold text-emerald-300/60 uppercase tracking-wider">PORTAL DONATUR</span>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-emerald-100/70 hover:bg-[#1a382b] hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] text-emerald-300/70 group-hover:text-white">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard Ringkasan</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-emerald-100/70 hover:bg-[#1a382b] hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] text-emerald-300/70 group-hover:text-white">public</span>
+<span class="font-body-md text-body-md">Peta WebGIS Portofolio</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-[#2D6A4F] text-white font-medium shadow-sm" href="#">
+<span class="material-symbols-outlined text-[20px] text-emerald-300">potted_plant</span>
+<span class="font-body-md text-body-md">Eksplorasi Katalog Lahan</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-emerald-100/70 hover:bg-[#1a382b] hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] text-emerald-300/70 group-hover:text-white">workspace_premium</span>
+<span class="font-body-md text-body-md">Sertifikat &amp; Karbon</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-emerald-100/70 hover:bg-[#1a382b] hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] text-emerald-300/70 group-hover:text-white">receipt_long</span>
+<span class="font-body-md text-body-md">Riwayat Transaksi</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-emerald-100/70 hover:bg-[#1a382b] hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] text-emerald-300/70 group-hover:text-white">settings</span>
+<span class="font-body-md text-body-md">Pengaturan Akun</span>
+</a>
+</nav>
+</div>
+</div>
+<!-- Sidebar Footer Status Widget -->
+<div class="p-3 border-t border-[#1c382b]">
+<div class="bg-[#172e23] border border-emerald-800/40 rounded-xl p-3 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+</div>
+<div class="min-w-0">
+<span class="block text-[11px] font-semibold text-emerald-200">Status Escrow</span>
+<span class="block text-[10px] text-emerald-400/80 truncate">Aman Terlindungi (KLHK)</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT WRAPPER (Offset by sidebar width 260px) -->
+<div class="flex-1 ml-[260px] min-h-screen flex flex-col bg-surface">
+<!-- TOP HEADER BAR (SaaS Header) -->
+<header class="h-16 bg-surface-container-lowest border-b border-surface-container sticky top-0 z-30 px-6 flex items-center justify-between shadow-sm">
+<!-- Global Search -->
+<div class="relative w-full max-w-md">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low text-on-surface placeholder:text-on-surface-variant/70 font-body-sm text-body-sm rounded-lg border border-transparent focus:border-primary-container focus:bg-white focus:outline-none transition-all" placeholder="Cari klaster lahan, komoditas pohon, atau lokasi..." type="text">
+</div>
+<!-- Header Actions & Donor Profile -->
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-medium text-primary-container">Total 24 Klaster Tersedia</span>
+</div>
+<button aria-label="Notifikasi" class="relative p-2 rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors" type="button">
+<span class="material-symbols-outlined text-[22px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error"></span>
+</button>
+<div class="h-7 w-px bg-surface-container"></div>
+<!-- Donor Profile User Info with IMAGE_14 -->
+<div class="flex items-center gap-3">
+<img alt="Budi Santoso" class="w-9 h-9 rounded-full object-cover border-2 border-primary-fixed" src="https://lh3.googleusercontent.com/aida/AEtjO1XnqDtD2QnkGzgIMf0Ki6Nb3_0BJ0nG0ShAG32MkyxmkmmtirS9qzkX4xL0CponzD5VxZp8HSJbeJmh8VrBqMmmWErFEYdAwPPdBB1W68QA5gvvF640n0nDxwMcHYbAv62n7zuaN4m0X2ukeDC-BpjZwWHgzm6cUMx8UB6FePEs5ikuPwrZYKdwRpGq6JgiOe8l88Getip78jBkrSjRCaqcz11tFX10Y5aYZKBFXuj12nk7AwgYLhutaAA">
+<div class="hidden md:flex flex-col leading-tight">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Budi Santoso</span>
+<span class="text-[11px] text-primary font-medium">Donatur Konservasi</span>
+</div>
+</div>
+</div>
+</header>
+<!-- DASHBOARD PAGE VIEW -->
+<main class="flex-1 p-6 space-y-6">
+<!-- Page Header & Breadcrumbs -->
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+<div>
+<nav class="flex items-center gap-1 text-[12px] text-on-surface-variant mb-1 font-medium">
+<span>Portal Donatur</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary-container">Eksplorasi Katalog Lahan</span>
+</nav>
+<h1 class="font-headline-md text-headline-md text-on-surface tracking-tight">Katalog Lahan Agroforestri Siap Adopsi</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Pilih klaster lahan konservasi binaan petani lokal untuk adopsi pohon.</p>
+</div>
+<div class="flex items-center gap-2 self-start sm:self-auto text-on-surface-variant font-label-sm text-label-sm bg-surface-container-low px-3 py-1.5 rounded-lg border border-surface-container">
+<span class="material-symbols-outlined text-primary text-[16px]">satellite_alt</span>
+<span>Audit Satelit: <strong>Sentinel-2 Bulanan</strong></span>
+</div>
+</div>
+<!-- Layout Split Viewport -->
+<div class="flex flex-col lg:flex-row gap-6 items-start">
+<!-- LEFT SIDEBAR: FILTERS -->
+<aside class="w-full lg:w-[280px] shrink-0 bg-surface-container-lowest rounded-xl p-5 border border-surface-container shadow-sm space-y-4">
+<!-- Sidebar Header -->
+<div class="flex items-center justify-between pb-3 border-b border-surface-container">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary-container text-[20px]">tune</span>
+<h2 class="font-headline-sm text-[16px] text-on-surface">Filter Lahan</h2>
+</div>
+<button class="font-label-sm text-label-sm text-primary-container hover:underline cursor-pointer" id="resetFilterBtn" type="button">Reset</button>
+</div>
+<div class="space-y-4">
+<!-- Kategori: Jenis Pohon -->
+<div class="space-y-2">
+<span class="block font-label-sm text-label-sm text-on-surface uppercase tracking-wider font-semibold">Jenis Tanaman</span>
+<div class="space-y-2">
+<label class="flex items-start gap-2.5 cursor-pointer group">
+<input checked="" class="mt-0.5 w-4 h-4 rounded text-primary-container accent-primary-container cursor-pointer" type="checkbox">
+<span class="font-body-sm text-body-sm text-on-surface flex-1">
+                  Pohon Buah (Alpukat, Mangga, Kopi)
+                  <span class="block text-[11px] text-on-surface-variant">(142 klaster)</span>
+</span>
+</label>
+<label class="flex items-start gap-2.5 cursor-pointer group">
+<input class="mt-0.5 w-4 h-4 rounded text-primary-container accent-primary-container cursor-pointer" type="checkbox">
+<span class="font-body-sm text-body-sm text-on-surface flex-1">
+                  Kayu Keras (Sengon, Jati, Mahoni)
+                  <span class="block text-[11px] text-on-surface-variant">(89 klaster)</span>
+</span>
+</label>
+<label class="flex items-start gap-2.5 cursor-pointer group">
+<input checked="" class="mt-0.5 w-4 h-4 rounded text-primary-container accent-primary-container cursor-pointer" type="checkbox">
+<span class="font-body-sm text-body-sm text-on-surface flex-1">
+                  Mangrove &amp; Pesisir (Rhizophora)
+                  <span class="block text-[11px] text-on-surface-variant">(35 klaster)</span>
+</span>
+</label>
+<label class="flex items-start gap-2.5 cursor-pointer group">
+<input class="mt-0.5 w-4 h-4 rounded text-primary-container accent-primary-container cursor-pointer" type="checkbox">
+<span class="font-body-sm text-body-sm text-on-surface flex-1">
+                  MPTS Multiguna Ekologis
+                  <span class="block text-[11px] text-on-surface-variant">(54 klaster)</span>
+</span>
+</label>
+</div>
+</div>
+<div class="h-px bg-surface-container"></div>
+<!-- Kategori: Lokasi Prioritas -->
+<div class="space-y-2">
+<span class="block font-label-sm text-label-sm text-on-surface uppercase tracking-wider font-semibold">Provinsi / Lanskap</span>
+<div class="space-y-2 max-h-40 overflow-y-auto pr-1">
+<label class="flex items-center gap-2.5 cursor-pointer">
+<input checked="" class="w-4 h-4 rounded accent-primary-container" type="checkbox">
+<span class="font-body-sm text-body-sm text-on-surface">Jawa Timur (Bondowoso, Malang)</span>
+</label>
+<label class="flex items-center gap-2.5 cursor-pointer">
+<input class="w-4 h-4 rounded accent-primary-container" type="checkbox">
+<span class="font-body-sm text-body-sm text-on-surface">Jawa Barat (Garut, Citarum)</span>
+</label>
+<label class="flex items-center gap-2.5 cursor-pointer">
+<input class="w-4 h-4 rounded accent-primary-container" type="checkbox">
+<span class="font-body-sm text-body-sm text-on-surface">Sulawesi Selatan (Toraja)</span>
+</label>
+<label class="flex items-center gap-2.5 cursor-pointer">
+<input class="w-4 h-4 rounded accent-primary-container" type="checkbox">
+<span class="font-body-sm text-body-sm text-on-surface">Papua (Jayapura, Merauke)</span>
+</label>
+<label class="flex items-center gap-2.5 cursor-pointer">
+<input class="w-4 h-4 rounded accent-primary-container" type="checkbox">
+<span class="font-body-sm text-body-sm text-on-surface">Kalimantan Barat (Ketapang)</span>
+</label>
+</div>
+</div>
+<div class="h-px bg-surface-container"></div>
+<!-- Slider: Range Harga -->
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface uppercase tracking-wider font-semibold">Harga Per Pohon</span>
+<span class="font-label-sm text-label-sm text-primary-container font-semibold" id="priceLabel">Rp 35.000 - Rp 80.000</span>
+</div>
+<input class="w-full accent-primary-container cursor-pointer" id="priceRangeInput" max="100000" min="25000" step="5000" type="range" value="80000">
+<div class="flex justify-between text-[11px] text-on-surface-variant">
+<span>Rp 25.000</span>
+<span>Rp 100.000</span>
+</div>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-low border border-surface-container flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">verified_user</span>
+<p class="text-[11px] text-on-surface-variant leading-tight">100% klaster divalidasi geospasial poligon dan terintegrasi ledger SRN-PPI.</p>
+</div>
+</div>
+</aside>
+<!-- RIGHT CONTENT AREA: GRID & CONTROLS -->
+<section class="flex-1 w-full space-y-4">
+<!-- Control Bar -->
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-surface-container shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+<span class="font-label-md text-label-md text-on-surface-variant">
+            Menampilkan <strong class="text-primary font-semibold">12 Klaster Lahan Terverifikasi</strong>
+</span>
+<div class="flex items-center gap-2 self-end sm:self-auto">
+<label class="font-label-sm text-label-sm text-on-surface-variant whitespace-nowrap" for="sortSelector">Urutkan:</label>
+<select class="bg-surface-container-low text-on-surface font-label-md text-label-md py-1.5 px-3 rounded-lg border border-surface-container focus:outline-none focus:ring-1 focus:ring-primary-container cursor-pointer" id="sortSelector">
+<option value="terbaru">Terbaru Masuk Sistem</option>
+<option selected="" value="mendesak">Paling Mendesak Tanam</option>
+<option value="target">Target Pohon Terbanyak</option>
+<option value="harga_asc">Harga Terendah</option>
+</select>
+</div>
+</div>
+<!-- Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+<!-- Card 1: Kopi Robusta Lereng Ijen -->
+<div class="bg-surface-container-lowest rounded-xl border border-surface-container shadow-sm hover:shadow-md transition-shadow flex flex-col overflow-hidden">
+<div class="relative h-44 w-full">
+<img alt="Kopi Robusta Lereng Ijen" class="w-full h-full object-cover" src="/assets/reference/79aa2e730f0920669e92.jpg">
+<div class="absolute top-2 left-2 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-full text-[11px] text-primary-container font-semibold flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[13px]">location_on</span> Bondowoso, Jatim
+              </div>
+<div class="absolute top-2 right-2 bg-primary text-white px-2 py-0.5 rounded text-[10px] tracking-wider uppercase font-semibold">
+                Siap Tanam
+              </div>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+<div class="space-y-1">
+<div class="flex items-center justify-between text-on-surface-variant text-[11px]">
+<span class="truncate">Kel. Tani Ijen Hijau Lestari</span>
+<span class="font-semibold text-primary-container">#BN-04</span>
+</div>
+<h3 class="font-headline-sm text-[16px] text-on-surface font-bold hover:text-primary-container cursor-pointer transition-colors">
+                  Kopi Robusta &amp; MPTS Lereng Ijen
+                </h3>
+<p class="font-body-sm text-[13px] text-on-surface-variant line-clamp-2">
+                  Kombinasi pohon naungan sengon laut dan kopi robusta untuk mencegah erosi vulkanik.
+                </p>
+</div>
+<div class="space-y-2 bg-surface-container-low p-2.5 rounded-lg border border-surface-container/60">
+<div class="flex items-center justify-between text-[11px]">
+<span class="text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary-container">co2</span> Serapan Karbon:
+                  </span>
+<span class="font-semibold text-on-surface">25 kg CO₂/thn</span>
+</div>
+<div>
+<div class="flex justify-between text-[11px] mb-1">
+<span class="text-on-surface-variant">Terdanai: 3.120 / 4.000</span>
+<span class="font-semibold text-primary">78%</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 78%;"></div>
+</div>
+</div>
+</div>
+<div class="pt-1 flex items-center justify-between">
+<div>
+<span class="block text-[11px] text-on-surface-variant">Adopsi per pohon</span>
+<span class="font-headline-sm text-primary font-bold">Rp 40.000</span>
+</div>
+<button class="px-3.5 py-2 bg-primary-container hover:bg-primary text-white font-label-md text-label-md rounded-lg shadow-sm transition-colors flex items-center gap-1 cursor-pointer" onclick="openCheckoutModal('Kopi Robusta Lereng Ijen', 'Bondowoso, Jawa Timur', 'Ijen Hijau Lestari', 40000)" type="button">
+<span>Adopsi</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 2: Mangrove Rhizophora -->
+<div class="bg-surface-container-lowest rounded-xl border border-surface-container shadow-sm hover:shadow-md transition-shadow flex flex-col overflow-hidden">
+<div class="relative h-44 w-full">
+<img alt="Mangrove Demak" class="w-full h-full object-cover" src="/assets/reference/aa26b15e8ab01f250209.jpg">
+<div class="absolute top-2 left-2 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-full text-[11px] text-primary-container font-semibold flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[13px]">location_on</span> Demak, Jateng
+              </div>
+<div class="absolute top-2 right-2 bg-secondary text-white px-2 py-0.5 rounded text-[10px] tracking-wider uppercase font-semibold">
+                Kritis Abrasi
+              </div>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+<div class="space-y-1">
+<div class="flex items-center justify-between text-on-surface-variant text-[11px]">
+<span class="truncate">Pokmaswas Pesisir Lestari</span>
+<span class="font-semibold text-primary-container">#DM-02</span>
+</div>
+<h3 class="font-headline-sm text-[16px] text-on-surface font-bold hover:text-primary-container cursor-pointer transition-colors">
+                  Restorasi Mangrove Rhizophora
+                </h3>
+<p class="font-body-sm text-[13px] text-on-surface-variant line-clamp-2">
+                  Benteng alami pesisir utara Demak untuk menahan laju abrasi rob sekaligus habitat kepiting bakau.
+                </p>
+</div>
+<div class="space-y-2 bg-surface-container-low p-2.5 rounded-lg border border-surface-container/60">
+<div class="flex items-center justify-between text-[11px]">
+<span class="text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary-container">co2</span> Serapan Karbon:
+                  </span>
+<span class="font-semibold text-on-surface">32 kg CO₂/thn</span>
+</div>
+<div>
+<div class="flex justify-between text-[11px] mb-1">
+<span class="text-on-surface-variant">Terdanai: 4.800 / 5.000</span>
+<span class="font-semibold text-primary">96%</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 96%;"></div>
+</div>
+</div>
+</div>
+<div class="pt-1 flex items-center justify-between">
+<div>
+<span class="block text-[11px] text-on-surface-variant">Adopsi per bibit</span>
+<span class="font-headline-sm text-primary font-bold">Rp 35.000</span>
+</div>
+<button class="px-3.5 py-2 bg-primary-container hover:bg-primary text-white font-label-md text-label-md rounded-lg shadow-sm transition-colors flex items-center gap-1 cursor-pointer" onclick="openCheckoutModal('Restorasi Mangrove Rhizophora', 'Demak, Jawa Tengah', 'Pokmaswas Pesisir Lestari', 35000)" type="button">
+<span>Adopsi</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3: Alpukat Aligator Garut -->
+<div class="bg-surface-container-lowest rounded-xl border border-surface-container shadow-sm hover:shadow-md transition-shadow flex flex-col overflow-hidden">
+<div class="relative h-44 w-full">
+<img alt="Alpukat DAS Citarum" class="w-full h-full object-cover" src="/assets/reference/c0260ef3356b0610c2ac.jpg">
+<div class="absolute top-2 left-2 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-full text-[11px] text-primary-container font-semibold flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[13px]">location_on</span> Garut, Jabar
+              </div>
+<div class="absolute top-2 right-2 bg-primary text-white px-2 py-0.5 rounded text-[10px] tracking-wider uppercase font-semibold">
+                Siap Tanam
+              </div>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+<div class="space-y-1">
+<div class="flex items-center justify-between text-on-surface-variant text-[11px]">
+<span class="truncate">KTH Hutan Subur Garut</span>
+<span class="font-semibold text-primary-container">#GR-11</span>
+</div>
+<h3 class="font-headline-sm text-[16px] text-on-surface font-bold hover:text-primary-container cursor-pointer transition-colors">
+                  Alpukat Aligator Sub-DAS Citarum
+                </h3>
+<p class="font-body-sm text-[13px] text-on-surface-variant line-clamp-2">
+                  Penghijauan tebing curam hulu DAS untuk menekan laju sedimentasi waduk bernilai ekonomi.
+                </p>
+</div>
+<div class="space-y-2 bg-surface-container-low p-2.5 rounded-lg border border-surface-container/60">
+<div class="flex items-center justify-between text-[11px]">
+<span class="text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary-container">co2</span> Serapan Karbon:
+                  </span>
+<span class="font-semibold text-on-surface">22 kg CO₂/thn</span>
+</div>
+<div>
+<div class="flex justify-between text-[11px] mb-1">
+<span class="text-on-surface-variant">Terdanai: 1.250 / 2.500</span>
+<span class="font-semibold text-primary">50%</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 50%;"></div>
+</div>
+</div>
+</div>
+<div class="pt-1 flex items-center justify-between">
+<div>
+<span class="block text-[11px] text-on-surface-variant">Adopsi per pohon</span>
+<span class="font-headline-sm text-primary font-bold">Rp 55.000</span>
+</div>
+<button class="px-3.5 py-2 bg-primary-container hover:bg-primary text-white font-label-md text-label-md rounded-lg shadow-sm transition-colors flex items-center gap-1 cursor-pointer" onclick="openCheckoutModal('Alpukat Aligator Sub-DAS Citarum', 'Garut, Jawa Barat', 'KTH Hutan Subur Garut', 55000)" type="button">
+<span>Adopsi</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 4: Mahoni Pujon Malang -->
+<div class="bg-surface-container-lowest rounded-xl border border-surface-container shadow-sm hover:shadow-md transition-shadow flex flex-col overflow-hidden">
+<div class="relative h-44 w-full">
+<img alt="Mahoni Malang" class="w-full h-full object-cover" src="/assets/reference/58c20937abec73e49662.jpg">
+<div class="absolute top-2 left-2 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-full text-[11px] text-primary-container font-semibold flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[13px]">location_on</span> Malang, Jatim
+              </div>
+<div class="absolute top-2 right-2 bg-surface-container-highest text-on-surface-variant px-2 py-0.5 rounded text-[10px] tracking-wider uppercase font-semibold">
+                Bibit Disiapkan
+              </div>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+<div class="space-y-1">
+<div class="flex items-center justify-between text-on-surface-variant text-[11px]">
+<span class="truncate">Gapoktan Pujon Lestari</span>
+<span class="font-semibold text-primary-container">#ML-08</span>
+</div>
+<h3 class="font-headline-sm text-[16px] text-on-surface font-bold hover:text-primary-container cursor-pointer transition-colors">
+                  Kayu Suren &amp; Mahoni Kemitraan
+                </h3>
+<p class="font-body-sm text-[13px] text-on-surface-variant line-clamp-2">
+                  Sabuk hijau pegunungan dengan kayu lokal tanpa tebang habis untuk serapan karbon stabil.
+                </p>
+</div>
+<div class="space-y-2 bg-surface-container-low p-2.5 rounded-lg border border-surface-container/60">
+<div class="flex items-center justify-between text-[11px]">
+<span class="text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary-container">co2</span> Serapan Karbon:
+                  </span>
+<span class="font-semibold text-on-surface">45 kg CO₂/thn</span>
+</div>
+<div>
+<div class="flex justify-between text-[11px] mb-1">
+<span class="text-on-surface-variant">Terdanai: 620 / 2.000</span>
+<span class="font-semibold text-primary">31%</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 31%;"></div>
+</div>
+</div>
+</div>
+<div class="pt-1 flex items-center justify-between">
+<div>
+<span class="block text-[11px] text-on-surface-variant">Adopsi per pohon</span>
+<span class="font-headline-sm text-primary font-bold">Rp 48.000</span>
+</div>
+<button class="px-3.5 py-2 bg-primary-container hover:bg-primary text-white font-label-md text-label-md rounded-lg shadow-sm transition-colors flex items-center gap-1 cursor-pointer" onclick="openCheckoutModal('Kayu Suren &amp; Mahoni Kemitraan', 'Malang, Jawa Timur', 'Gapoktan Pujon Lestari', 48000)" type="button">
+<span>Adopsi</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 5: Kopi Toraja -->
+<div class="bg-surface-container-lowest rounded-xl border border-surface-container shadow-sm hover:shadow-md transition-shadow flex flex-col overflow-hidden">
+<div class="relative h-44 w-full">
+<img alt="Kopi Toraja" class="w-full h-full object-cover" src="/assets/reference/c45a99cc95b784afdbe2.jpg">
+<div class="absolute top-2 left-2 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-full text-[11px] text-primary-container font-semibold flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[13px]">location_on</span> Tana Toraja, Sulsel
+              </div>
+<div class="absolute top-2 right-2 bg-primary text-white px-2 py-0.5 rounded text-[10px] tracking-wider uppercase font-semibold">
+                Siap Tanam
+              </div>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+<div class="space-y-1">
+<div class="flex items-center justify-between text-on-surface-variant text-[11px]">
+<span class="truncate">Komunitas Adat Kesu</span>
+<span class="font-semibold text-primary-container">#TR-03</span>
+</div>
+<h3 class="font-headline-sm text-[16px] text-on-surface font-bold hover:text-primary-container cursor-pointer transition-colors">
+                  Kopi Arabika Warisan Adat Toraja
+                </h3>
+<p class="font-body-sm text-[13px] text-on-surface-variant line-clamp-2">
+                  Budidaya kopi organik dengan tegakan hutan adat lindung, menjaga koridor satwa endemik.
+                </p>
+</div>
+<div class="space-y-2 bg-surface-container-low p-2.5 rounded-lg border border-surface-container/60">
+<div class="flex items-center justify-between text-[11px]">
+<span class="text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary-container">co2</span> Serapan Karbon:
+                  </span>
+<span class="font-semibold text-on-surface">28 kg CO₂/thn</span>
+</div>
+<div>
+<div class="flex justify-between text-[11px] mb-1">
+<span class="text-on-surface-variant">Terdanai: 1.840 / 3.000</span>
+<span class="font-semibold text-primary">61%</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 61%;"></div>
+</div>
+</div>
+</div>
+<div class="pt-1 flex items-center justify-between">
+<div>
+<span class="block text-[11px] text-on-surface-variant">Adopsi per pohon</span>
+<span class="font-headline-sm text-primary font-bold">Rp 60.000</span>
+</div>
+<button class="px-3.5 py-2 bg-primary-container hover:bg-primary text-white font-label-md text-label-md rounded-lg shadow-sm transition-colors flex items-center gap-1 cursor-pointer" onclick="openCheckoutModal('Kopi Arabika Warisan Adat Toraja', 'Tana Toraja, Sulsel', 'Komunitas Adat Kesu', 60000)" type="button">
+<span>Adopsi</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 6: Gambut Ketapang -->
+<div class="bg-surface-container-lowest rounded-xl border border-surface-container shadow-sm hover:shadow-md transition-shadow flex flex-col overflow-hidden">
+<div class="relative h-44 w-full">
+<img alt="Rawa Gambut Ketapang" class="w-full h-full object-cover" src="/assets/reference/ff201161bc0ffcdaf950.jpg">
+<div class="absolute top-2 left-2 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-full text-[11px] text-primary-container font-semibold flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[13px]">location_on</span> Ketapang, Kalbar
+              </div>
+<div class="absolute top-2 right-2 bg-secondary text-white px-2 py-0.5 rounded text-[10px] tracking-wider uppercase font-semibold">
+                Gambut Prioritas
+              </div>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+<div class="space-y-1">
+<div class="flex items-center justify-between text-on-surface-variant text-[11px]">
+<span class="truncate">Yayasan Penyelamatan Gambut</span>
+<span class="font-semibold text-primary-container">#KT-01</span>
+</div>
+<h3 class="font-headline-sm text-[16px] text-on-surface font-bold hover:text-primary-container cursor-pointer transition-colors">
+                  Pohon Endemik Rawa Gambut
+                </h3>
+<p class="font-body-sm text-[13px] text-on-surface-variant line-clamp-2">
+                  Penanaman bibit Jelutung dan Belangeran merevitalisasi gambut dan menekan karhutla.
+                </p>
+</div>
+<div class="space-y-2 bg-surface-container-low p-2.5 rounded-lg border border-surface-container/60">
+<div class="flex items-center justify-between text-[11px]">
+<span class="text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary-container">co2</span> Serapan Karbon:
+                  </span>
+<span class="font-semibold text-on-surface">52 kg CO₂/thn</span>
+</div>
+<div>
+<div class="flex justify-between text-[11px] mb-1">
+<span class="text-on-surface-variant">Terdanai: 3.450 / 4.000</span>
+<span class="font-semibold text-primary">86%</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 86%;"></div>
+</div>
+</div>
+</div>
+<div class="pt-1 flex items-center justify-between">
+<div>
+<span class="block text-[11px] text-on-surface-variant">Adopsi per pohon</span>
+<span class="font-headline-sm text-primary font-bold">Rp 50.000</span>
+</div>
+<button class="px-3.5 py-2 bg-primary-container hover:bg-primary text-white font-label-md text-label-md rounded-lg shadow-sm transition-colors flex items-center gap-1 cursor-pointer" onclick="openCheckoutModal('Pohon Endemik Rawa Gambut', 'Ketapang, Kalbar', 'Yayasan Penyelamatan Gambut', 50000)" type="button">
+<span>Adopsi</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Dashboard Pagination Bar -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-3 bg-surface-container-lowest p-4 rounded-xl border border-surface-container shadow-sm">
+<span class="text-[12px] text-on-surface-variant">Menampilkan halaman 1 dari 4 (Total 24 Klaster)</span>
+<div class="flex items-center gap-1.5">
+<button class="w-8 h-8 rounded-lg bg-surface-container-low text-on-surface-variant flex items-center justify-center cursor-not-allowed opacity-50">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-primary text-white text-[12px] font-semibold flex items-center justify-center">1</button>
+<button class="w-8 h-8 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface text-[12px] flex items-center justify-center">2</button>
+<button class="w-8 h-8 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface text-[12px] flex items-center justify-center">3</button>
+<button class="w-8 h-8 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface text-[12px] flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+<!-- CHECKOUT MODAL OVERLAY (Pop-up Aktif di Tengah Layar Dashboard) -->
+<div class="fixed inset-0 z-50 bg-[#11231a]/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto" id="checkoutModalOverlay">
+<!-- Modal Card -->
+<div class="w-full max-w-lg bg-surface-container-lowest rounded-2xl shadow-2xl p-6 sm:p-7 relative my-8 border border-surface-container animate-in fade-in zoom-in-95 duration-200">
+<!-- Modal Header -->
+<div class="flex items-center justify-between pb-3.5 mb-4 border-b border-surface-container">
+<div class="flex items-center gap-2">
+<span class="p-1 rounded bg-primary-fixed text-primary-container">
+<span class="material-symbols-outlined text-[20px]">forest</span>
+</span>
+<h3 class="font-headline-md text-[18px] text-on-surface font-bold">Adopsi Pohon Agroforestri</h3>
+</div>
+<button aria-label="Tutup Modal" class="w-8 h-8 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-colors cursor-pointer" id="closeModalBtn" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div class="space-y-4">
+<!-- Item Info: Thumbnail Lahan -->
+<div class="bg-surface-container-low rounded-xl p-3 flex items-center gap-3 border border-surface-container/60">
+<div class="w-16 h-16 rounded-lg overflow-hidden shrink-0">
+<img alt="Thumbnail Lahan" class="w-full h-full object-cover" id="modalLandThumb" src="/assets/reference/c05a16f4f1d9ac4792d7.jpg">
+</div>
+<div class="min-w-0 flex-1">
+<h4 class="font-headline-sm text-[15px] font-bold text-on-surface truncate" id="modalLandTitle">Kopi Robusta Lereng Ijen</h4>
+<div class="flex items-center gap-1 text-[12px] text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px]">location_on</span>
+<span class="truncate" id="modalLandLoc">Bondowoso, Jawa Timur</span>
+</div>
+<span class="block text-[11px] text-primary font-medium truncate" id="modalLandGroup">Kelompok Tani: Ijen Hijau Lestari</span>
+</div>
+</div>
+<!-- Stepper: Jumlah Pohon yang Diadopsi -->
+<div class="bg-surface-container-lowest p-3 rounded-xl border border-surface-container">
+<div class="flex items-center justify-between">
+<div>
+<span class="block font-label-md text-label-md text-on-surface font-semibold">Tentukan Jumlah Pohon</span>
+<span class="text-[12px] text-primary-container font-medium" id="modalCarbonEquiv">Setara 125 kg CO₂/tahun terserap</span>
+</div>
+<!-- Stepper Buttons -->
+<div class="flex items-center bg-surface-container-low rounded-lg p-1 border border-surface-container">
+<button class="w-8 h-8 rounded-md bg-white hover:bg-surface-container text-on-surface font-bold text-[18px] flex items-center justify-center transition-colors cursor-pointer select-none shadow-xs" id="stepDecBtn" type="button">
+              -
+            </button>
+<span class="w-10 text-center font-headline-md text-[16px] font-bold text-on-surface select-none" id="treeCountDisplay">5</span>
+<button class="w-8 h-8 rounded-md bg-white hover:bg-surface-container text-on-surface font-bold text-[18px] flex items-center justify-center transition-colors cursor-pointer select-none shadow-xs" id="stepIncBtn" type="button">
+              +
+            </button>
+</div>
+</div>
+</div>
+<!-- Form Input: Nama di Sertifikat -->
+<div class="space-y-1.5">
+<label class="block text-[11px] text-on-surface uppercase tracking-wider font-semibold" for="donorCertificateName">
+          Nama untuk di Sertifikat
+        </label>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">badge</span>
+</span>
+<input class="w-full pl-10 pr-3 py-2 bg-surface-container-lowest border border-outline-variant text-on-surface font-body-md text-body-md rounded-lg focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" id="donorCertificateName" type="text" value="Budi Santoso &amp; Keluarga">
+</div>
+<p class="text-[11px] text-on-surface-variant">
+          *Nama ini akan dicetak di E-Sertifikat dan disematkan pada titik koordinat peta WebGIS spasial publik.
+        </p>
+</div>
+<!-- Ringkasan Biaya Transparan -->
+<div class="bg-surface-container-low p-3.5 rounded-xl space-y-2 border border-surface-container">
+<span class="block text-[11px] text-on-surface uppercase tracking-wider font-semibold">Ringkasan Biaya</span>
+<div class="space-y-1.5 text-[13px]">
+<div class="flex items-center justify-between text-on-surface">
+<span id="summaryMathText">5 Pohon x Rp 40.000</span>
+<span class="font-medium" id="summarySubtotal">Rp 200.000</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="flex items-center gap-1">
+              Biaya Pemeliharaan 3 Tahun (Inklusif)
+              <span class="material-symbols-outlined text-[14px] text-primary cursor-pointer" title="Meliputi audit drone satelit, pupuk kompos alami, dan upah harian petani perawat.">info</span>
+</span>
+<span class="text-primary font-medium">Rp 0 (Disubsidi)</span>
+</div>
+</div>
+<div class="h-px bg-surface-container my-1"></div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-md text-label-md text-on-surface font-bold">Total Donasi Adopsi:</span>
+<span class="font-headline-md text-[18px] text-primary-container font-bold" id="summaryTotalText">Rp 200.000</span>
+</div>
+</div>
+<!-- Pilihan Metode Pembayaran Cepat -->
+<div class="space-y-2">
+<span class="block text-[11px] text-on-surface uppercase tracking-wider font-semibold">Pilih Metode Pembayaran Cepat</span>
+<div class="grid grid-cols-3 gap-2">
+<!-- QRIS Option -->
+<label class="flex flex-col items-center justify-center p-2.5 rounded-lg bg-surface-container-lowest border-2 border-primary-container cursor-pointer transition-all hover:bg-surface-container-low">
+<input checked="" class="sr-only" name="paymentMethod" type="radio" value="qris">
+<span class="material-symbols-outlined text-primary text-[22px]">qr_code_scanner</span>
+<span class="text-[11px] text-on-surface font-semibold mt-1">QRIS Instant</span>
+<span class="text-[9px] text-on-surface-variant">GoPay, OVO, Dana</span>
+</label>
+<!-- Mandiri VA -->
+<label class="flex flex-col items-center justify-center p-2.5 rounded-lg bg-surface-container-lowest border border-outline-variant cursor-pointer transition-all hover:bg-surface-container-low opacity-80 hover:opacity-100">
+<input class="sr-only" name="paymentMethod" type="radio" value="mandiri">
+<span class="material-symbols-outlined text-on-surface-variant text-[22px]">account_balance</span>
+<span class="text-[11px] text-on-surface font-semibold mt-1">Mandiri VA</span>
+<span class="text-[9px] text-on-surface-variant">Otomatis Verifikasi</span>
+</label>
+<!-- BCA VA -->
+<label class="flex flex-col items-center justify-center p-2.5 rounded-lg bg-surface-container-lowest border border-outline-variant cursor-pointer transition-all hover:bg-surface-container-low opacity-80 hover:opacity-100">
+<input class="sr-only" name="paymentMethod" type="radio" value="bca">
+<span class="material-symbols-outlined text-on-surface-variant text-[22px]">account_balance_wallet</span>
+<span class="text-[11px] text-on-surface font-semibold mt-1">BCA Virtual</span>
+<span class="text-[9px] text-on-surface-variant">BCA Mobile / ATM</span>
+</label>
+</div>
+</div>
+<!-- Tombol CTA Checkout -->
+<div class="pt-2">
+<button class="w-full py-3 bg-primary-container hover:bg-primary text-white font-headline-sm text-[15px] font-bold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer" id="paySubmitBtn" type="button">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+<span>Lanjut Pembayaran (Midtrans Secured)</span>
+</button>
+<div class="flex items-center justify-center gap-1.5 mt-2.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px] text-primary">shield</span>
+<span class="text-[10px]">Enkripsi 256-bit SSL • Donasi tercatat langsung di Smart-Contract SRN-PPI</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive Logic -->
+<script>
+  (function () {
+    let currentTreeCount = 5;
+    let currentUnitPrice = 40000;
+    const co2PerTreeYear = 25;
+
+    // DOM references
+    const modalOverlay = document.getElementById('checkoutModalOverlay');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const stepDecBtn = document.getElementById('stepDecBtn');
+    const stepIncBtn = document.getElementById('stepIncBtn');
+    const treeCountDisplay = document.getElementById('treeCountDisplay');
+    const summaryMathText = document.getElementById('summaryMathText');
+    const summarySubtotal = document.getElementById('summarySubtotal');
+    const summaryTotalText = document.getElementById('summaryTotalText');
+    const modalCarbonEquiv = document.getElementById('modalCarbonEquiv');
+    const modalLandTitle = document.getElementById('modalLandTitle');
+    const modalLandLoc = document.getElementById('modalLandLoc');
+    const modalLandGroup = document.getElementById('modalLandGroup');
+    const priceRangeInput = document.getElementById('priceRangeInput');
+    const priceLabel = document.getElementById('priceLabel');
+    const resetFilterBtn = document.getElementById('resetFilterBtn');
+    const paySubmitBtn = document.getElementById('paySubmitBtn');
+
+    function formatRupiah(amount) {
+      return 'Rp ' + amount.toLocaleString('id-ID');
+    }
+
+    function updateModalCalculations() {
+      treeCountDisplay.textContent = currentTreeCount;
+      const total = currentTreeCount * currentUnitPrice;
+      const co2Total = currentTreeCount * co2PerTreeYear;
+      
+      modalCarbonEquiv.textContent = 'Setara ' + co2Total + ' kg CO₂/tahun terserap';
+      summaryMathText.textContent = currentTreeCount + ' Pohon x ' + formatRupiah(currentUnitPrice);
+      summarySubtotal.textContent = formatRupiah(total);
+      summaryTotalText.textContent = formatRupiah(total);
+    }
+
+    // Open Modal handler
+    window.openCheckoutModal = function(title, loc, group, unitPrice) {
+      if (title) modalLandTitle.textContent = title;
+      if (loc) modalLandLoc.textContent = loc;
+      if (group) modalLandGroup.textContent = 'Kelompok Tani: ' + group;
+      if (unitPrice) currentUnitPrice = unitPrice;
+      
+      currentTreeCount = 5;
+      updateModalCalculations();
+      modalOverlay.classList.remove('hidden');
+      modalOverlay.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    };
+
+    // Close Modal handler
+    function closeModal() {
+      modalOverlay.classList.add('hidden');
+      modalOverlay.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    closeModalBtn.addEventListener('click', closeModal);
+
+    // Dismiss on backdrop click
+    modalOverlay.addEventListener('click', function(e) {
+      if (e.target === modalOverlay) {
+        closeModal();
+      }
+    });
+
+    // Stepper Handlers
+    stepDecBtn.addEventListener('click', function() {
+      if (currentTreeCount > 1) {
+        currentTreeCount--;
+        updateModalCalculations();
+      }
+    });
+
+    stepIncBtn.addEventListener('click', function() {
+      if (currentTreeCount < 500) {
+        currentTreeCount++;
+        updateModalCalculations();
+      }
+    });
+
+    // Price Slider Handler
+    if (priceRangeInput && priceLabel) {
+      priceRangeInput.addEventListener('input', function() {
+        const val = parseInt(this.value, 10);
+        priceLabel.textContent = 'Rp 25.000 - ' + formatRupiah(val);
+      });
+    }
+
+    // Reset Filter Handler
+    if (resetFilterBtn && priceRangeInput && priceLabel) {
+      resetFilterBtn.addEventListener('click', function() {
+        priceRangeInput.value = 80000;
+        priceLabel.textContent = 'Rp 35.000 - Rp 80.000';
+      });
+    }
+
+    // Payment Selection Accent
+    const paymentLabels = document.querySelectorAll('input[name="paymentMethod"]');
+    paymentLabels.forEach(function(radio) {
+      radio.addEventListener('change', function() {
+        paymentLabels.forEach(function(r) {
+          const parent = r.parentElement;
+          if (r.checked) {
+            parent.classList.add('border-2', 'border-primary-container', 'opacity-100');
+            parent.classList.remove('border-outline-variant', 'opacity-80');
+          } else {
+            parent.classList.remove('border-2', 'border-primary-container', 'opacity-100');
+            parent.classList.add('border', 'border-outline-variant', 'opacity-80');
+          }
+        });
+      });
+    });
+
+    // Payment Submission Micro-Interaction
+    paySubmitBtn.addEventListener('click', function() {
+      const originalText = paySubmitBtn.innerHTML;
+      paySubmitBtn.disabled = true;
+      paySubmitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">progress_activity</span><span>Memproses Invoice Spasial...</span>';
+      
+      setTimeout(function() {
+        alert('Gateway Pembayaran Terhubung! Anda mengadopsi ' + currentTreeCount + ' pohon dengan sertifikat atas nama: ' + document.getElementById('donorCertificateName').value);
+        paySubmitBtn.disabled = false;
+        paySubmitBtn.innerHTML = originalText;
+        closeModal();
+      }, 900);
+    });
+
+    // Initial modal run
+    updateModalCalculations();
+  })();
+</script>
+</body></html>

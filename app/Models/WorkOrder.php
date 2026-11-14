@@ -10,6 +10,22 @@ class WorkOrder extends Model
 
     protected $guarded = ['id'];
 
+    public function getProgressStatusAttribute(): string
+    {
+        $trees = $this->item->trees;
+        if ($trees->isNotEmpty() && $trees->every(fn ($tree): bool => $tree->planting?->status === 'approved')) {
+            return 'planted';
+        }
+        if ($trees->contains(fn ($tree): bool => $tree->planting?->status === 'revision')) {
+            return 'revision';
+        }
+        if ($trees->contains(fn ($tree): bool => $tree->planting?->status === 'pending')) {
+            return 'pending';
+        }
+
+        return 'waiting';
+    }
+
     public function item(): mixed
     {
         return $this->belongsTo(AdoptionItem::class, 'adoption_item_id');
@@ -23,17 +39,5 @@ class WorkOrder extends Model
     public function disbursements(): mixed
     {
         return $this->hasMany(Disbursement::class);
-    }
-
-    public function refreshPlantingStatus(): void
-    {
-        $states = $this->item->trees()->with('planting')->get()->map(fn (Tree $tree) => $tree->planting?->status);
-        $status = match (true) {
-            $states->isNotEmpty() && $states->every(fn ($state) => $state === 'approved') => 'planted',
-            $states->contains('revision') => 'revision',
-            $states->contains('pending') => 'pending',
-            default => 'waiting',
-        };
-        $this->update(['status' => $status]);
     }
 }

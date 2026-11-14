@@ -73,7 +73,7 @@
 </div>
 <div class="flex flex-col">
 <div class="flex items-baseline gap-space-xs">
-<span class="font-headline-xl text-headline-xl text-primary font-bold tracking-tight">{{ $publicStats['planted'] }}</span>
+<span class="font-headline-xl text-headline-xl text-primary font-bold tracking-tight">{{ \App\Models\Planting::where('status','approved')->count() }}</span>
 <span class="font-label-sm text-label-sm text-primary font-semibold">Terverifikasi</span>
 </div>
 <span class="font-headline-sm text-headline-sm text-on-surface">Pohon Tertanam</span>
@@ -86,7 +86,7 @@
 <span class="material-symbols-outlined text-primary-container text-[32px]">co2</span>
 </div>
 <div class="flex flex-col">
-<span class="font-headline-xl text-headline-xl text-primary-container font-bold tracking-tight">{{ $publicStats['reports'] }}</span>
+<span class="font-headline-xl text-headline-xl text-primary-container font-bold tracking-tight">{{ \App\Models\Monitoring::where('status','approved')->count() }}</span>
 <span class="font-headline-sm text-headline-sm text-on-surface">Laporan Disetujui</span>
 <span class="font-body-sm text-body-sm text-on-surface-variant">Berdasarkan bukti lapangan</span>
 </div>

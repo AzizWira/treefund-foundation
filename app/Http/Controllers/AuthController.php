@@ -11,14 +11,13 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
     public function login(Request $request): mixed
     {
-        $request->merge(['email' => strtolower((string) $request->input('email'))]);
         $data = $request->validate(['email' => 'required|email', 'password' => 'required|string']);
         if (! Auth::attempt($data, $request->boolean('remember'))) {
             return back()->withErrors(['email' => 'Email atau kata sandi tidak sesuai.'])->onlyInput('email');
@@ -32,7 +31,6 @@ class AuthController extends Controller
 
     public function register(Request $request): mixed
     {
-        $request->merge(['email' => strtolower((string) $request->input('email'))]);
         $data = $request->validate(['name' => 'required|string|max:120', 'email' => 'required|email|max:190|unique:users', 'password' => ['required', 'confirmed', Password::min(8)], 'role' => 'required|in:donor,partner']);
         $user = new User(['name' => $data['name'], 'email' => strtolower($data['email']), 'password' => $data['password']]);
         $user->role = $data['role'];
@@ -80,7 +78,6 @@ class AuthController extends Controller
                 $user->email = $data['email'];
                 $user->email_verified_at = null;
                 $user->remember_token = Str::random(60);
-                DB::table('sessions')->where('user_id', $user->id)->where('id', '!=', $request->session()->getId())->delete();
                 DB::table('email_verification_challenges')->where('user_id', $user->id)->delete();
                 if ($oldUser->hasVerifiedEmail()) {
                     app(EmailService::class)->send($oldUser, 'security', ['title' => 'Alamat email akun Anda diubah', 'body' => 'Alamat email pada akun TreeFund Anda telah diganti. Jika perubahan ini bukan tindakan Anda, segera hubungi pengelola.'], false);

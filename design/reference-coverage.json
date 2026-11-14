@@ -1,0 +1,142 @@
+[
+  {
+    "reference": "treefund_admin_dashboard_overview.html",
+    "implementation": "dashboard/admin.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_admin_side_sheet_verifikasi_laporan.html",
+    "implementation": "admin/review.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_admin_tabel_verifikasi_bukti_tanam.html",
+    "implementation": "admin/queue.blade.php + admin/review.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_admin_verifikasi_lahan_baru.html",
+    "implementation": "admin/queue.blade.php + admin/review.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_admin_verifikasi_monitoring_berkala.html",
+    "implementation": "admin/queue.blade.php + admin/review.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_admin_verifikasi_pencairan_dana.html",
+    "implementation": "admin/funds.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_donatur_dashboard_webgis.html",
+    "implementation": "trees.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_donatur_katalog_lahan_agroforestri_desktop.html",
+    "implementation": "catalog.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_donatur_katalog_lahan_checkout.html",
+    "implementation": "checkout.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_donatur_riwayat_transaksi_e_sertifikat.html",
+    "implementation": "orders.blade.php + certificates.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_landing_page_beranda.html",
+    "implementation": "landing.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_petani_dashboard_ringkasan_desktop.html",
+    "implementation": "dashboard/partner.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_petani_dashboard_work_order.html",
+    "implementation": "partner/works.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_petani_data_anggota_poktan_desktop.html",
+    "implementation": "partner/members.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_petani_input_bukti_tanam_lapangan.html",
+    "implementation": "partner/work.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_petani_input_bukti_tanam_monitoring.html",
+    "implementation": "partner/monitoring.blade.php + partner/monitoring-form.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_petani_pengajuan_kemitraan_lahan_desktop_1.html",
+    "implementation": "partner/partnership.blade.php + partner/plots.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_petani_pengajuan_kemitraan_lahan_desktop_2.html",
+    "implementation": "partner/partnership.blade.php + partner/plots.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_petani_pengajuan_kemitraan_lahan.html",
+    "implementation": "partner/partnership.blade.php + partner/plots.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_petani_pengajuan_pencairan_dana_desktop_1.html",
+    "implementation": "partner/funds.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_petani_pengajuan_pencairan_dana_desktop_2.html",
+    "implementation": "partner/funds.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_petani_pengajuan_pencairan_dana_mobile_1.html",
+    "implementation": "partner/funds.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_petani_pengajuan_pencairan_dana_mobile_2.html",
+    "implementation": "partner/funds.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_petani_pengajuan_pencairan_dana.html",
+    "implementation": "partner/funds.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_petani_pengaturan_akun_desktop.html",
+    "implementation": "profile.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_petani_registrasi_lahan_upload_sk.html",
+    "implementation": "partner/partnership.blade.php + partner/plots.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_petani_work_order_input_tanam_desktop.html",
+    "implementation": "partner/work.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  },
+  {
+    "reference": "treefund_petani_work_order_input_tanam.html",
+    "implementation": "partner/work.blade.php",
+    "note": "Varian desktop/mobile dan langkah dalam satu alur memakai template responsif serta status formulir, bukan salinan halaman terpisah."
+  }
+]

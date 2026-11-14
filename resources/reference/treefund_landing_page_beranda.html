@@ -1,0 +1,477 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"surface-container-high":"#e6e9e4","on-secondary-fixed":"#321300","surface":"#f7faf5","inverse-surface":"#2d312e","surface-tint":"#2c694e","primary":"#0f5238","surface-container-lowest":"#ffffff","surface-container-highest":"#e0e3de","secondary-fixed-dim":"#fab890","primary-fixed":"#b1f0ce","on-primary":"#ffffff","on-error-container":"#93000a","on-primary-container":"#a8e7c5","secondary-container":"#fdbb93","surface-container":"#ecefe9","on-surface-variant":"#404943","primary-fixed-dim":"#95d4b3","on-primary-fixed-variant":"#0e5138","error-container":"#ffdad6","surface-dim":"#d8dbd6","on-secondary-container":"#794829","on-secondary":"#ffffff","on-primary-fixed":"#002114","on-tertiary-fixed":"#251a00","on-error":"#ffffff","on-tertiary-container":"#ffd473","secondary":"#855232","on-background":"#191d1a","on-tertiary":"#ffffff","on-secondary-fixed-variant":"#693b1d","outline-variant":"#bfc9c1","outline":"#707973","on-surface":"#191d1a","tertiary-container":"#795a00","surface-bright":"#f7faf5","background":"#f7faf5","tertiary-fixed-dim":"#f1c048","error":"#ba1a1a","primary-container":"#2d6a4f","secondary-fixed":"#ffdbc8","surface-variant":"#e0e3de","tertiary-fixed":"#ffdf9c","surface-container-low":"#f1f4ef","on-tertiary-fixed-variant":"#5b4300","inverse-primary":"#95d4b3","inverse-on-surface":"#eff2ec","tertiary":"#5b4400"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"space-md":"1rem","gutter-mobile":"0.75rem","space-lg":"1.5rem","margin":"2rem","margin-mobile":"1rem","space-sm":"0.5rem","gutter":"1.5rem","space-xs":"0.25rem","space-xl":"2rem"},"fontFamily":{"body-sm":["Inter"],"headline-md":["Plus Jakarta Sans"],"label-sm":["Inter"],"headline-xl-mobile":["Plus Jakarta Sans"],"body-md":["Inter"],"body-lg":["Inter"],"headline-sm":["Plus Jakarta Sans"],"headline-lg":["Plus Jakarta Sans"],"label-md":["Inter"],"headline-xl":["Plus Jakarta Sans"]},"fontSize":{"body-sm":["13px",{"lineHeight":"18px","fontWeight":"400"}],"headline-md":["20px",{"lineHeight":"28px","fontWeight":"700"}],"label-sm":["11px",{"lineHeight":"14px","fontWeight":"600"}],"headline-xl-mobile":["26px",{"lineHeight":"34px","fontWeight":"700"}],"body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}],"body-lg":["16px",{"lineHeight":"24px","fontWeight":"400"}],"headline-sm":["18px",{"lineHeight":"24px","fontWeight":"700"}],"headline-lg":["24px",{"lineHeight":"32px","fontWeight":"700"}],"label-md":["12px",{"lineHeight":"16px","fontWeight":"500"}],"headline-xl":["32px",{"lineHeight":"40px","fontWeight":"700"}]}}}};</script></head><body class="bg-surface text-on-surface font-body-md text-body-md"><header class="fixed top-0 w-full z-50 bg-surface-container-lowest shadow-[0_1px_3px_rgba(27,35,30,0.08)]"><div class="h-16 max-w-7xl mx-auto px-margin flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-sm"><img alt="TreeFund Logo" class="h-8 w-auto object-contain" src="/assets/reference/ecbd9b297493d4c2a355.jpg"><span class="font-headline-md text-headline-md text-primary-container tracking-tight">TreeFund</span></div><nav class="hidden lg:flex items-center gap-space-lg" data-active-classes="text-primary-container font-headline-sm"><a aria-current="page" class="transition-colors text-primary-container font-headline-sm" data-path="beranda" href="#">Beranda</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary-container transition-colors" data-path="katalog-lahan" href="#">Katalog Lahan</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary-container transition-colors" data-path="peta-webgis-donatur" href="#">Peta WebGIS Donatur</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary-container transition-colors" data-path="tentang-kami" href="#">Tentang Kami</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary-container transition-colors" data-path="faq" href="#">FAQ</a></nav><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-sm pl-space-sm"><button class="relative p-space-xs text-on-surface-variant hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-error"></span></button><div class="flex items-center gap-space-xs pl-space-xs"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="/assets/reference/baf29626b202938dd94a.jpg"><div class="hidden sm:flex flex-col text-left leading-none"><span class="font-label-md text-label-md text-on-surface">Budi Santoso</span><span class="font-label-sm text-label-sm text-on-surface-variant">(Donatur)</span></div></div></div></div></div></header><main class="w-full pt-16 bg-surface min-h-[calc(100vh-16rem)]"><div class="flex flex-col w-full">
+<!-- Hero Section -->
+<section class="relative w-full overflow-hidden bg-inverse-surface -mt-16 pt-28 pb-32 md:pb-40 text-surface-container-lowest">
+<!-- Atmospheric Visual Background with Scrim -->
+<div class="absolute inset-0 w-full h-full bg-cover bg-center mix-blend-overlay opacity-35 scale-105 transform motion-safe:transition-transform motion-safe:duration-1000 ease-out" data-alt="Stunning aerial cinematic shot of an expansive tropical agroforestry reserve in Indonesia, lush multilayered canopy featuring towering mahogany trees, flowering coffee understory, misty morning sunlight piercing through forest foliage with rich organic emerald and deep moss tones, 8k resolution, crisp photorealistic details" style="background-image: url('/assets/reference/a6a3947a808a16b613b7.jpg')"></div>
+<!-- Depth Gradient Scrims -->
+<div class="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary-container/80 to-inverse-surface/85 pointer-events-none"></div>
+<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary-fixed/10 via-transparent to-transparent pointer-events-none"></div>
+<div class="relative max-w-7xl mx-auto px-margin z-10 flex flex-col items-center text-center">
+<!-- Tag / Sub-badge -->
+<div class="inline-flex items-center gap-space-xs bg-surface-container-lowest/15 backdrop-blur-md px-space-md py-1.5 rounded-full mb-space-lg text-primary-fixed shadow-sm">
+<span class="material-symbols-outlined text-[18px]">satellite_alt</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-surface-container-lowest">WebGIS &amp; Agroforestry Telemetry v2.4</span>
+</div>
+<!-- Main Headline -->
+<h1 class="font-headline-xl text-headline-xl text-surface-container-lowest max-w-4xl tracking-tight leading-tight [text-shadow:_0_2px_12px_rgba(0,0,0,0.45)] mb-space-md">
+        Bantu Hijaukan Bumi, Satu Pohon Setiap Harinya.
+      </h1>
+<!-- Sub-text -->
+<p class="font-body-lg text-body-lg text-surface-container-low max-w-2xl font-normal leading-relaxed mb-space-xl [text-shadow:_0_1px_4px_rgba(0,0,0,0.3)]">
+        Platform transparansi adopsi pohon agroforestri dengan pantauan WebGIS presisi satelit, terintegrasi langsung dengan kelompok tani hutan nusantara.
+      </p>
+<!-- Action Buttons -->
+<div class="flex flex-col sm:flex-row items-center justify-center gap-space-md w-full sm:w-auto">
+<a class="w-full sm:w-auto inline-flex items-center justify-center gap-space-sm bg-primary-container hover:bg-primary text-surface-container-lowest font-headline-sm text-headline-sm px-8 py-3.5 rounded-lg shadow-md transition-all duration-200 transform hover:-translate-y-0.5" href="#katalog">
+<span>Lihat Katalog Lahan</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</a>
+<a class="w-full sm:w-auto inline-flex items-center justify-center gap-space-sm bg-surface-container-lowest/10 hover:bg-surface-container-lowest/20 backdrop-blur-sm text-surface-container-lowest font-headline-sm text-headline-sm px-7 py-3.5 rounded-lg shadow-sm transition-all duration-200" href="#cara-kerja">
+<span class="material-symbols-outlined text-[20px]">play_circle</span>
+<span>Pelajari Cara Kerja</span>
+</a>
+</div>
+<!-- Floating Indicator Badges -->
+<div class="mt-space-xl flex flex-wrap justify-center items-center gap-space-lg text-surface-container-low/80 font-label-md text-label-md">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary-fixed text-[16px]">verified</span>
+<span>SRN PPI Kompatibel</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary-fixed text-[16px]">pin_drop</span>
+<span>Geotagging Titik Tanam GPS</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary-fixed text-[16px]">lock</span>
+<span>Escrow Smart Ledger</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 1.5: Floating Metric Counter Bar (Overlapping -mt-16) -->
+<section class="relative z-20 px-margin">
+<div class="max-w-5xl mx-auto -mt-16 bg-surface-container-lowest rounded-full shadow-xl p-space-lg overflow-hidden">
+<!-- Top Micro Status Header -->
+<div class="flex flex-wrap items-center justify-between pb-space-md mb-space-md bg-surface-container-low px-space-md py-space-xs rounded-lg gap-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-primary font-semibold uppercase tracking-wider">Audit Satelit Aktif</span>
+</div>
+<div class="flex items-center gap-space-sm text-on-surface-variant font-label-sm text-label-sm">
+<span>Sinkronisasi Poligon Terakhir: <strong class="text-on-surface">Hari Ini, 08:30 WIB</strong></span>
+<span class="hidden sm:inline text-outline-variant">•</span>
+<span class="hidden sm:inline">Sentinel-2 MSI Level-2A</span>
+</div>
+</div>
+<!-- Metric Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-lg items-center">
+<!-- Metric 1: Total Pohon -->
+<div class="flex items-center gap-space-md p-space-sm rounded-lg hover:bg-surface-container-low transition-colors">
+<div class="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-[32px]">forest</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-xl text-headline-xl text-primary font-bold tracking-tight">148.290</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold">+12%</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface">Pohon Tertanam</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Agroforestri terpetakan aktif</span>
+</div>
+</div>
+<!-- Metric 2: Karbon Terserap -->
+<div class="flex items-center gap-space-md p-space-sm rounded-lg hover:bg-surface-container-low transition-colors">
+<div class="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary-container text-[32px]">co2</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-xl text-headline-xl text-primary-container font-bold tracking-tight">3.707.250</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Kg CO₂e Terserap</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Terverifikasi metodologi VCS</span>
+</div>
+</div>
+<!-- Metric 3: Petani Mitra -->
+<div class="flex items-center gap-space-md p-space-sm rounded-lg hover:bg-surface-container-low transition-colors">
+<div class="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary text-[32px]">groups</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-xl text-headline-xl text-secondary font-bold tracking-tight">1.420</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Mitra Petani Hutan</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Tersebar di 34 Desa Konservasi</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: Cara Kerja Donasi Agroforestri -->
+<section class="w-full bg-surface py-20 px-margin mt-space-lg" id="cara-kerja">
+<div class="max-w-7xl mx-auto flex flex-col">
+<!-- Section Title Header -->
+<div class="text-center max-w-3xl mx-auto mb-space-xl">
+<div class="inline-flex items-center gap-space-xs bg-surface-container-highest px-space-md py-1 rounded-full text-primary mb-space-sm">
+<span class="material-symbols-outlined text-[16px]">account_tree</span>
+<span class="font-label-sm text-label-sm font-semibold uppercase tracking-wider">Alur Transparansi Terbuka</span>
+</div>
+<h2 class="font-headline-xl text-headline-xl text-on-surface tracking-tight mb-space-sm">
+          Bagaimana Donasi Anda Bekerja?
+        </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+          4 langkah transparan dari pendanaan bibit hingga pertumbuhan terpantau satelit secara akuntabel.
+        </p>
+</div>
+<!-- 4 Columns Process Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md relative">
+<!-- Step 1 -->
+<div class="group bg-surface-container-lowest p-space-lg rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between relative overflow-hidden">
+<div class="absolute top-0 right-0 w-24 h-24 bg-surface-container-low rounded-bl-full -mr-6 -mt-6 transition-all group-hover:bg-primary-fixed/30"></div>
+<div>
+<div class="flex items-center justify-between mb-space-md relative z-10">
+<span class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-primary font-headline-md text-headline-md font-bold">
+                01
+              </span>
+<span class="material-symbols-outlined text-[32px] text-primary">travel_explore</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-space-xs font-bold">Pilih Lahan</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              Pilih lokasi lahan kritis atau agroforestri produktif yang membutuhkan adopsi pohon berdasarkan profil ekologis &amp; risiko bencana lokal.
+            </p>
+</div>
+<div class="mt-space-lg pt-space-sm flex items-center gap-space-xs text-primary font-label-md text-label-md">
+<span>Audit Tapak WebGIS</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="group bg-surface-container-lowest p-space-lg rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between relative overflow-hidden">
+<div class="absolute top-0 right-0 w-24 h-24 bg-surface-container-low rounded-bl-full -mr-6 -mt-6 transition-all group-hover:bg-secondary-fixed/40"></div>
+<div>
+<div class="flex items-center justify-between mb-space-md relative z-10">
+<span class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-secondary font-headline-md text-headline-md font-bold">
+                02
+              </span>
+<span class="material-symbols-outlined text-[32px] text-secondary">payments</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-space-xs font-bold">Berdonasi</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              Kustomisasi jenis pohon &amp; sertifikat atas nama Anda atau korporasi. Transaksi escrow aman melalui payment gateway instan resmi.
+            </p>
+</div>
+<div class="mt-space-lg pt-space-sm flex items-center gap-space-xs text-secondary font-label-md text-label-md">
+<span>Sertifikat Digital VCS</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="group bg-surface-container-lowest p-space-lg rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between relative overflow-hidden">
+<div class="absolute top-0 right-0 w-24 h-24 bg-surface-container-low rounded-bl-full -mr-6 -mt-6 transition-all group-hover:bg-tertiary-fixed/40"></div>
+<div>
+<div class="flex items-center justify-between mb-space-md relative z-10">
+<span class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-tertiary font-headline-md text-headline-md font-bold">
+                03
+              </span>
+<span class="material-symbols-outlined text-[32px] text-tertiary">agriculture</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-space-xs font-bold">Petani Menanam</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              Kelompok tani mitra menanam bibit unggul, memupuk organik, dan mencatat koordinat geolokasi presisi langsung di lapangan via aplikasi terpadu.
+            </p>
+</div>
+<div class="mt-space-lg pt-space-sm flex items-center gap-space-xs text-tertiary font-label-md text-label-md">
+<span>Pemberdayaan Desa</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="group bg-surface-container-lowest p-space-lg rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between relative overflow-hidden">
+<div class="absolute top-0 right-0 w-24 h-24 bg-surface-container-low rounded-bl-full -mr-6 -mt-6 transition-all group-hover:bg-primary-fixed/40"></div>
+<div>
+<div class="flex items-center justify-between mb-space-md relative z-10">
+<span class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-primary-container font-headline-md text-headline-md font-bold">
+                04
+              </span>
+<span class="material-symbols-outlined text-[32px] text-primary-container">map</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-space-xs font-bold">Pantau via Peta</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              Akses WebGIS interaktif pribadi dengan foto pertumbuhan berkala, indeks kesehatan kanopi NDVI satelit, dan estimasi biomassa serapan karbon.
+            </p>
+</div>
+<div class="mt-space-lg pt-space-sm flex items-center gap-space-xs text-primary-container font-label-md text-label-md">
+<span>Telemetri NDVI Satelit</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Lahan Mendesak Membutuhkan Adopsi -->
+<section class="w-full bg-surface-container-lowest py-20 px-margin" id="katalog">
+<div class="max-w-7xl mx-auto flex flex-col">
+<!-- Section Top Navigation -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-space-xl gap-space-md">
+<div>
+<div class="inline-flex items-center gap-space-xs bg-secondary-container px-space-md py-1 rounded-full text-on-secondary-container font-label-sm text-label-sm font-semibold mb-space-xs">
+<span class="material-symbols-outlined text-[16px]">warning</span>
+<span>Prioritas Konservasi Musim Tanam 2024</span>
+</div>
+<h2 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">
+            Lahan Mendesak Membutuhkan Adopsi
+          </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">
+            Bantu penuhi kuota tanam sebelum musim penghujan berakhir untuk memaksimalkan tingkat kelangsungan hidup bibit.
+          </p>
+</div>
+<a class="inline-flex items-center gap-space-xs text-primary font-headline-sm text-headline-sm hover:underline self-start md:self-end" data-path="katalog-lahan" href="#">
+<span>Lihat Semua Lahan</span>
+<span class="material-symbols-outlined text-[20px]">trending_flat</span>
+</a>
+</div>
+<!-- 3 Urgent Land Cards Mosaic -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-lg">
+<!-- Card 1: Lereng Semeru -->
+<div class="bg-surface rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between">
+<div>
+<!-- Visual Land Preview -->
+<div class="relative h-52 w-full overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" data-alt="Steep mountainous hillside agroforestry parcel on the slopes of Mount Semeru East Java Indonesia, lush terraced fruit trees avocado and giant petung bamboo clumps, volcanic fertile dark earth, clear daytime atmosphere" src="/assets/reference/76d8f8a11a92384a9615.jpg">
+<div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-md px-2.5 py-1 rounded text-on-surface font-label-sm text-label-sm flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-primary text-[14px]">location_on</span>
+<span>Malang, Jawa Timur</span>
+</div>
+<div class="absolute top-3 right-3 bg-primary-container text-on-primary px-2.5 py-1 rounded-full font-label-sm text-label-sm font-semibold">
+                82% Terdanai
+              </div>
+</div>
+<!-- Card Content Body -->
+<div class="p-space-lg">
+<div class="flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm mb-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">nature</span>
+<span>Klaster Hutan Rakyat Sub-DAS Brantas</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold mb-space-xs">
+                Hutan Rakyat Lereng Semeru
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md line-clamp-2">
+                Restorasi sabuk hijau lereng vulkanik guna mencegah erosi tanah longsor sekaligus diversifikasi pangan petani lokal.
+              </p>
+<!-- Tags / Varietas -->
+<div class="mb-space-md flex flex-wrap gap-space-xs">
+<span class="bg-surface-container px-2 py-0.5 rounded text-on-surface font-label-sm text-label-sm">Alpukat Mentega</span>
+<span class="bg-surface-container px-2 py-0.5 rounded text-on-surface font-label-sm text-label-sm">Bambu Petung</span>
+<span class="bg-surface-container px-2 py-0.5 rounded text-on-surface font-label-sm text-label-sm">Sengon Jawa</span>
+</div>
+<!-- Progress Bar Data -->
+<div class="space-y-space-xs mb-space-md">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Terkumpul: <strong class="text-on-surface">1.230</strong> / 1.500 Pohon</span>
+<span class="text-primary font-semibold">Sisa 270 Pohon</span>
+</div>
+<div class="w-full h-2.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 82%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Action & Pricing -->
+<div class="p-space-lg pt-0 flex items-center justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Donasi Adopsi</span>
+<span class="font-headline-sm text-headline-sm text-primary font-bold">Rp 45.000<span class="font-body-sm text-body-sm font-normal text-on-surface-variant">/pohon</span></span>
+</div>
+<button class="inline-flex items-center gap-space-xs bg-primary-container hover:bg-primary text-surface-container-lowest font-headline-sm text-headline-sm px-4 py-2.5 rounded-lg shadow-sm transition-colors" type="button">
+<span>Adopsi Sekarang</span>
+<span class="material-symbols-outlined text-[18px]">add_task</span>
+</button>
+</div>
+</div>
+<!-- Card 2: DAS Citarum Hulu -->
+<div class="bg-surface rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between">
+<div>
+<!-- Visual Land Preview -->
+<div class="relative h-52 w-full overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" data-alt="Lush green agroforestry high altitude plantation in Bandung West Java overlooking rolling mist covered mountains, shade grown Arabica coffee bushes under tall Suren forest timber canopy, high clarity ecological conservation photography" src="/assets/reference/a516fc10423ca57cf231.jpg">
+<div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-md px-2.5 py-1 rounded text-on-surface font-label-sm text-label-sm flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-primary text-[14px]">location_on</span>
+<span>Bandung, Jawa Barat</span>
+</div>
+<div class="absolute top-3 right-3 bg-secondary-container text-on-secondary-container px-2.5 py-1 rounded-full font-label-sm text-label-sm font-semibold">
+                Sisa 270 Pohon!
+              </div>
+</div>
+<!-- Card Content Body -->
+<div class="p-space-lg">
+<div class="flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm mb-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">nature</span>
+<span>Kawasan Lindung Tangkapan Air Hulu</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold mb-space-xs">
+                Restorasi DAS Citarum Hulu
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md line-clamp-2">
+                Agroforestri kopi konservasi guna memulihkan sedimentasi sungai kritis dan memberdayakan komunitas petani kopi pegunungan.
+              </p>
+<!-- Tags / Varietas -->
+<div class="mb-space-md flex flex-wrap gap-space-xs">
+<span class="bg-surface-container px-2 py-0.5 rounded text-on-surface font-label-sm text-label-sm">Kopi Arabika</span>
+<span class="bg-surface-container px-2 py-0.5 rounded text-on-surface font-label-sm text-label-sm">Kayu Suren</span>
+<span class="bg-surface-container px-2 py-0.5 rounded text-on-surface font-label-sm text-label-sm">Puspa</span>
+</div>
+<!-- Progress Bar Data -->
+<div class="space-y-space-xs mb-space-md">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Terkumpul: <strong class="text-on-surface">2.730</strong> / 3.000 Pohon</span>
+<span class="text-secondary font-semibold">91% Terpenuhi</span>
+</div>
+<div class="w-full h-2.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container rounded-full" style="width: 91%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Action & Pricing -->
+<div class="p-space-lg pt-0 flex items-center justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Donasi Adopsi</span>
+<span class="font-headline-sm text-headline-sm text-primary font-bold">Rp 35.000<span class="font-body-sm text-body-sm font-normal text-on-surface-variant">/pohon</span></span>
+</div>
+<button class="inline-flex items-center gap-space-xs bg-primary-container hover:bg-primary text-surface-container-lowest font-headline-sm text-headline-sm px-4 py-2.5 rounded-lg shadow-sm transition-colors" type="button">
+<span>Adopsi Sekarang</span>
+<span class="material-symbols-outlined text-[18px]">add_task</span>
+</button>
+</div>
+</div>
+<!-- Card 3: Teluk Youtefa Papua -->
+<div class="bg-surface rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between">
+<div>
+<!-- Visual Land Preview -->
+<div class="relative h-52 w-full overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" data-alt="Intact rich coastal mangrove forest in Youtefa Bay Jayapura Papua, emerald green tidal brackish waters with dense aerial stilt roots of Rhizophora trees, blue tropical sky with vibrant ecosystem wildlife" src="/assets/reference/033768ba0599d703dcf9.jpg">
+<div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-md px-2.5 py-1 rounded text-on-surface font-label-sm text-label-sm flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-primary text-[14px]">location_on</span>
+<span>Jayapura, Papua</span>
+</div>
+<div class="absolute top-3 right-3 bg-primary-container text-on-primary px-2.5 py-1 rounded-full font-label-sm text-label-sm font-semibold">
+                74% Terdanai
+              </div>
+</div>
+<!-- Card Content Body -->
+<div class="p-space-lg">
+<div class="flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm mb-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">water_drop</span>
+<span>Blue Carbon Pesisir Pasifik</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold mb-space-xs">
+                Mangrove Teluk Youtefa
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md line-clamp-2">
+                Pemulihan sabuk pelindung pesisir adat dari abrasi laut dan penguatan habitat kepiting bakau bagi perempuan nelayan Port Numbay.
+              </p>
+<!-- Tags / Varietas -->
+<div class="mb-space-md flex flex-wrap gap-space-xs">
+<span class="bg-surface-container px-2 py-0.5 rounded text-on-surface font-label-sm text-label-sm">Rhizophora Apiculata</span>
+<span class="bg-surface-container px-2 py-0.5 rounded text-on-surface font-label-sm text-label-sm">Sonneratia Alba</span>
+</div>
+<!-- Progress Bar Data -->
+<div class="space-y-space-xs mb-space-md">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Terkumpul: <strong class="text-on-surface">1.480</strong> / 2.000 Pohon</span>
+<span class="text-primary font-semibold">Sisa 520 Pohon</span>
+</div>
+<div class="w-full h-2.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 74%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Action & Pricing -->
+<div class="p-space-lg pt-0 flex items-center justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Donasi Adopsi</span>
+<span class="font-headline-sm text-headline-sm text-primary font-bold">Rp 50.000<span class="font-body-sm text-body-sm font-normal text-on-surface-variant">/pohon</span></span>
+</div>
+<button class="inline-flex items-center gap-space-xs bg-primary-container hover:bg-primary text-surface-container-lowest font-headline-sm text-headline-sm px-4 py-2.5 rounded-lg shadow-sm transition-colors" type="button">
+<span>Adopsi Sekarang</span>
+<span class="material-symbols-outlined text-[18px]">add_task</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Trust Badges & Partner Logos -->
+<div class="mt-space-xl pt-space-lg bg-surface-container-low rounded-xl p-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary-container shadow-sm">
+<span class="material-symbols-outlined text-[26px]">verified_user</span>
+</div>
+<div>
+<span class="font-headline-sm text-headline-sm text-on-surface block font-bold">Standar Sertifikasi &amp; Verifikasi Ketat</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Setiap pohon diinspeksi secara geospasial dan terdaftar di buku besar digital.</span>
+</div>
+</div>
+<!-- Verification Tokens -->
+<div class="flex flex-wrap items-center gap-space-md">
+<div class="flex items-center gap-space-xs bg-surface-container-lowest px-3 py-1.5 rounded-md shadow-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">KTH Agroforestri Mandiri</span>
+</div>
+<div class="flex items-center gap-space-xs bg-surface-container-lowest px-3 py-1.5 rounded-md shadow-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Audit Spasial Sentinel-2</span>
+</div>
+<div class="flex items-center gap-space-xs bg-surface-container-lowest px-3 py-1.5 rounded-md shadow-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">VCS Verra Methodology</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 4: WebGIS Satellite Transparency Banner -->
+<section class="w-full bg-surface py-16 px-margin">
+<div class="max-w-7xl mx-auto bg-inverse-surface rounded-2xl overflow-hidden shadow-xl text-surface-container-lowest grid grid-cols-1 lg:grid-cols-12 items-stretch">
+<!-- Left Editorial Text Content -->
+<div class="lg:col-span-6 p-space-xl flex flex-col justify-center">
+<div class="inline-flex items-center gap-space-xs text-primary-fixed mb-space-sm font-label-sm text-label-sm uppercase font-semibold">
+<span class="material-symbols-outlined text-[16px]">public</span>
+<span>Teknologi WebGIS Donatur</span>
+</div>
+<h2 class="font-headline-xl text-headline-xl text-surface-container-lowest tracking-tight mb-space-md">
+          Pantau Pertumbuhan Pohon Anda Langsung Dari Satelit.
+        </h2>
+<p class="font-body-md text-body-md text-surface-container-high leading-relaxed mb-space-lg">
+          Bukan sekadar menanam, TreeFund memberikan tautan peta interaktif WebGIS khusus untuk setiap pohon Anda. Periksa foto lapangan geotagged, grafik indeks kehijauan (NDVI), dan perhitungan biomasa riil secara berkala dari kenyamanan ponsel Anda.
+        </p>
+<div class="flex flex-wrap items-center gap-space-md">
+<a class="inline-flex items-center gap-space-sm bg-primary-fixed text-on-primary-fixed hover:bg-surface-container-lowest font-headline-sm text-headline-sm px-6 py-3 rounded-lg shadow-sm transition-colors" data-path="peta-webgis-donatur" href="#">
+<span>Buka Demo WebGIS</span>
+<span class="material-symbols-outlined text-[20px]">explore</span>
+</a>
+<span class="font-label-sm text-label-sm text-surface-container-high flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary-fixed">check</span>
+            Resolusi hingga 10m/pixel
+          </span>
+</div>
+</div>
+<!-- Right Interactive Map Showcase Mockup -->
+<div class="lg:col-span-6 relative min-h-[300px] lg:min-h-full bg-surface-container-highest">
+<div class="w-full h-full bg-cover bg-center min-h-[320px]" data-location="Mount Semeru Agroforestry Reserve, Lumajang, Indonesia" style="background-image: url('/assets/reference/dbc915f3ca6e4fbc351e.jpg')"></div>
+<!-- GIS Map HUD Overlay -->
+<div class="absolute bottom-4 left-4 right-4 bg-inverse-surface/85 backdrop-blur-md p-space-md rounded-lg shadow-lg text-surface-container-lowest flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary-fixed text-[24px]">satellite</span>
+<div>
+<span class="font-label-sm text-label-sm block text-primary-fixed font-semibold">Polygon ID: #KTH-SMR-092</span>
+<span class="font-body-sm text-body-sm text-surface-container-high">Lat: -8.1082° S | Lon: 112.9221° E</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-label-sm text-label-sm block text-surface-container-high">Indeks NDVI</span>
+<span class="font-headline-sm text-headline-sm text-primary-fixed font-bold">0.78 (Sehat)</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div></main><footer class="w-full bg-surface-container-low"><div class="max-w-7xl mx-auto px-margin pt-space-xl pb-space-lg"><div class="grid grid-cols-1 md:grid-cols-4 gap-space-lg pb-space-xl"><div class="md:col-span-2 space-y-space-sm"><div class="flex items-center gap-space-xs"><img alt="TreeFund Logo" class="h-6 w-auto object-contain" src="/assets/reference/ecbd9b297493d4c2a355.jpg"><span class="font-headline-sm text-headline-sm text-primary-container">TreeFund</span></div><p class="font-body-sm text-body-sm text-on-surface-variant max-w-md">Platform gotong royong dan adopsi pohon agroforestri dengan audit berbasis WebGIS satelit presisi tinggi untuk restorasi ekosistem nusantara.</p><div class="inline-flex items-center gap-space-sm bg-surface-container-lowest px-space-md py-space-xs rounded-full shadow-[0_1px_3px_rgba(27,35,30,0.04)]"><span class="material-symbols-outlined text-primary-container text-[18px]">eco</span><span class="font-label-sm text-label-sm text-primary-container">Terverifikasi SRN PPI &amp; VCS Agroforestry Verra</span></div></div><div><h4 class="font-headline-sm text-headline-sm text-on-surface mb-space-sm">Eksplorasi</h4><ul class="space-y-space-xs"><li class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface"><a href="#">Katalog Klaster</a></li><li class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface"><a href="#">Peta NDVI Satelit</a></li><li class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface"><a href="#">Kalkulator Karbon</a></li><li class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface"><a href="#">Mitra Petani</a></li></ul></div><div><h4 class="font-headline-sm text-headline-sm text-on-surface mb-space-sm">Dampak Terukur</h4><div class="space-y-space-xs"><div class="bg-surface-container-lowest p-space-sm rounded-lg"><span class="block font-label-sm text-label-sm text-on-surface-variant">Total Serapan Karbon</span><span class="font-headline-md text-headline-md text-primary-container">14.280 Ton CO2e</span></div><span class="block font-label-sm text-label-sm text-on-surface-variant">Pembaruan telemetri GIS: Real-time Sentinel-2</span></div></div></div><div class="pt-space-md flex flex-col md:flex-row items-center justify-between gap-space-sm"><p class="font-label-sm text-label-sm text-on-surface-variant">© 2024 TreeFund Platform Nusantara. Hak Cipta Dilindungi.</p><div class="flex items-center gap-space-md"><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface" href="#">Ketentuan Layanan</a><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface" href="#">Kebijakan Privasi Spasial</a><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface" href="#">Laporan Audit</a></div></div></div></footer></body></html>

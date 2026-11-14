@@ -10,10 +10,11 @@ class PublicController extends Controller
 {
     public function home(): mixed
     {
-        $featuredOffers = Offer::published()->with('plot.partner')
+        $featuredOffers = Offer::with('plot.partner')->where('active', true)
+            ->whereHas('plot', fn ($query) => $query->where('status', 'approved')->whereHas('partner', fn ($partner) => $partner->where('status', 'approved')))
             ->latest('id')->limit(3)->get();
 
-        return view('landing', ['featuredOffers' => $featuredOffers, 'publicStats' => ['planted' => 0, 'reports' => 0]]);
+        return view('landing', compact('featuredOffers'));
     }
 
     public function information(string $topic): mixed
@@ -38,8 +39,9 @@ class PublicController extends Controller
 
     public function mapData(Request $request): mixed
     {
-        $plots = Plot::with(['partner', 'offers' => fn ($query) => $query->published()])
-            ->whereHas('offers', fn ($query) => $query->published())->get();
+        $plots = Plot::with('partner', 'offers')->where('status', 'approved')
+            ->whereHas('partner', fn ($query) => $query->where('status', 'approved'))
+            ->whereHas('offers', fn ($query) => $query->where('active', true))->get();
 
         return response()->json($plots->map(fn ($plot) => [
             'name' => $plot->name, 'location' => $plot->location,

@@ -29,7 +29,6 @@ class DisbursementService
     {
         return DB::transaction(function () use ($work, $rule) {
             $work = WorkOrder::lockForUpdate()->findOrFail($work->id);
-            $rule = TerminRule::lockForUpdate()->findOrFail($rule->id);
             if (! $this->eligible($work, $rule)) {
                 throw ValidationException::withMessages(['termin_rule_id' => 'Milestone termin belum terpenuhi.']);
             }
@@ -42,7 +41,7 @@ class DisbursementService
             if ($amount < 1 || $used + $amount > $work->allocated_amount) {
                 throw ValidationException::withMessages(['termin_rule_id' => 'Total pencairan melebihi alokasi dana.']);
             }
-            $row = Disbursement::updateOrCreate(['work_order_id' => $work->id, 'termin_rule_id' => $rule->id], ['amount' => $amount, 'status' => 'pending', 'note' => null, 'approved_by' => null, 'submission_version' => ($current?->submission_version ?? 0) + 1]);
+            $row = Disbursement::updateOrCreate(['work_order_id' => $work->id, 'termin_rule_id' => $rule->id], ['amount' => $amount, 'status' => 'pending', 'note' => null]);
             app(ActivityService::class)->audit('disbursement.submitted', $row);
             app(ActivityService::class)->notifyAdmins('Pengajuan pencairan baru', 'Mitra mengajukan '.$rule->name.'.', '/admin/disbursements');
 

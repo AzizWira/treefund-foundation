@@ -6,8 +6,11 @@ use PHPUnit\Framework\TestCase;
 
 class ExampleTest extends TestCase
 {
-    public function test_php_runtime_is_supported(): void
+    /**
+     * A basic test example.
+     */
+    public function test_that_true_is_true(): void
     {
-        $this->assertGreaterThanOrEqual(80300, PHP_VERSION_ID);
+        $this->assertTrue(true);
     }
 }

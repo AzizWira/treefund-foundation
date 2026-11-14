@@ -1,0 +1,308 @@
+{
+  "note": "URL dengan ID menggunakan data demonstrasi. Sesuaikan ID pada instalasi lain.",
+  "viewports": {
+    "desktop": {
+      "width": 1440,
+      "height": 1000
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  "screens": [
+    {
+      "id": "01",
+      "role": "Publik",
+      "title": "Beranda",
+      "url": "/",
+      "reference": "resources/reference/treefund_landing_page_beranda.html"
+    },
+    {
+      "id": "02",
+      "role": "Publik",
+      "title": "Login",
+      "url": "/login",
+      "reference": null
+    },
+    {
+      "id": "03",
+      "role": "Publik",
+      "title": "Registrasi",
+      "url": "/register",
+      "reference": null
+    },
+    {
+      "id": "04",
+      "role": "Donatur",
+      "title": "Dashboard",
+      "url": "/dashboard",
+      "reference": null
+    },
+    {
+      "id": "05",
+      "role": "Donatur",
+      "title": "Katalog Lahan",
+      "url": "/donor/catalog",
+      "reference": "resources/reference/treefund_donatur_katalog_lahan_agroforestri_desktop.html"
+    },
+    {
+      "id": "06",
+      "role": "Donatur",
+      "title": "Checkout",
+      "url": "/checkout/1",
+      "reference": "resources/reference/treefund_donatur_katalog_lahan_checkout.html"
+    },
+    {
+      "id": "07",
+      "role": "Donatur",
+      "title": "Pembayaran & Detail Pesanan",
+      "url": "/orders/1",
+      "reference": null
+    },
+    {
+      "id": "08",
+      "role": "Donatur",
+      "title": "Riwayat Transaksi",
+      "url": "/orders",
+      "reference": "resources/reference/treefund_donatur_riwayat_transaksi_e_sertifikat.html"
+    },
+    {
+      "id": "09",
+      "role": "Donatur",
+      "title": "E-Sertifikat",
+      "url": "/certificates",
+      "reference": null
+    },
+    {
+      "id": "10",
+      "role": "Donatur",
+      "title": "Peta dan Timeline Pohon",
+      "url": "/trees",
+      "reference": "resources/reference/treefund_donatur_dashboard_webgis.html"
+    },
+    {
+      "id": "11",
+      "role": "Mitra",
+      "title": "Dashboard",
+      "url": "/dashboard",
+      "reference": "resources/reference/treefund_petani_dashboard_ringkasan_desktop.html"
+    },
+    {
+      "id": "12",
+      "role": "Mitra",
+      "title": "Profil Kemitraan",
+      "url": "/partner/partnership",
+      "reference": "resources/reference/treefund_petani_pengajuan_kemitraan_lahan_desktop_1.html"
+    },
+    {
+      "id": "13",
+      "role": "Mitra",
+      "title": "Pengajuan Lahan",
+      "url": "/partner/plots",
+      "reference": "resources/reference/treefund_petani_pengajuan_kemitraan_lahan_desktop_2.html"
+    },
+    {
+      "id": "14",
+      "role": "Mitra",
+      "title": "Daftar Work Order",
+      "url": "/partner/work-orders",
+      "reference": "resources/reference/treefund_petani_dashboard_work_order.html"
+    },
+    {
+      "id": "15",
+      "role": "Mitra",
+      "title": "Bukti Penanaman",
+      "url": "/partner/work-orders/1",
+      "reference": "resources/reference/treefund_petani_work_order_input_tanam_desktop.html"
+    },
+    {
+      "id": "16",
+      "role": "Mitra",
+      "title": "Log Monitoring",
+      "url": "/partner/monitoring",
+      "reference": "resources/reference/treefund_petani_input_bukti_tanam_monitoring.html"
+    },
+    {
+      "id": "17",
+      "role": "Mitra",
+      "title": "Pencairan Dana",
+      "url": "/partner/funds",
+      "reference": "resources/reference/treefund_petani_pengajuan_pencairan_dana_desktop_1.html"
+    },
+    {
+      "id": "18",
+      "role": "Mitra",
+      "title": "Anggota Kelompok",
+      "url": "/partner/members",
+      "reference": "resources/reference/treefund_petani_data_anggota_poktan_desktop.html"
+    },
+    {
+      "id": "19",
+      "role": "Admin",
+      "title": "Dashboard",
+      "url": "/dashboard",
+      "reference": "resources/reference/treefund_admin_dashboard_overview.html"
+    },
+    {
+      "id": "20",
+      "role": "Admin",
+      "title": "Verifikasi Mitra",
+      "url": "/admin/partners",
+      "reference": null
+    },
+    {
+      "id": "21",
+      "role": "Admin",
+      "title": "Verifikasi Lahan",
+      "url": "/admin/plots",
+      "reference": "resources/reference/treefund_admin_verifikasi_lahan_baru.html"
+    },
+    {
+      "id": "22",
+      "role": "Admin",
+      "title": "Verifikasi Bukti Tanam",
+      "url": "/admin/plantings",
+      "reference": "resources/reference/treefund_admin_tabel_verifikasi_bukti_tanam.html"
+    },
+    {
+      "id": "23",
+      "role": "Admin",
+      "title": "Verifikasi Monitoring",
+      "url": "/admin/monitorings",
+      "reference": "resources/reference/treefund_admin_verifikasi_monitoring_berkala.html"
+    },
+    {
+      "id": "24",
+      "role": "Admin",
+      "title": "Katalog",
+      "url": "/admin/catalog",
+      "reference": null
+    },
+    {
+      "id": "25",
+      "role": "Admin",
+      "title": "Pencairan dan Alokasi",
+      "url": "/admin/disbursements",
+      "reference": "resources/reference/treefund_admin_verifikasi_pencairan_dana.html"
+    },
+    {
+      "id": "26",
+      "role": "Admin",
+      "title": "Rekapitulasi",
+      "url": "/admin/reports",
+      "reference": null
+    },
+    {
+      "id": "27",
+      "role": "Admin",
+      "title": "Pengaturan dan Audit",
+      "url": "/admin/settings",
+      "reference": null
+    },
+    {
+      "id": "28",
+      "role": "Semua Peran",
+      "title": "Profil Akun",
+      "url": "/settings",
+      "reference": "resources/reference/treefund_petani_pengaturan_akun_desktop.html"
+    },
+    {
+      "id": "29",
+      "role": "Semua Peran",
+      "title": "Notifikasi",
+      "url": "/notifications",
+      "reference": null
+    },
+    {
+      "title": "Katalog Website",
+      "url": "/catalog",
+      "reference": null,
+      "role": "Publik",
+      "id": "30"
+    },
+    {
+      "title": "Peta Lahan",
+      "url": "/peta",
+      "reference": null,
+      "role": "Publik",
+      "id": "31"
+    },
+    {
+      "title": "Tentang TreeFund",
+      "url": "/informasi/tentang",
+      "reference": null,
+      "role": "Publik",
+      "id": "32"
+    },
+    {
+      "title": "FAQ",
+      "url": "/faq",
+      "reference": null,
+      "role": "Publik",
+      "id": "33"
+    },
+    {
+      "title": "Cara Kerja",
+      "url": "/informasi/cara-kerja",
+      "reference": null,
+      "role": "Publik",
+      "id": "34"
+    },
+    {
+      "title": "Transparansi",
+      "url": "/informasi/transparansi",
+      "reference": null,
+      "role": "Publik",
+      "id": "35"
+    },
+    {
+      "title": "Privasi",
+      "url": "/informasi/privasi",
+      "reference": null,
+      "role": "Publik",
+      "id": "36"
+    },
+    {
+      "title": "Ketentuan",
+      "url": "/informasi/ketentuan",
+      "reference": null,
+      "role": "Publik",
+      "id": "37"
+    },
+    {
+      "reference": null,
+      "title": "Verifikasi Email Kode atau Tautan",
+      "role": "Akun Belum Terverifikasi",
+      "id": "38",
+      "url": "/email/verify"
+    },
+    {
+      "reference": null,
+      "title": "Lupa Kata Sandi",
+      "role": "Publik",
+      "id": "39",
+      "url": "/forgot-password"
+    },
+    {
+      "reference": null,
+      "title": "Reset Kata Sandi",
+      "role": "Publik",
+      "id": "40",
+      "url": "/reset-password/TOKEN"
+    }
+  ],
+  "states": [
+    "empty",
+    "validation_error",
+    "pending",
+    "approved",
+    "revision",
+    "payment_pending",
+    "payment_paid",
+    "payment_failed",
+    "payment_expired",
+    "quota_full",
+    "network_error"
+  ]
+}

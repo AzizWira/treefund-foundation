@@ -9,7 +9,6 @@ class MidtransWebhookController extends Controller
 {
     public function __invoke(Request $request, MidtransService $service): mixed
     {
-        abort_unless(config('treefund.midtrans.enabled'), 404);
         $payload = $request->validate(['order_id' => 'required|string|max:50', 'status_code' => 'required|string|max:5', 'gross_amount' => 'required|numeric', 'signature_key' => 'required|string|size:128']);
         $service->notification($payload);
 

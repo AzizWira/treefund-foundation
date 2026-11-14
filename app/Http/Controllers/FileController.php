@@ -6,39 +6,45 @@ use App\Models\Disbursement;
 use App\Models\Monitoring;
 use App\Models\Partner;
 use App\Models\Planting;
-use App\Services\PrivateEvidenceService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
 {
-    public function __invoke(Request $request, string $type, int $id, PrivateEvidenceService $evidence): mixed
+    public function __invoke(Request $request, string $type, int $id): mixed
     {
-        if ($type === 'transfer') {
-            $row = Disbursement::with('workOrder')->findOrFail($id);
-            $user = $request->user();
-            abort_unless(($user->role === 'admin' && $user->can_manage_finance) || ($user->role === 'partner' && $user->partner && $row->workOrder->partner_id === $user->partner->id), 403);
-            abort_unless($row->status === 'paid', 404);
-
-            return $evidence->respond($request, $row->proof, 'Bukti Transfer', $type, $id);
-        }
-
-        if (in_array($type, ['planting', 'monitoring'], true)) {
-            $row = ($type === 'planting' ? Planting::class : Monitoring::class)::with('tree.item.workOrder', 'tree.item.adoption')->findOrFail($id);
-            $user = $request->user();
-            $item = $row->tree->item;
-            $allowed = $user->role === 'admin'
-                || ($user->role === 'partner' && $user->partner && $item->workOrder?->partner_id === $user->partner->id)
-                || ($user->role === 'donor' && $item->adoption->user_id === $user->id && $item->adoption->status === 'paid' && $row->status === 'approved');
-            abort_unless($allowed, 403);
-
-            return $evidence->respond($request, $row->photo, $type === 'planting' ? 'Bukti Penanaman' : 'Bukti Monitoring', $type, $id);
-        }
-
-        abort_unless($type === 'legal', 404);
-        $row = Partner::findOrFail($id);
+        $types = ['legal' => Partner::class, 'planting' => Planting::class, 'monitoring' => Monitoring::class, 'transfer' => Disbursement::class];
+        abort_unless(isset($types[$type]), 404);
+        $row = $types[$type]::findOrFail($id);
         $user = $request->user();
-        abort_unless($user->role === 'admin' || $row->user_id === $user->id, 403);
+        if ($type === 'legal') {
+            $allowed = $user->role === 'admin' || $row->user_id === $user->id;
+        } elseif ($type === 'transfer') {
+            $allowed = ($user->role === 'admin' && $user->can_manage_finance) || $row->workOrder->partner->user_id === $user->id;
+        } else {
+            $allowed = $user->role === 'admin' || $row->tree->item->offer->plot->partner->user_id === $user->id || ($row->status === 'approved' && $row->tree->item->adoption->user_id === $user->id);
+        }
+        abort_unless($allowed, 403);
+        $file = match ($type) {
+            'legal' => $row->document,'transfer' => $row->proof,default => $row->photo
+        };
+        abort_unless($file && Storage::disk('local')->exists($file), 404);
 
-        return $evidence->respond($request, $row->document, 'Dokumen Legalitas Kelompok Tani', $type, $id);
+        if ($request->boolean('download')) {
+            return Storage::disk('local')->download($file, null, ['X-Content-Type-Options' => 'nosniff', 'Cache-Control' => 'private, no-store']);
+        }
+        if ($request->boolean('preview')) {
+            $title = match ($type) {
+                'legal' => 'Dokumen Legalitas Kelompok Tani',
+                'planting' => 'Dokumentasi Bukti Tanam',
+                'monitoring' => 'Dokumentasi Monitoring',
+                'transfer' => 'Bukti Transfer',
+            };
+            $mime = Storage::disk('local')->mimeType($file) ?: 'application/octet-stream';
+
+            return view('file-preview', compact('title', 'mime', 'type', 'id'));
+        }
+
+        return Storage::disk('local')->response($file, null, ['X-Content-Type-Options' => 'nosniff', 'Cache-Control' => 'private, no-store']);
     }
 }

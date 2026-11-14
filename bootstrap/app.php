@@ -19,5 +19,5 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->dontFlash(['current_password', 'password', 'password_confirmation', 'code', 'token']);
-        $exceptions->shouldRenderJsonWhen(fn (Request $r) => $r->expectsJson());
+        $exceptions->shouldRenderJsonWhen(fn (Request $r) => $r->is('payments/midtrans/notification') || $r->expectsJson());
     })->create();

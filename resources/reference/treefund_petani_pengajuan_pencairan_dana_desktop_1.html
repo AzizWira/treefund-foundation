@@ -1,0 +1,823 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="web_dashboard" name="shell-type">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet">
+<style>
+    @layer base {
+      html, body { margin:0; padding:0; }
+      body { overscroll-behavior:none; }
+      main>:first-child { margin-top:0!important; }
+      main>:last-child { margin-bottom:0!important; }
+    }
+    ::-webkit-scrollbar { display:none; }
+  </style>
+<script src="https://cdn.tailwindcss.com"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#0f5238",
+            "on-tertiary-fixed-variant": "#5b4300",
+            "on-background": "#191d1a",
+            "on-secondary-fixed": "#321300",
+            "on-error": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "secondary": "#855232",
+            "surface-tint": "#2c694e",
+            "inverse-surface": "#2d312e",
+            "outline": "#707973",
+            "secondary-fixed-dim": "#fab890",
+            "surface-container-lowest": "#ffffff",
+            "tertiary": "#5b4400",
+            "on-error-container": "#93000a",
+            "tertiary-container": "#795a00",
+            "secondary-fixed": "#ffdbc8",
+            "surface-container-low": "#f1f4ef",
+            "primary-container": "#2d6a4f",
+            "background": "#f7faf5",
+            "surface-bright": "#f7faf5",
+            "surface-container": "#ecefe9",
+            "on-secondary-container": "#794829",
+            "on-surface": "#191d1a",
+            "on-primary-container": "#a8e7c5",
+            "surface-variant": "#e0e3de",
+            "surface": "#f7faf5",
+            "error-container": "#ffdad6",
+            "secondary-container": "#fdbb93",
+            "surface-dim": "#d8dbd6",
+            "tertiary-fixed-dim": "#f1c048",
+            "surface-container-high": "#e6e9e4",
+            "error": "#ba1a1a",
+            "on-primary": "#ffffff",
+            "outline-variant": "#bfc9c1",
+            "on-primary-fixed": "#002114",
+            "primary-fixed-dim": "#95d4b3",
+            "on-primary-fixed-variant": "#0e5138",
+            "on-tertiary-container": "#ffd473",
+            "inverse-primary": "#95d4b3",
+            "surface-container-highest": "#e0e3de",
+            "inverse-on-surface": "#eff2ec",
+            "on-surface-variant": "#404943",
+            "on-secondary": "#ffffff",
+            "tertiary-fixed": "#ffdf9c",
+            "primary-fixed": "#b1f0ce",
+            "on-tertiary-fixed": "#251a00",
+            "on-secondary-fixed-variant": "#693b1d"
+          },
+          borderRadius: {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          spacing: {
+            "gutter-mobile": "0.75rem",
+            "space-xl": "2rem",
+            "space-md": "1rem",
+            "margin-mobile": "1rem",
+            "space-lg": "1.5rem",
+            "space-xs": "0.25rem",
+            "gutter": "1.5rem",
+            "margin": "2rem",
+            "space-sm": "0.5rem"
+          },
+          fontFamily: {
+            "label-sm": ["Inter"],
+            "label-md": ["Inter"],
+            "headline-xl-mobile": ["Plus Jakarta Sans"],
+            "body-lg": ["Inter"],
+            "headline-xl": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-md": ["Inter"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Inter"],
+            "headline-sm": ["Plus Jakarta Sans"]
+          },
+          fontSize: {
+            "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "600"}],
+            "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+            "headline-xl-mobile": ["26px", {"lineHeight": "34px", "fontWeight": "700"}],
+            "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+            "headline-xl": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+            "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+            "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+            "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+            "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+            "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "700"}]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-background font-body-md text-on-surface antialiased">
+<!-- SIDEBAR KIRI (Deep Forest Green / Inverse Surface, lebar 260px) -->
+<aside class="fixed left-0 top-0 h-screen w-[260px] bg-inverse-surface text-inverse-on-surface z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+<div class="flex flex-col flex-1 overflow-y-auto">
+<!-- Brand Header -->
+<div class="px-space-md pt-space-md pb-space-sm flex items-center gap-space-sm">
+<img alt="TreeFund brand logo icon" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WKHhxXOVNnR6_N5BLXIh3coYtXGJmja0nBni9Uf0e_LAtyB5Tv8uq20jHbIMR9XZB7uMuFfW_lS_5rdIdDCtnwrPQcnvAxyO5Dct0LTN5KyJvwuL81dMPb8omDH6BQa-ztgQW-HarDCgQ_ezFQM-pr7fYjmfWKsEl9yp2ZCnxm3wzgREC5vtKsncjTbnqfQqTgB6ApYMFlE0Sx5m6Nb0mu-WkjWEBySgYPsBkseV3lC1nBVYipdMT4Rg">
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-surface-container-lowest leading-none">TreeFund</span>
+<span class="font-label-sm text-label-sm text-primary-fixed-dim uppercase tracking-wider mt-0.5">Mitra Petani</span>
+</div>
+</div>
+<div class="px-space-md pb-space-md">
+<div class="inline-flex items-center px-space-sm py-space-xs rounded bg-primary text-primary-fixed font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px] mr-1">verified</span>Portal Mitra Poktan
+      </div>
+</div>
+<!-- Navigation Menu Items -->
+<nav class="flex-1 px-space-sm space-y-space-xs">
+<a class="flex items-center gap-space-sm px-space-md py-space-sm rounded font-body-md text-body-md text-surface-variant hover:bg-surface-variant/20 hover:text-on-surface transition-colors" data-path="dashboard-ringkasan" href="#">
+<span class="material-symbols-outlined text-[20px]">grid_view</span>
+<span>Dashboard Ringkasan</span>
+</a>
+<a class="flex items-center gap-space-sm px-space-md py-space-sm rounded font-body-md text-body-md text-surface-variant hover:bg-surface-variant/20 hover:text-on-surface transition-colors" data-path="work-order-tanam" href="#">
+<span class="material-symbols-outlined text-[20px]">assignment</span>
+<span>Work Order Tanam</span>
+</a>
+<a class="flex items-center gap-space-sm px-space-md py-space-sm rounded font-body-md text-body-md text-surface-variant hover:bg-surface-variant/20 hover:text-on-surface transition-colors" data-path="data-anggota-poktan" href="#">
+<span class="material-symbols-outlined text-[20px]">groups</span>
+<span>Data Anggota Poktan</span>
+</a>
+<a class="flex items-center gap-space-sm px-space-md py-space-sm rounded font-body-md text-body-md text-surface-variant hover:bg-surface-variant/20 hover:text-on-surface transition-colors" data-path="pengajuan-kemitraan" href="#">
+<span class="material-symbols-outlined text-[20px]">handshake</span>
+<span>Pengajuan Kemitraan</span>
+</a>
+<!-- Active Item: Pencairan Dana Escrow -->
+<a aria-current="page" class="flex items-center gap-space-sm px-space-md py-space-sm transition-colors bg-primary-container text-on-primary font-label-md rounded shadow-sm" data-path="pencairan-dana-escrow" href="#">
+<span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+<span class="font-medium">Pencairan Dana Escrow</span>
+</a>
+<a class="flex items-center gap-space-sm px-space-md py-space-sm rounded font-body-md text-body-md text-surface-variant hover:bg-surface-variant/20 hover:text-on-surface transition-colors" data-path="pengaturan-akun" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span>Pengaturan Akun</span>
+</a>
+</nav>
+</div>
+<!-- Bottom Profile & Status -->
+<div class="p-space-md bg-inverse-surface/80 flex flex-col gap-space-sm border-t border-surface-container-highest/10">
+<div class="flex items-center justify-between px-space-sm py-space-xs rounded bg-surface-container-highest/20">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary-fixed animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-primary-fixed">RTK GNSS Fix</span>
+</div>
+<span class="font-label-sm text-label-sm text-surface-dim font-mono">±1.4cm</span>
+</div>
+<div class="flex items-center gap-space-sm pt-space-xs">
+<img alt="Profile Joko Susilo" class="w-8 h-8 rounded-full object-cover ring-1 ring-primary-fixed/30" src="https://lh3.googleusercontent.com/aida/AEtjO1XPwEMrV0aMCe1BPdiXlJD2rpFjkSbbgeNlX15X3cSEqj5dPhID85aa_WcoKawf9CePVCr8g5_0vSWAXSX4B1Pfd_9W_1EAY0cw21TAMp3ujtKh0LsAmUc4vN8vyp-Ft2NHcnqtav9gyOQipzs5m8kFcS8O_3uKJ-KH50kFWhghbfGbaFtCwNsAUuHnbyUzqejawJJwCS2PKKOqH7dncx5E9gsSTyc6AsXozIjbPpPiGfT4m_CYy5AakLg">
+<div class="flex flex-col min-w-0 flex-1">
+<span class="font-body-sm text-body-sm font-semibold text-surface-container-lowest truncate">Bpk. Joko Susilo</span>
+<span class="font-label-sm text-label-sm text-outline-variant truncate">Ketua KTH Ijen Makmur</span>
+</div>
+</div>
+<div class="pt-space-xs">
+<a class="flex items-center gap-1.5 font-label-md text-label-md text-error-container hover:text-on-error transition-colors" data-path="login" href="#">
+<span class="material-symbols-outlined text-[16px]">logout</span>
+<span>Keluar Portal</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT WRAPPER -->
+<div class="pl-[260px]">
+<!-- TOPBAR HEADER -->
+<header class="fixed top-0 left-[260px] right-0 h-16 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-margin border-b border-outline-variant/20">
+<div class="flex items-center gap-space-sm text-body-sm">
+<span class="material-symbols-outlined text-outline text-[18px]">terrain</span>
+<span class="font-label-md text-label-md text-outline">Wilayah Hutan Ijen</span>
+<span class="text-outline-variant font-label-sm text-label-sm">/</span>
+<span class="font-label-md text-label-md text-outline">Poktan Ijen Makmur</span>
+<span class="text-outline-variant font-label-sm text-label-sm">/</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Pencairan Dana Escrow</span>
+</div>
+<div class="flex items-center gap-space-md">
+<!-- Micro Weather Telemetry -->
+<div class="hidden md:flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-primary">partly_cloudy_day</span>
+<span>Suhu 24°C • Kelembapan 78%</span>
+</div>
+<!-- Notification Icon -->
+<div class="relative flex items-center">
+<button aria-label="Notifikasi" class="p-1.5 rounded hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-error"></span>
+</button>
+</div>
+<!-- Bantuan Pendamping Button -->
+<a class="inline-flex items-center gap-1.5 px-space-sm py-1.5 rounded bg-surface-container-low hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors border border-outline-variant/30" href="#">
+<span class="material-symbols-outlined text-[16px] text-secondary">help</span>
+<span>Bantuan Pendamping</span>
+</a>
+<img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-primary/20" src="https://lh3.googleusercontent.com/aida/AEtjO1XPwEMrV0aMCe1BPdiXlJD2rpFjkSbbgeNlX15X3cSEqj5dPhID85aa_WcoKawf9CePVCr8g5_0vSWAXSX4B1Pfd_9W_1EAY0cw21TAMp3ujtKh0LsAmUc4vN8vyp-Ft2NHcnqtav9gyOQipzs5m8kFcS8O_3uKJ-KH50kFWhghbfGbaFtCwNsAUuHnbyUzqejawJJwCS2PKKOqH7dncx5E9gsSTyc6AsXozIjbPpPiGfT4m_CYy5AakLg">
+</div>
+</header>
+<main class="relative pt-16 bg-background min-h-screen">
+<div class="p-space-margin space-y-space-lg max-w-[1440px] mx-auto w-full">
+<!-- PAGE TITLE & HERO SECTION -->
+<section class="relative overflow-hidden rounded-xl bg-surface-container-low shadow-sm p-space-lg flex flex-col xl:flex-row xl:items-center justify-between gap-space-md border border-outline-variant/20">
+<div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-primary-fixed/20 blur-3xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col gap-space-xs max-w-3xl">
+<div class="flex items-center gap-space-sm flex-wrap">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">account_balance</span>
+              Rekening Escrow Penampung: BRI - KTH Ijen Makmur (Terverifikasi)
+            </span>
+<span class="font-mono text-outline-variant font-label-sm text-label-sm">No. Reg: 35.10.04.2001</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Pengajuan &amp; Riwayat Pencairan Dana Escrow</h1>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Kelola klaim dana termin penanaman, penuhi syarat verifikasi bukti tanam lapangan, dan pantau status transfer rekening kelompok tani Anda.
+          </p>
+</div>
+<div class="relative z-10 flex items-center gap-space-sm flex-wrap sm:flex-nowrap shrink-0">
+<button class="inline-flex items-center gap-2 px-space-md py-2.5 rounded-lg bg-surface-container-high hover:bg-surface-variant text-on-surface font-label-md text-label-md transition-colors shadow-sm border border-outline-variant/40" id="downloadReportBtn" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary">download</span>
+<span>Unduh Laporan Rekap Escrow</span>
+</button>
+<a class="inline-flex items-center gap-2 px-space-lg py-2.5 rounded-lg bg-primary-container hover:bg-primary text-on-primary font-headline-sm text-headline-sm transition-all shadow-md active:scale-95" href="#klaim-panel">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>+ Ajukan Pencairan Termin Baru</span>
+</a>
+</div>
+</section>
+<!-- 4 KPI STATS CARDS -->
+<section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-md">
+<!-- Card 1: Dana Escrow Siap Dicairkan (Highlight Active) -->
+<div class="rounded-xl bg-surface-container-lowest shadow-sm p-space-md flex flex-col justify-between relative overflow-hidden group hover:shadow-md transition-shadow border-2 border-primary">
+<div class="absolute top-0 left-0 right-0 h-1 bg-primary"></div>
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider font-semibold">Dana Escrow Siap Cair</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-bold shadow-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+                Siap Klaim
+              </span>
+</div>
+<div class="flex items-baseline gap-1 pt-1">
+<span class="font-headline-xl text-headline-xl text-primary font-bold tracking-tight">Rp 3.750.000</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-primary">verified</span>
+              Termin 2 - 100% Bukti Tanam Lolos Audit KLHK
+            </p>
+</div>
+<div class="pt-space-md mt-space-sm">
+<div class="flex items-center justify-between px-2.5 py-1.5 rounded bg-primary/10 font-label-sm text-label-sm">
+<span class="text-primary font-medium">Klaim Termin 2: Tanam &amp; Geotag</span>
+<span class="font-semibold font-mono text-primary">Tersedia</span>
+</div>
+</div>
+</div>
+<!-- Card 2: Total Dana Telah Dicairkan -->
+<div class="rounded-xl bg-surface-container-lowest shadow-sm p-space-md flex flex-col justify-between hover:shadow-md transition-shadow border border-outline-variant/30">
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider font-semibold">Total Dana Telah Dicairkan</span>
+<span class="p-1.5 rounded-lg bg-surface-container-low text-primary">
+<span class="material-symbols-outlined text-[20px]">task_alt</span>
+</span>
+</div>
+<div class="flex items-baseline gap-1 pt-1">
+<span class="font-headline-xl text-headline-xl text-on-surface font-bold tracking-tight">Rp 8.750.000</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Termin 1 Persiapan Lahan &amp; Operasional Awal
+            </p>
+</div>
+<div class="pt-space-md mt-space-sm">
+<div class="flex items-center justify-between px-2.5 py-1.5 rounded bg-surface-container-low font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Status Transfer</span>
+<span class="font-semibold text-primary">100% Sukses Masuk Rekening</span>
+</div>
+</div>
+</div>
+<!-- Card 3: Dana Dalam Escrow (Locked) -->
+<div class="rounded-xl bg-surface-container-lowest shadow-sm p-space-md flex flex-col justify-between hover:shadow-md transition-shadow border border-outline-variant/30">
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider font-semibold">Dana Dalam Escrow (Locked)</span>
+<span class="p-1.5 rounded-lg bg-surface-container-low text-secondary">
+<span class="material-symbols-outlined text-[20px]">lock_clock</span>
+</span>
+</div>
+<div class="flex items-baseline gap-1 pt-1">
+<span class="font-headline-xl text-headline-xl text-on-surface font-bold tracking-tight">Rp 22.500.000</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Menunggu milestone perawatan 3 bulan &amp; survival 90%
+            </p>
+</div>
+<div class="pt-space-md mt-space-sm">
+<div class="flex items-center justify-between px-2.5 py-1.5 rounded bg-surface-container-low font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Jadwal Rilis Termin 3</span>
+<span class="font-semibold text-secondary font-mono">Februari 2025</span>
+</div>
+</div>
+</div>
+<!-- Card 4: Total Nilai Kontrak Kemitraan -->
+<div class="rounded-xl bg-surface-container-lowest shadow-sm p-space-md flex flex-col justify-between hover:shadow-md transition-shadow border border-outline-variant/30">
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider font-semibold">Nilai Kontrak Kemitraan</span>
+<span class="p-1.5 rounded-lg bg-surface-container-low text-tertiary">
+<span class="material-symbols-outlined text-[20px]">forest</span>
+</span>
+</div>
+<div class="flex items-baseline gap-1 pt-1">
+<span class="font-headline-xl text-headline-xl text-on-surface font-bold tracking-tight">Rp 35.000.000</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Klaster 12.5 Ha • Total 5.000 Pohon Agroforestri
+            </p>
+</div>
+<div class="pt-space-md mt-space-sm">
+<div class="flex items-center justify-between px-2.5 py-1.5 rounded bg-surface-container-low font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Realisasi Fisik</span>
+<span class="font-semibold text-on-surface">69.0% (3.450 Pohon)</span>
+</div>
+</div>
+</div>
+</section>
+<!-- MAIN CONTENT GRID (2 Kolom: 70% Kolom Kiri / 30% Kolom Kanan) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- KOLOM KIRI (70% - lg:col-span-8 atau 7/12 & 8/12) -->
+<div class="lg:col-span-8 space-y-space-lg">
+<!-- PANEL A: Formulir & Konfirmasi Klaim Termin Aktif -->
+<div class="rounded-xl bg-surface-container-lowest shadow-sm border border-outline-variant/30 p-space-lg space-y-space-md relative overflow-hidden" id="klaim-panel">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-xs border-b border-outline-variant/20">
+<div class="flex items-center gap-space-sm">
+<span class="w-9 h-9 rounded-lg bg-primary-container text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">assignment_turned_in</span>
+</span>
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Konfirmasi Klaim Termin 2: Penanaman &amp; Geotagging</h2>
+<p class="font-body-sm text-body-sm text-outline">Verifikasi lapangan telah disetujui BPDAS Brantas Sampean &amp; Tim Ahli KLHK</p>
+</div>
+</div>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary font-label-sm text-label-sm font-bold">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                Termin Aktif Siap Cair
+              </span>
+</div>
+<!-- Milestone Stepper Progress Bar -->
+<div class="py-space-sm space-y-space-sm">
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="font-bold text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">check_circle</span>
+                  1. Persiapan Lahan (Selesai - Rp 5 Juta)
+                </span>
+<span class="font-bold text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">radio_button_checked</span>
+                  2. Tanam 3.450 Pohon (Tahap Aktif - Rp 3.75 Juta)
+                </span>
+<span class="text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">lock</span>
+                  3. Rawat Bulan ke-6 (Mendatang)
+                </span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all" style="width: 66.6%;"></div>
+</div>
+</div>
+<!-- Nominal Callout Card -->
+<div class="p-space-md rounded-xl bg-gradient-to-r from-primary/10 via-surface-container-low to-surface-container border border-primary/20 flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="space-y-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold">Nominal Pencairan Termin 2</span>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-xl text-headline-xl text-primary font-bold">Rp 3.750.000</span>
+<span class="font-label-sm text-label-sm text-outline font-mono">(Biaya Jasa Tanam Petani)</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Bebas potongan biaya administrasi perbankan / Kliring RTGS BRI 100% Ditanggung TreeFund.</p>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-lowest border border-outline-variant/30 text-right shrink-0">
+<span class="font-label-sm text-label-sm text-outline block">Total Pohon Selesai:</span>
+<span class="font-headline-sm text-headline-sm font-mono text-on-surface font-bold">3.450 / 3.450 Titik</span>
+</div>
+</div>
+<!-- Checkpoint Verifikasi KLHK & BPDAS -->
+<div class="space-y-space-xs pt-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-semibold block">Syarat Kepatuhan Verifikasi Spasial &amp; Administrasi</span>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-sm pt-1">
+<div class="p-space-sm rounded-lg bg-surface-container-low border border-outline-variant/30 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-[20px] text-primary shrink-0 mt-0.5">verified</span>
+<div class="text-left">
+<p class="font-label-md text-label-md font-semibold text-on-surface">Geotagging Valid</p>
+<p class="font-body-sm text-body-sm text-outline text-[12px]">3.450 titik pohon lolos sensor akurasi RTK GNSS</p>
+</div>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low border border-outline-variant/30 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-[20px] text-primary shrink-0 mt-0.5">verified</span>
+<div class="text-left">
+<p class="font-label-md text-label-md font-semibold text-on-surface">Berita Acara Sah</p>
+<p class="font-body-sm text-body-sm text-outline text-[12px]">Ditandatangani Penyuluh KPH Banyuwangi Barat</p>
+</div>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low border border-outline-variant/30 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-[20px] text-primary shrink-0 mt-0.5">verified</span>
+<div class="text-left">
+<p class="font-label-md text-label-md font-semibold text-on-surface">42 Anggota Padan</p>
+<p class="font-body-sm text-body-sm text-outline text-[12px]">NIK seluruh penggarap terpadan resmi Dukcapil</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Rekening Tujuan Konfirmasi Box -->
+<div class="p-space-md rounded-xl bg-surface-container-low border border-outline-variant/30 flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm">
+<span class="w-10 h-10 rounded-lg bg-primary text-on-primary font-headline-sm text-[13px] flex items-center justify-center font-bold shadow-xs">BRI</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline">Rekening Penampung Resmi:</span>
+<span class="font-headline-sm text-headline-sm font-mono text-on-surface font-bold">0018-01-002938-50-4</span>
+<span class="font-label-sm text-label-sm text-primary font-medium">a.n KTH IJEN MAKMUR (Sesuai SK MenLHK)</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">lock</span> Terkunci &amp; Siap Terima Dana
+                </span>
+</div>
+</div>
+<!-- Action & Integrity Check -->
+<div class="pt-space-xs space-y-space-sm">
+<label class="flex items-start gap-space-sm cursor-pointer select-none bg-surface-container-low p-space-sm rounded-lg border border-outline-variant/20">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary focus:ring-primary accent-[#2d6a4f] cursor-pointer shrink-0" id="integrityCheck" type="checkbox">
+<span class="font-body-sm text-body-sm text-on-surface leading-snug">
+                  Saya selaku <strong>Ketua KTH Ijen Makmur</strong> menyatakan bahwa dana termin penanaman ini akan segera didistribusikan kepada 42 petani penggarap sesuai Berita Acara pembagian kerja kelompok tani.
+                </span>
+</label>
+<div class="flex flex-col sm:flex-row items-center justify-between gap-space-md pt-1">
+<div class="flex items-center gap-2 text-outline font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[18px] text-primary">schedule</span>
+<span>Dana otomatis ditransfer dalam 1x24 jam kerja setelah dikonfirmasi.</span>
+</div>
+<button class="w-full sm:w-auto px-space-xl py-3 rounded-lg bg-primary-container hover:bg-primary text-on-primary font-headline-sm text-headline-sm transition-all shadow-md active:scale-95 flex items-center justify-center gap-2" id="submitClaimBtn" type="button">
+<span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+<span>Konfirmasi &amp; Kirim Pengajuan Pencairan</span>
+</button>
+</div>
+</div>
+</div>
+<!-- PANEL B: Tabel Riwayat Pencairan Dana (Data Table) -->
+<div class="rounded-xl bg-surface-container-lowest shadow-sm border border-outline-variant/30 flex flex-col overflow-hidden">
+<!-- Table Header & Filter Tabs -->
+<div class="px-space-md pt-space-md pb-space-sm flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm bg-surface-container-low/40 border-b border-outline-variant/20">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Riwayat Pengajuan &amp; Mutasi Escrow</h3>
+<p class="font-body-sm text-body-sm text-outline">Catatan transparan alur kas masuk dari custodial account TreeFund</p>
+</div>
+<div class="flex items-center gap-space-xs overflow-x-auto no-scrollbar" id="tabHistoryContainer">
+<button class="px-3 py-1.5 rounded font-label-md text-label-md bg-primary-container text-on-primary transition-all flex items-center gap-1 history-tab active">
+<span>Semua</span>
+<span class="px-1.5 py-0.2 rounded-full bg-primary text-primary-fixed font-mono text-[10px]">3</span>
+</button>
+<button class="px-3 py-1.5 rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all flex items-center gap-1 history-tab">
+<span>Selesai Ditransfer</span>
+<span class="px-1.5 py-0.2 rounded-full bg-surface-container-highest text-on-surface font-mono text-[10px]">2</span>
+</button>
+<button class="px-3 py-1.5 rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all flex items-center gap-1 history-tab">
+<span>Sedang Diverifikasi</span>
+<span class="px-1.5 py-0.2 rounded-full bg-surface-container-highest text-on-surface font-mono text-[10px]">1</span>
+</button>
+</div>
+</div>
+<!-- Table -->
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider border-b border-outline-variant/20">
+<th class="py-3 px-space-md font-semibold" scope="col">ID Pengajuan</th>
+<th class="py-3 px-space-sm font-semibold" scope="col">Termin Milestone</th>
+<th class="py-3 px-space-sm font-semibold" scope="col">Tanggal Diajukan</th>
+<th class="py-3 px-space-sm font-semibold" scope="col">Nominal</th>
+<th class="py-3 px-space-sm font-semibold" scope="col">Rekening Tujuan</th>
+<th class="py-3 px-space-sm font-semibold" scope="col">Status Verifikasi</th>
+<th class="py-3 px-space-md text-right font-semibold" scope="col">Aksi</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10 text-body-sm font-body-sm text-on-surface" id="withdrawalTableBody">
+<!-- Row 1: Termin 2 (Baru Diajukan / Menunggu) -->
+<tr class="hover:bg-surface-container-low/60 transition-colors bg-primary/5">
+<td class="py-3.5 px-space-md">
+<span class="font-mono text-label-md text-primary font-bold">#WD-2024-002</span>
+</td>
+<td class="py-3.5 px-space-sm">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">Termin 2: Tanam &amp; Geotag</span>
+<span class="font-label-sm text-label-sm text-outline">3.450 Bibit Lolos RTK</span>
+</div>
+</td>
+<td class="py-3.5 px-space-sm">
+<span class="text-on-surface font-medium">28 Okt 2024</span>
+<span class="block text-[11px] text-outline font-mono">08:15 WIB</span>
+</td>
+<td class="py-3.5 px-space-sm">
+<span class="font-headline-sm text-body-md font-bold text-primary font-mono">Rp 3.750.000</span>
+</td>
+<td class="py-3.5 px-space-sm">
+<div class="flex items-center gap-1.5">
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface font-mono text-[11px] font-semibold">BRI</span>
+<span class="font-mono text-label-sm text-outline">•••• 50-4</span>
+</div>
+</td>
+<td class="py-3.5 px-space-sm">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[13px]">pending</span>
+                        Menunggu Konfirmasi Ketua
+                      </span>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<button class="px-2.5 py-1.5 rounded bg-primary-container hover:bg-primary text-on-primary font-label-sm text-label-sm font-semibold transition-all inline-flex items-center gap-1" onclick="document.getElementById('klaim-panel').scrollIntoView({behavior: 'smooth'})" type="button">
+<span>Review</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: Termin 1 (Selesai Ditransfer) -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3.5 px-space-md">
+<span class="font-mono text-label-md text-outline font-medium">#WD-2024-001</span>
+</td>
+<td class="py-3.5 px-space-sm">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">Termin 1: Pembersihan Lahan &amp; Lubang</span>
+<span class="font-label-sm text-label-sm text-outline">12.5 Hektar Klaster Ijen</span>
+</div>
+</td>
+<td class="py-3.5 px-space-sm">
+<span class="text-on-surface font-medium">14 Sep 2024</span>
+<span class="block text-[11px] text-outline font-mono">11:20 WIB</span>
+</td>
+<td class="py-3.5 px-space-sm">
+<span class="font-headline-sm text-body-md font-bold text-on-surface font-mono">Rp 5.000.000</span>
+</td>
+<td class="py-3.5 px-space-sm">
+<div class="flex items-center gap-1.5">
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface font-mono text-[11px] font-semibold">BRI</span>
+<span class="font-mono text-label-sm text-outline">•••• 50-4</span>
+</div>
+</td>
+<td class="py-3.5 px-space-sm">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-fixed/80 text-on-primary-fixed font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[13px]">check_circle</span>
+                        Berhasil Ditransfer (Lunas)
+                      </span>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<button class="px-2.5 py-1.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-colors inline-flex items-center gap-1" onclick="alert('Mengunduh Bukti Transfer Bank BRI: No Ref BRI-20240914-88219')" type="button">
+<span class="material-symbols-outlined text-[15px] text-primary">receipt_long</span>
+<span>Bukti PDF</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: Pre-operational -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3.5 px-space-md">
+<span class="font-mono text-label-md text-outline font-medium">#WD-2024-PRE</span>
+</td>
+<td class="py-3.5 px-space-sm">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">Dana Uji Tanah &amp; Pemetaan RTK</span>
+<span class="font-label-sm text-label-sm text-outline">Survei Lapangan GIS BPDAS</span>
+</div>
+</td>
+<td class="py-3.5 px-space-sm">
+<span class="text-on-surface font-medium">02 Agu 2024</span>
+<span class="block text-[11px] text-outline font-mono">14:05 WIB</span>
+</td>
+<td class="py-3.5 px-space-sm">
+<span class="font-headline-sm text-body-md font-bold text-on-surface font-mono">Rp 3.750.000</span>
+</td>
+<td class="py-3.5 px-space-sm">
+<div class="flex items-center gap-1.5">
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface font-mono text-[11px] font-semibold">BRI</span>
+<span class="font-mono text-label-sm text-outline">•••• 50-4</span>
+</div>
+</td>
+<td class="py-3.5 px-space-sm">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-fixed/80 text-on-primary-fixed font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[13px]">check_circle</span>
+                        Berhasil Ditransfer
+                      </span>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<button class="px-2.5 py-1.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-colors inline-flex items-center gap-1" onclick="alert('Mengunduh Bukti Transfer Bank BRI: No Ref BRI-20240802-11029')" type="button">
+<span class="material-symbols-outlined text-[15px] text-primary">receipt_long</span>
+<span>Bukti PDF</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer -->
+<div class="p-space-md bg-surface-container-low/30 border-t border-outline-variant/20 flex flex-col sm:flex-row items-center justify-between gap-space-md text-body-sm">
+<span class="font-body-sm text-body-sm text-outline">
+                Menampilkan <strong class="text-on-surface">3</strong> dari <strong class="text-on-surface">3</strong> transaksi pencairan kemitraan resmi
+              </span>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1 text-primary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]">security</span>
+                  Sistem Escrow Terenkripsi Bank Kustodian BRI &amp; BPDAS KLHK
+                </span>
+</div>
+</div>
+</div>
+</div>
+<!-- KOLOM KANAN (30% - lg:col-span-4) -->
+<div class="lg:col-span-4 space-y-space-lg">
+<!-- Card A: Rekening Bank Penampung Resmi -->
+<div class="rounded-xl bg-surface-container-lowest shadow-sm border border-outline-variant/30 p-space-md space-y-space-md relative overflow-hidden">
+<div class="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-primary-fixed/20 pointer-events-none"></div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-8 h-8 rounded-lg bg-surface-container text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">account_balance</span>
+</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Rekening Escrow Resmi</h3>
+</div>
+<span class="px-2 py-0.5 rounded bg-primary/10 text-primary font-label-sm text-label-sm font-semibold">Tervalidasi</span>
+</div>
+<div class="p-space-md rounded-xl bg-gradient-to-br from-surface-container-low to-surface-container border border-outline-variant/30 space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-7 h-7 rounded bg-primary text-on-primary font-headline-sm text-[12px] flex items-center justify-center font-bold">BRI</span>
+<span class="font-headline-sm text-body-md font-bold text-on-surface">Bank Rakyat Indonesia</span>
+</div>
+<span class="font-mono text-label-sm text-outline">Cab. Banyuwangi</span>
+</div>
+<div class="pt-1">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider block">Nomor Rekening Poktan:</span>
+<div class="flex items-center justify-between mt-0.5">
+<span class="font-headline-sm text-headline-sm text-primary font-mono tracking-wider font-bold">0018-01-002938-50-4</span>
+<button class="p-1.5 rounded hover:bg-surface-variant text-outline hover:text-on-surface transition-colors" onclick="navigator.clipboard?.writeText('0018-01-002938-50-4'); alert('Nomor Rekening BRI disalin!')" title="Salin Nomor Rekening" type="button">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+</button>
+</div>
+</div>
+<div class="pt-space-xs border-t border-surface-variant/40">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider block">Atas Nama Rekening:</span>
+<span class="font-body-md text-body-md font-bold text-on-surface">KTH IJEN MAKMUR</span>
+<span class="font-label-sm text-label-sm text-outline block text-[11px]">(Sesuai SK MenLHK &amp; Akta Notaris Poktan)</span>
+</div>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary mt-0.5 shrink-0">lock</span>
+<span>Rekening ini dikunci khusus untuk pencairan program TreeFund. Penarikan tunai diawasi bersama oleh Ketua &amp; Bendahara Poktan.</span>
+</div>
+</div>
+<!-- Card B: Alur Pencairan Dana Escrow (Stepper Info) -->
+<div class="rounded-xl bg-surface-container-lowest shadow-sm border border-outline-variant/30 p-space-md space-y-space-md">
+<div class="flex items-center justify-between pb-space-xs border-b border-outline-variant/20">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Alur Pencairan Escrow</h3>
+<span class="font-label-sm text-label-sm text-primary font-semibold">SOP KLHK</span>
+</div>
+<div class="space-y-space-md relative pl-6 before:content-[''] before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-surface-container-highest">
+<!-- Step 1 -->
+<div class="relative space-y-0.5">
+<span class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[13px]">check</span>
+</span>
+<div class="font-label-md text-label-md font-bold text-on-surface">1. Pemenuhan Work Order Lapangan</div>
+<p class="font-body-sm text-body-sm text-outline text-[12px]">Petani menanam pohon dan mengambil geotagging koordinat RTK presisi.</p>
+</div>
+<!-- Step 2 -->
+<div class="relative space-y-0.5">
+<span class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[13px]">check</span>
+</span>
+<div class="font-label-md text-label-md font-bold text-on-surface">2. Audit Sentinel-2 &amp; BPDAS</div>
+<p class="font-body-sm text-body-sm text-outline text-[12px]">Penyuluh lapangan dan citra satelit memverifikasi kerapatan tajuk bibit.</p>
+</div>
+<!-- Step 3 (Current) -->
+<div class="relative space-y-0.5 bg-primary/5 p-2 rounded-lg -ml-1 border border-primary/20">
+<span class="absolute -left-5 top-2.5 w-5 h-5 rounded-full bg-primary-container flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[13px]">verified</span>
+</span>
+<div class="font-label-md text-label-md font-bold text-primary">3. Konfirmasi Pengajuan Ketua</div>
+<p class="font-body-sm text-body-sm text-on-surface text-[12px]">Ketua KTH menandatangani rilis dana termin melalui portal resmi ini.</p>
+</div>
+<!-- Step 4 -->
+<div class="relative space-y-0.5 opacity-75">
+<span class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px]">account_balance</span>
+</span>
+<div class="font-label-md text-label-md font-medium text-on-surface">4. Transfer Otomatis Bank BRI</div>
+<p class="font-body-sm text-body-sm text-outline text-[12px]">Smart escrow merilis dana langsung ke rekening penampung kelompok.</p>
+</div>
+</div>
+</div>
+<!-- Card C: Kontak Bantuan & Pendamping Lapangan -->
+<div class="rounded-xl bg-surface-container-lowest shadow-sm border border-outline-variant/30 p-space-md space-y-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider font-semibold">Pendamping Kehutanan &amp; Perbankan</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span> Siap Membantu
+              </span>
+</div>
+<div class="flex items-center gap-space-sm">
+<img alt="Penyuluh Budi Santoso" class="w-12 h-12 rounded-full object-cover shadow-sm ring-2 ring-surface-container" src="/assets/reference/d6a0975134689753e49d.jpg">
+<div class="min-w-0 flex-1">
+<h4 class="font-headline-sm text-body-md font-bold text-on-surface truncate">Budi Santoso, S.Hut</h4>
+<p class="font-body-sm text-body-sm text-outline truncate">Penyuluh KPH Banyuwangi Barat</p>
+<p class="font-mono text-label-sm text-label-sm text-primary font-semibold">WA: 0812-3456-7890</p>
+</div>
+</div>
+<div class="pt-1 flex flex-col gap-2">
+<a class="w-full inline-flex items-center justify-center gap-2 px-space-md py-2.5 rounded-lg bg-primary-container hover:bg-primary text-on-primary font-label-md text-label-md font-bold transition-all shadow-sm" href="https://wa.me/6281234567890" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[18px]">chat</span>
+<span>Hubungi Penyuluh Lapangan</span>
+</a>
+<div class="p-2.5 rounded-lg bg-surface-container-low text-outline font-label-sm text-label-sm flex items-center justify-between">
+<span>Bendahara Poktan: Ibu Siti Rohmah</span>
+<span class="font-mono text-on-surface font-semibold">0852-1143-6629</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Notification Toast -->
+<div class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none" id="toastNotification">
+<div class="flex items-center gap-space-sm px-space-md py-3 rounded-lg bg-inverse-surface text-inverse-on-surface shadow-xl border border-white/10">
+<span class="material-symbols-outlined text-primary-fixed text-[20px]">check_circle</span>
+<span class="font-body-md text-body-md font-medium" id="toastMessage">Pengajuan pencairan Termin 2 berhasil dikirim ke Bank BRI!</span>
+</div>
+</div>
+</main>
+</div>
+<!-- Interaction Script -->
+<script>
+  (function initEscrowWithdrawal() {
+    const toast = document.getElementById('toastNotification');
+    const toastMsg = document.getElementById('toastMessage');
+    const submitBtn = document.getElementById('submitClaimBtn');
+    const integrityCheck = document.getElementById('integrityCheck');
+    const downloadReportBtn = document.getElementById('downloadReportBtn');
+
+    function showToast(message) {
+      if (!toast) return;
+      toastMsg.textContent = message;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3500);
+    }
+
+    if (integrityCheck && submitBtn) {
+      integrityCheck.addEventListener('change', function() {
+        if (!this.checked) {
+          submitBtn.disabled = true;
+          submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        } else {
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+      });
+    }
+
+    if (submitBtn) {
+      submitBtn.addEventListener('click', function() {
+        if (!integrityCheck.checked) return;
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">sync</span><span>Mengenkripsi Pengajuan Escrow ke Bank BRI...</span>';
+        submitBtn.disabled = true;
+
+        setTimeout(() => {
+          submitBtn.innerHTML = '<span class="material-symbols-outlined text-[20px]">check_circle</span><span>Pengajuan Berhasil Diproses!</span>';
+          submitBtn.classList.remove('bg-primary-container', 'hover:bg-primary');
+          submitBtn.classList.add('bg-[#1e4620]');
+          showToast('Permintaan rilis Termin 2 (Rp 3.750.000) sukses diteruskan ke Kustodian BRI!');
+        }, 1200);
+      });
+    }
+
+    if (downloadReportBtn) {
+      downloadReportBtn.addEventListener('click', function() {
+        showToast('Menyiapkan Berita Acara Rekap Escrow KTH Ijen Makmur (PDF)...');
+      });
+    }
+
+    // Tab filter interaction
+    const tabs = document.querySelectorAll('.history-tab');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        tabs.forEach(t => {
+          t.classList.remove('bg-primary-container', 'text-on-primary');
+          t.classList.add('text-on-surface-variant');
+        });
+        this.classList.remove('text-on-surface-variant');
+        this.classList.add('bg-primary-container', 'text-on-primary');
+      });
+    });
+  })();
+</script>
+</body></html>

@@ -21,6 +21,7 @@ class Partner extends Model
     {
         return $this->hasMany(Plot::class);
     }
+
     public function members(): mixed
     {
         return $this->hasMany(Member::class);
